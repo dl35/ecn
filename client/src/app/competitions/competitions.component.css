@@ -1,0 +1,20 @@
+.example-h2_ {
+  margin: 0px;
+}
+
+.example-section_ {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin_ {
+  margin: 0 10px;
+}
+
+
+#tcolor .md-icon{
+ background-color: green;
+
+}
