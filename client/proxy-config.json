@@ -1,0 +1,8 @@
+{
+  "/api/public": {
+    "target": "http://127.0.0.1",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {"^/api/public" : "/natation/api/public"}
+  }
+}
