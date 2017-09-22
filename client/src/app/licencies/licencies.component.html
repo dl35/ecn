@@ -1,0 +1,286 @@
+
+<!--
+<div class="example-container mat-elevation-z10" fxLayout="column"  [fxShow]="meta.displayForm"   >
+  
+      <br/>
+      <br/>
+  
+  <form class="example-form" name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate   >  
+
+  
+  <div fxLayout="row" fxLayoutAlign="start center"  >
+          
+    
+    <md-form-field fxFlex="65" >
+          <input mdInput placeholder="Nom" formControlName="nom"    >
+          </md-form-field>
+    
+  
+          <md-form-field fxFlex="28" >
+          <input mdInput placeholder="Lieu" formControlName="lieu"   >
+          <md-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          *Le Lieu est requis sur 4 charactères minimum
+          </md-hint>
+          </md-form-field>
+  
+  </div> 
+  
+  
+  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' >
+      
+      <md-form-field fxFlex="15"  >
+          <input mdInput [mdDatepicker]="debut"  placeholder="Début" (click)="debut.open()"  formControlName="debut" >
+          <md-datepicker-toggle mdSuffix [for]="debut"  ></md-datepicker-toggle>
+          <md-datepicker #debut></md-datepicker>
+      </md-form-field>
+      <md-form-field fxFlex="15"  >
+          <input mdInput [mdDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()" formControlName="fin">
+          <md-datepicker-toggle mdSuffix [for]="fin"></md-datepicker-toggle>
+          <md-datepicker #fin></md-datepicker>
+      </md-form-field>
+      
+      <md-form-field fxFlex="15"  >
+          <input mdInput [mdDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()" formControlName="limite_club" >
+          <md-datepicker-toggle mdSuffix [for]="limite"></md-datepicker-toggle>
+          <md-datepicker #limite></md-datepicker>
+      </md-form-field>
+    
+  
+    
+      <md-select placeholder="Bassin" name="bassin"  formControlName="bassin" fxFlex="8" fxFlexOffset="10" >
+          <md-option *ngFor="let bassin of meta.bassin" [value]="bassin.value">
+            {{bassin.type}}
+          </md-option>
+        </md-select>
+   
+  
+  
+        <md-select placeholder="Type" name="type" formControlName="type" fxFlexOffset="3" fxFlex="10" >
+            <md-option *ngFor="let type of meta.type" [value]="type.value">
+              {{type.type}}
+            </md-option>
+          </md-select>
+  
+  
+  </div> 
+  
+  
+  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:20px' >
+  
+      <div fxFlexOffset="3" fxFlex="50" formGroupName="categories"  fxLayout="row" fxLayoutAlign="start center" >
+          <span>Categories:&nbsp;&nbsp;&nbsp;</span>
+  
+          <md-checkbox formControlName="ap"   >Av</md-checkbox>&nbsp;
+          <md-checkbox formControlName="ben"  >Ben</md-checkbox>&nbsp;
+          <md-checkbox formControlName="dep"  >Dep</md-checkbox>&nbsp;
+          <md-checkbox formControlName="reg"  >Reg</md-checkbox>&nbsp;
+          <md-checkbox formControlName="nat"  >Nat</md-checkbox>&nbsp;
+          <md-checkbox formControlName="mast"  >Mast</md-checkbox>&nbsp;
+          
+  </div>
+  
+  
+  
+    <div fxFlexOffset="3" fxFlex="10" >  
+    <md-checkbox name="verif"  formControlName="verif"  >Vérification</md-checkbox>
+    </div>
+    <div fxFlexOffset="3" fxFlex="10" >  
+    <md-checkbox name="choixnages"  formControlName="choixnages"  >Choix nages</md-checkbox>
+    </div>
+  
+  
+  
+  </div> 
+  
+  
+  
+  
+  <div   fxLayout="row" fxLayoutAlign="center center"  style='margin-top:20px'    >
+      <md-form-field fxFlex="75" >
+          <textarea mdInput   mdTextareaAutosize mdAutosizeMinRows="3"   formControlName="commentaires"  placeholder="Commentaires"></textarea>
+        </md-form-field>
+  </div>
+  
+    <div fxLayout="row" fxLayoutAlign="center center"  >
+     
+               <button md-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
+               <button md-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
+      </div>
+  
+  </form>
+  <br>
+  <br>
+  </div>
+  
+-->
+  
+  
+  
+  <div class="mat-elevation-z8"     [fxShow]="!meta.displayForm"   >
+  
+     
+      <div>
+      <div fxFlex="100" fxFlexLayout="column"  fxLayoutAlign="center center" fxLayoutGap="45px" >
+          <md-form-field floatPlaceholder="never"  fxFlex="65"  >
+            <input mdInput #filter placeholder="Filtre...  nom, prenom, ville">
+          </md-form-field>
+          
+              <button md-mini-fab color="primary"  (click)="updateForm('-1') "  > <md-icon>add</md-icon></button>
+              <md-chip-list>
+                  <md-chip color="accent" selected="true">{{meta.totdisp}} / {{meta.total}}</md-chip>
+                </md-chip-list>
+        </div>
+      </div>  
+  
+   
+
+  <md-table     class="mat-table"  #table [dataSource]="dataSource" mdSort>
+  
+  
+  
+  <!-- Name Column -->
+  <ng-container mdColumnDef="nom">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Nom </md-header-cell>
+    <md-cell *mdCellDef="let row" > {{row.nom}} </md-cell>
+  </ng-container>
+  
+  <!-- Name Column -->
+  <ng-container mdColumnDef="prenom">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Prénom</md-header-cell>
+    <md-cell *mdCellDef="let row" > {{row.prenom | lowercase}} </md-cell>
+  </ng-container>
+  
+  <!-- Name Column -->
+  <ng-container mdColumnDef="sexe">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Sexe</md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.sexe}} </md-cell>
+  </ng-container>
+  
+ <!-- Name Column -->
+ <ng-container mdColumnDef="ville">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Ville</md-header-cell>
+  <md-cell *mdCellDef="let row">{{row.ville }} </md-cell>
+ </ng-container>
+
+
+
+  <!-- Name Column -->
+  <ng-container mdColumnDef="niveau">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Niveau </md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.niveau}} </md-cell>
+  </ng-container>
+  
+  <!-- Name Column -->
+  <ng-container mdColumnDef="categorie">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Catégorie </md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.categorie}} </md-cell>
+  </ng-container>
+
+
+
+  <!-- Name Column -->
+  <ng-container mdColumnDef="rang">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Rang </md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.rang}} </md-cell>
+  </ng-container>
+  
+  
+  <!-- Name Column -->
+  <ng-container mdColumnDef="officiel">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Officiel </md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.officiel }} </md-cell>
+  </ng-container>
+  
+   <!-- Name Column -->
+   <ng-container mdColumnDef="cotisation">
+      <md-header-cell *mdHeaderCellDef md-sort-header>Cotisation</md-header-cell>
+      <md-cell *mdCellDef="let row"  [ngStyle]="{'color': row.cotisation > 0 ? 'green' : 'red' , 'font-weight':'bold'}"   > {{row.cotisation}} </md-cell>
+     </ng-container>
+  
+  <!-- Name Column -->
+  <ng-container mdColumnDef="licence">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Licence</md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.licence }} </md-cell>
+   </ng-container>
+
+  <!-- Name Column -->
+  <ng-container mdColumnDef="valide">
+    <md-header-cell *mdHeaderCellDef md-sort-header>Valide</md-header-cell>
+    <md-cell *mdCellDef="let row"> {{row.valide }} </md-cell>
+   </ng-container>
+
+   <ng-container mdColumnDef="id" >
+    <md-header-cell *mdHeaderCellDef>Actions</md-header-cell>
+  
+    <md-cell *mdCellDef="let row"  >
+            <button md-icon-button (click)="updateForm(row.id)" >
+              <md-icon color='primary' >edit</md-icon>
+            </button>
+    </md-cell>
+  </ng-container>
+  
+  
+  
+    <!-- Header and Row Declarations -->
+  
+  
+    <md-header-row *mdHeaderRowDef="['nom','prenom','sexe','ville','niveau','categorie', 'rang', 'officiel' ,'cotisation' ,'licence','valide', 'id' ]"></md-header-row>
+    <md-row *mdRowDef="let row; columns: ['nom','prenom','sexe','ville','niveau','categorie', 'rang', 'officiel' ,'cotisation','licence', 'valide','id' ]"></md-row>
+  
+
+
+  
+  </md-table>
+
+  <md-paginator #paginator
+  
+  [length]="dataSource?.datas?.length"
+  [pageIndex]="0"
+  [pageSize]="50"
+  [pageSizeOptions]="[5, 10]">
+</md-paginator>
+
+  <md-toolbar color="white"  >
+<div fxFlex="100" fxLayout="row" fxLayoutAlign="space-around  center"   >
+
+      <md-select placeholder="Sexe"  color="primary" >
+          <md-option value="F" >Femme</md-option>
+          <md-option value="H">Homme</md-option>
+        </md-select>
+
+        <md-select placeholder="Catégories"  color="primary" >
+            <md-option value="av" >Avenirs</md-option>
+            <md-option value="be">Benjamins</md-option>
+          </md-select>
+
+          <md-select placeholder="Type"  color="primary" >
+              <md-option value="R" >Renouvellement</md-option>
+              <md-option value="N">Nouveau</md-option>
+            </md-select>
+
+            <md-select placeholder="Paye"  color="primary" >
+                <md-option value="0" >Non</md-option>
+                <md-option value="1">Oui</md-option>
+              </md-select>
+
+              <md-select placeholder="Cert.médical"  color="primary" >
+                  <md-option value="0" >Non</md-option>
+                  <md-option value="1">Oui</md-option>
+                </md-select>
+
+
+              <md-select placeholder="Fich.médical"  color="primary" >
+                  <md-option value="0" >Non</md-option>
+                  <md-option value="1">Oui</md-option>
+                </md-select>
+
+              <md-select placeholder="Auto.parentale"  color="primary" >
+                  <md-option value="0" >Non</md-option>
+                  <md-option value="1">Oui</md-option>
+                </md-select>
+ </div>
+  </md-toolbar>
+
+
+
+  </div>

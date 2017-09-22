@@ -1,0 +1,214 @@
+
+
+
+
+<div class="example-container mat-elevation-z10" fxLayout="column"  [fxShow]="meta.displayForm"   >
+
+    <br/>
+    <br/>
+
+<form class="example-form" name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate   >  
+<!--
+    (ngSubmit)="saveLogin(loginForm.value)"
+-->
+
+<div fxLayout="row" fxLayoutAlign="start center"  >
+        
+  
+  <md-form-field fxFlex="65" >
+        <input mdInput placeholder="Nom" formControlName="nom"    >
+        </md-form-field>
+  
+
+        <md-form-field fxFlex="28" >
+        <input mdInput placeholder="Lieu" formControlName="lieu"   >
+        <md-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+        *Le Lieu est requis sur 4 charactères minimum
+        </md-hint>
+        </md-form-field>
+
+</div> 
+
+
+<div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' >
+    
+    <md-form-field fxFlex="15"  >
+        <input mdInput [mdDatepicker]="debut"  placeholder="Début" (click)="debut.open()"  formControlName="debut" >
+        <md-datepicker-toggle mdSuffix [for]="debut"  ></md-datepicker-toggle>
+        <md-datepicker #debut></md-datepicker>
+    </md-form-field>
+    <md-form-field fxFlex="15"  >
+        <input mdInput [mdDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()" formControlName="fin">
+        <md-datepicker-toggle mdSuffix [for]="fin"></md-datepicker-toggle>
+        <md-datepicker #fin></md-datepicker>
+    </md-form-field>
+    
+    <md-form-field fxFlex="15"  >
+        <input mdInput [mdDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()" formControlName="limite_club" >
+        <md-datepicker-toggle mdSuffix [for]="limite"></md-datepicker-toggle>
+        <md-datepicker #limite></md-datepicker>
+    </md-form-field>
+  
+
+  
+    <md-select placeholder="Bassin" name="bassin"  formControlName="bassin" fxFlex="8" fxFlexOffset="10" >
+        <md-option *ngFor="let bassin of meta.bassin" [value]="bassin.value">
+          {{bassin.type}}
+        </md-option>
+      </md-select>
+ 
+
+
+      <md-select placeholder="Type" name="type" formControlName="type" fxFlexOffset="3" fxFlex="10" >
+          <md-option *ngFor="let type of meta.type" [value]="type.value">
+            {{type.type}}
+          </md-option>
+        </md-select>
+
+
+</div> 
+
+
+<div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:20px' >
+
+    <div fxFlexOffset="3" fxFlex="50" formGroupName="categories"  fxLayout="row" fxLayoutAlign="start center" >
+        <span>Categories:&nbsp;&nbsp;&nbsp;</span>
+
+        <md-checkbox formControlName="ap"   >Av</md-checkbox>&nbsp;
+        <md-checkbox formControlName="ben"  >Ben</md-checkbox>&nbsp;
+        <md-checkbox formControlName="dep"  >Dep</md-checkbox>&nbsp;
+        <md-checkbox formControlName="reg"  >Reg</md-checkbox>&nbsp;
+        <md-checkbox formControlName="nat"  >Nat</md-checkbox>&nbsp;
+        <md-checkbox formControlName="mast"  >Mast</md-checkbox>&nbsp;
+        
+</div>
+
+
+
+  <div fxFlexOffset="3" fxFlex="10" >  
+  <md-checkbox name="verif"  formControlName="verif"  >Vérification</md-checkbox>
+  </div>
+  <div fxFlexOffset="3" fxFlex="10" >  
+  <md-checkbox name="choixnages"  formControlName="choixnages"  >Choix nages</md-checkbox>
+  </div>
+
+
+
+</div> 
+
+
+
+
+<div   fxLayout="row" fxLayoutAlign="center center"  style='margin-top:20px'    >
+    <md-form-field fxFlex="75" >
+        <textarea mdInput   mdTextareaAutosize mdAutosizeMinRows="3"   formControlName="commentaires"  placeholder="Commentaires"></textarea>
+      </md-form-field>
+</div>
+
+  <div fxLayout="row" fxLayoutAlign="center center"  >
+   
+             <button md-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
+             <button md-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
+    </div>
+
+</form>
+<br>
+<br>
+</div>
+
+
+
+
+
+<div class="example-container mat-elevation-z8"     [fxShow]="!meta.displayForm"   >
+
+   
+      
+    <div class="example-header">
+        <md-form-field floatPlaceholder="never">
+          <input mdInput #filter placeholder="Filtre...">
+        </md-form-field>
+        
+            <button md-mini-fab color="primary"  (click)="updateForm('-1') "  > <md-icon>add</md-icon></button>
+        
+      </div>
+
+
+<md-table class="mat-table"  #table [dataSource]="dataSource" mdSort>
+
+
+
+<!-- Name Column -->
+<ng-container mdColumnDef="nom">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Nom </md-header-cell>
+  <md-cell *mdCellDef="let row" [ngStyle]="{'color': row.verif == 1 ? 'green' : 'red'}"  > {{row.nom}} </md-cell>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container mdColumnDef="lieu">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Lieu</md-header-cell>
+  <md-cell *mdCellDef="let row" > {{row.lieu | lowercase}} </md-cell>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container mdColumnDef="categories">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Categories </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.categories.av}} </md-cell>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container mdColumnDef="bassin">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Bassin </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.bassin}} </md-cell>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container mdColumnDef="type">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Type </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.type}} </md-cell>
+</ng-container>
+
+
+<!-- Name Column -->
+<ng-container mdColumnDef="debut">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Début </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.debut | date: 'dd MMM yyyy' }} </md-cell>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container mdColumnDef="fin">
+  <md-header-cell *mdHeaderCellDef md-sort-header>Fin</md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.fin | date: 'dd MMM yyyy' }} </md-cell>
+ </ng-container>
+
+
+ <ng-container mdColumnDef="id" >
+  <md-header-cell *mdHeaderCellDef>Actions</md-header-cell>
+
+  <md-cell *mdCellDef="let row"  >
+          <button md-icon-button (click)="updateForm(row.id)" >
+            <md-icon color='primary' >edit</md-icon>
+          </button>
+          <button md-icon-button>
+              <md-icon color='primary' (click)="deleteItem(row.id)"  >delete</md-icon>
+            </button>
+   
+  </md-cell>
+</ng-container>
+
+
+
+  <!-- Header and Row Declarations -->
+
+
+  <md-header-row *mdHeaderRowDef="['nom','lieu','categories','bassin','type', 'debut', 'fin' ,'id'  ]"></md-header-row>
+  <md-row *mdRowDef="let row; columns: ['nom','lieu','categories','bassin','type', 'debut', 'fin', 'id'  ]"></md-row>
+
+
+
+
+</md-table>
+
+
+
+</div>

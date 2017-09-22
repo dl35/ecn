@@ -1,0 +1,39 @@
+<md-toolbar color="primary">
+    <span>Login</span>
+  </md-toolbar>
+  
+  <form   autocomplete="off" [formGroup]="dataForm"   novalidate>  
+
+  <div style="margin-top:35px" >
+      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100"> 
+        <md-icon color="primary" >perm_identity</md-icon>
+        <md-form-field  fxFlex="40" >
+          <input mdInput placeholder="Utilisateur"  formControlName="user"  >
+          <md-error>une adresse email valide est requise</md-error>
+          <md-hint>Veuillez saisir votre adresse email</md-hint>
+        </md-form-field>
+      </div>
+      </div>
+
+      <div style="margin-top:15px" >
+          <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100"> 
+            <md-icon color="primary" >lock</md-icon>
+            <md-form-field  fxFlex="40" >
+              <input mdInput placeholder="Mot de passe"   formControlName="pwd"  >
+              <md-error>un mot de passe requis</md-error>
+              <md-hint>Veuillez saisir votre mot de passe</md-hint>
+            </md-form-field>
+          </div>
+          </div>
+          
+          <div  style="margin-top:15px" >
+          <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" fxLayoutGap="20px">
+          <button md-raised-button color="primary"  [disabled]="dataForm.invalid"  (click)="doSignUp()"  >
+              <md-icon>play_arrow</md-icon>
+              Login</button>
+              <md-error [fxShow]='meta.error'  >{{meta.message}}</md-error>
+            </div>
+       
+          </div>
+
+</form>
