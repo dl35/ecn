@@ -2,3 +2,20 @@
     overflow: auto;
     max-height:600px;
   }
+
+
+  form div {
+    margin-left: 32px;
+
+  }
+
+  .mat-form-field{
+    font-size: 12px;
+    _flex-grow: 1;
+    _margin-left: 32px;
+  }
+
+
+  md-checkbox  {
+    font-size: 12px;
+}

@@ -30,7 +30,12 @@ export class LicenciesComponent implements OnInit {
   @ViewChild(MdPaginator) paginator: MdPaginator;
 
   meta={
-    displayForm : false ,
+    displayForm : true ,
+    //rang:[{"value": 1  } , {"value": 2 } ,{"value": 3 }],
+    rang:[1,2,3],
+    banque:['CA','CMB'],
+    sexe:['F','H'] ,
+    categorie:[{"key":"Av" ,"value":"Avenirs" } , {"key":"JE" ,"value":"Jeune" } ,{"key":"JU" ,"value":"Junior" },{"key":"SE" ,"value":"Senior" },{"key":"MA" ,"value":"Master" }] ,
     total : 0,
     totdisp :0
   }
@@ -43,11 +48,107 @@ export class LicenciesComponent implements OnInit {
        }
 
  
+
+       initForm() {
+        
+            //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
+        
+            this.dataForm = this.formBuilder.group({
+              id: ['-1', [Validators.required] ],
+              nom: ['', [Validators.required] ],
+              prenom:  ['', [Validators.required] ],
+              date:  [ null, [Validators.required] ],
+              sexe:  ['', [Validators.required] ], 
+
+              categorie:  ['', [Validators.required] ], 
+              rang:  [  , [Validators.required] ], 
+              entr:  [false, [Validators.required] ], 
+            
+
+
+              adresse:  ['', [Validators.required] ],
+              code_postal:  ['', [Validators.required] ],
+              ville:  [ '' , [Validators.required] ],
+              
+              telephone1:  ['', [Validators.required] ],
+              telephone2:  ['', [Validators.required] ],
+              telephone3:  ['', [Validators.required] ],
+
+              email1:  ['', [Validators.required] ],
+              email2:  ['', [Validators.required] ],
+              email3:  ['', [Validators.required] ],
+              licence:  [ null , [Validators.required] ],
+
+              commentaires:  [ null  ],
+              inscriptions:  [ false , [Validators.required] ],
+
+              date_inscription:  [ false , [Validators.required] ],
+              date_valide:  [ false , [Validators.required] ],
+              conirmation_email:  [ false , [Validators.required] ],
+  
+              carte:  ['', [Validators.required] ],
+
+              auto_parentale:  [ false , [Validators.required] ] ,
+              cert_medical:  [ false , [Validators.required] ],
+              fiche_medicale:  [ false , [Validators.required] ],
+
+              photo:  [ false , [Validators.required] ],
+              paye:  [ false , [Validators.required] ],
+              reglement:  [ false , [Validators.required] ],
+              cotisation:  [false , [Validators.required] ],
+
+              tarif:  [ 0.0 , [Validators.required] ],
+              cheque1:  [ null , [Validators.required] ],
+              cheque2:  [ null , [Validators.required] ],
+              cheque3:  [ null , [Validators.required] ],
+              ch_sport:  [ null , [Validators.required] ],
+
+
+              num_cheque1:  ['' , [Validators.required] ],
+              num_cheque2:  [ '', [Validators.required] ],
+              num_cheque3:  ['', [Validators.required] ],
+              num_sport:  [ '' , [Validators.required] ],
+
+              banque:  [ "" ],
+              espece:  [ 0.0 ],
+              
+              nbre_chvac10:  [ 0 , [Validators.required] ],
+              nbre_chvac20:  [ 0 , [Validators.required] ],
+              type:  [ 'N' , [Validators.required] ],
+              valide:  [ false , [Validators.required] ],
+              
+              
+        
+        
+            
+        
+
+
+            });
+        
+        
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   ngOnInit() {
     
     
     
-    //      this.initForm();
+        this.initForm();
     
           this.licservice.list().subscribe(
           ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;

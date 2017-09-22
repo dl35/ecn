@@ -1,96 +1,191 @@
 
-<!--
-<div class="example-container mat-elevation-z10" fxLayout="column"  [fxShow]="meta.displayForm"   >
+
+<div class="mat-elevation-z10" fxLayout="column"   [fxShow]="meta.displayForm"   style="margin:10px"  fxLayoutGap="10px">
   
       <br/>
       <br/>
   
-  <form class="example-form" name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate   >  
+  <form  name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate>  
 
   
-  <div fxLayout="row" fxLayoutAlign="start center"  >
+  <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="10px"  >
           
     
-    <md-form-field fxFlex="65" >
+          <md-form-field fxFlex="20" >
           <input mdInput placeholder="Nom" formControlName="nom"    >
           </md-form-field>
     
+          <md-form-field fxFlex="20" >
+          <input mdInput placeholder="Prénom" formControlName="prenom"    >
+          </md-form-field>
+    
+          <md-form-field fxFlex="10"  >
+            <input mdInput [mdDatepicker]="date"  placeholder="Date" (click)="debut.open()"  formControlName="date" >
+            <md-datepicker-toggle mdSuffix [for]="date"  ></md-datepicker-toggle>
+            <md-datepicker #date></md-datepicker>
+         </md-form-field>
+
+
+         <div>
+            <md-select placeholder="Sexe" formControlName="sexe" fxFlex="4" >
+                <md-option *ngFor="let s of meta.sexe"    [value]="s"   >{{s}} </md-option>
+            </md-select> 
+         </div>
   
-          <md-form-field fxFlex="28" >
-          <input mdInput placeholder="Lieu" formControlName="lieu"   >
-          <md-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-          *Le Lieu est requis sur 4 charactères minimum
-          </md-hint>
+  </div> 
+  
+  
+  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' fxLayoutGap="10px" >
+      
+      <md-form-field fxFlex="25" >
+      <input mdInput placeholder="Adresse" formControlName="adresse"    >
+      </md-form-field>
+
+      <md-form-field fxFlex="8" >
+      <input mdInput placeholder="Code Postal" formControlName="code_postal"    >
+      </md-form-field>
+    
+      <md-form-field fxFlex="20" >
+      <input mdInput placeholder="Ville" formControlName="ville"    >
+      </md-form-field>
+     
+    
+  
+    
+  
+  
+  </div> 
+  
+  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' fxLayoutGap="10px" >
+      
+      <md-form-field fxFlex="18" >
+      <input mdInput placeholder="Email*" formControlName="email1"    >
+      </md-form-field>
+
+      <md-form-field fxFlex="18" >
+      <input mdInput placeholder="Email" formControlName="email2"    >
+      </md-form-field>
+    
+      <md-form-field fxFlex="18" >
+      <input mdInput placeholder="Email" formControlName="email3"    >
+      </md-form-field>
+     
+    
+      <md-form-field fxFlex="8" >
+          <input mdInput placeholder="Télephone*" formControlName="telephone1"   maxlength="10" >
+          </md-form-field>
+    
+          <md-form-field fxFlex="8" >
+          <input mdInput placeholder="Télephone" formControlName="telephone2"   maxlength="10"  >
+          </md-form-field>
+        
+          <md-form-field fxFlex="8" >
+          <input mdInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"   >
           </md-form-field>
   
+    
+  
+  
   </div> 
-  
-  
-  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' >
-      
-      <md-form-field fxFlex="15"  >
-          <input mdInput [mdDatepicker]="debut"  placeholder="Début" (click)="debut.open()"  formControlName="debut" >
-          <md-datepicker-toggle mdSuffix [for]="debut"  ></md-datepicker-toggle>
-          <md-datepicker #debut></md-datepicker>
-      </md-form-field>
-      <md-form-field fxFlex="15"  >
-          <input mdInput [mdDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()" formControlName="fin">
-          <md-datepicker-toggle mdSuffix [for]="fin"></md-datepicker-toggle>
-          <md-datepicker #fin></md-datepicker>
-      </md-form-field>
-      
-      <md-form-field fxFlex="15"  >
-          <input mdInput [mdDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()" formControlName="limite_club" >
-          <md-datepicker-toggle mdSuffix [for]="limite"></md-datepicker-toggle>
-          <md-datepicker #limite></md-datepicker>
-      </md-form-field>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div fxLayout="row" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
     
-  
-    
-      <md-select placeholder="Bassin" name="bassin"  formControlName="bassin" fxFlex="8" fxFlexOffset="10" >
-          <md-option *ngFor="let bassin of meta.bassin" [value]="bassin.value">
-            {{bassin.type}}
-          </md-option>
-        </md-select>
+
    
+    <div>
+        <md-select placeholder="Categorie" formControlName="categorie" fxFlex="4" >
+          <md-option *ngFor="let r of meta.categorie"    [value]="r.key"   >{{r.value}} </md-option>
+        </md-select> 
+        </div>
+      <div>
+      <md-select placeholder="Rang" formControlName="rang" fxFlex="4" >
+        <md-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </md-option>
+      </md-select> 
+      </div>
+
+
+          <md-form-field fxFlex="10" >
+              <input mdInput placeholder="Licence" formControlName="licence"    >
+            </md-form-field>
+
+            <section class="example-section">
+            <md-checkbox  formControlName="entr" color="primary" >Entraineur</md-checkbox>
+            <md-checkbox  formControlName="entr" color="primary" >Entraineur</md-checkbox>
+            <md-checkbox  formControlName="entr" color="primary" >Entraineur</md-checkbox>
+            </section>
+
   
+
+
+</div> 
+
+<div  fxLayout="row" fxLayoutAlign="start start"  style='margin-top:20px' fxLayoutGap="10px" >
+    
+
+   
+        <div>
+        <md-select placeholder="Banque" formControlName="banque" fxFlex="24" >
+          <md-option *ngFor="let r of meta.banque"    [value]="r"   >{{r}} </md-option>
+        </md-select> 
+        </div>
+     
+        <div fxLayout="column" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+          <md-form-field fxFlex="5" >
+              <input mdInput placeholder="Montant (€)" formControlName="cheque1"   >
+            </md-form-field>
+            <md-form-field fxFlex="10" >
+                <input mdInput placeholder="Numéro" formControlName="num_cheque1"    >
+              </md-form-field>
+           </div>
+         
+           <div fxLayout="column" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+              <md-form-field fxFlex="5" >
+                  <input mdInput placeholder="Montant (€)" formControlName="cheque2"    >
+                </md-form-field>
+                <md-form-field fxFlex="5" >
+                    <input mdInput placeholder="Numéro" formControlName="num_cheque2"    >
+                  </md-form-field>
+               </div>
+               <div fxLayout="column" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+                  <md-form-field fxFlex="5" >
+                      <input mdInput placeholder="Montant (€)" formControlName="cheque3"    >
+                    </md-form-field>
+                    <md-form-field fxFlex="5" >
+                        <input mdInput placeholder="Numéro" formControlName="num_cheque3"    >
+                      </md-form-field>
+                   </div>
+
+</div> 
+
+
+
+
+<div  fxLayout="row" fxLayoutAlign="center center"  style='margin-top:20px'   >
   
-        <md-select placeholder="Type" name="type" formControlName="type" fxFlexOffset="3" fxFlex="10" >
-            <md-option *ngFor="let type of meta.type" [value]="type.value">
-              {{type.type}}
-            </md-option>
-          </md-select>
-  
-  
-  </div> 
-  
-  
-  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:20px' >
-  
-      <div fxFlexOffset="3" fxFlex="50" formGroupName="categories"  fxLayout="row" fxLayoutAlign="start center" >
-          <span>Categories:&nbsp;&nbsp;&nbsp;</span>
-  
-          <md-checkbox formControlName="ap"   >Av</md-checkbox>&nbsp;
-          <md-checkbox formControlName="ben"  >Ben</md-checkbox>&nbsp;
-          <md-checkbox formControlName="dep"  >Dep</md-checkbox>&nbsp;
-          <md-checkbox formControlName="reg"  >Reg</md-checkbox>&nbsp;
-          <md-checkbox formControlName="nat"  >Nat</md-checkbox>&nbsp;
-          <md-checkbox formControlName="mast"  >Mast</md-checkbox>&nbsp;
-          
-  </div>
-  
-  
-  
-    <div fxFlexOffset="3" fxFlex="10" >  
-    <md-checkbox name="verif"  formControlName="verif"  >Vérification</md-checkbox>
-    </div>
-    <div fxFlexOffset="3" fxFlex="10" >  
-    <md-checkbox name="choixnages"  formControlName="choixnages"  >Choix nages</md-checkbox>
-    </div>
-  
-  
-  
-  </div> 
+        <section>
+        <md-checkbox  formControlName="cert_medical" color="primary" >Cert.Médical</md-checkbox>
+        <md-checkbox  formControlName="auto_parentale" color="primary" >Auto.Parentale</md-checkbox>
+        <md-checkbox  formControlName="fiche_medicale" color="primary" >Fich.Parentale</md-checkbox>
+        <md-checkbox  formControlName="photo" color="primary" >Auto.Photo</md-checkbox>
+        <md-checkbox  formControlName="reglement" color="primary" >Réglement</md-checkbox>
+        <md-checkbox  formControlName="cotisation" color="primary" >Cotisation</md-checkbox>
+        </section>
+
+
+
+
+</div> 
   
   
   
@@ -110,9 +205,16 @@
   </form>
   <br>
   <br>
-  </div>
+
+
+
+
+
+</div>
   
--->
+
+
+
   
   
   
