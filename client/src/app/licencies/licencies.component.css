@@ -19,3 +19,14 @@
   md-checkbox  {
     font-size: 12px;
 }
+
+
+
+
+
+/* do not group these rules */
+.cotisation  {
+  color: #128F65;
+  
+  font-weight: bold;
+}

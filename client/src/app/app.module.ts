@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { LOCALE_ID } from '@angular/core';
 import { Routes,RouterModule } from '@angular/router';
 import { HttpClientModule  } from '@angular/common/http';
 
@@ -10,7 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from '@angular/material';
-import { MdNativeDateModule ,  MD_DATE_FORMATS} from '@angular/material';
+import { MdNativeDateModule ,  MD_DATE_FORMATS  } from '@angular/material';
+
 import { DateAdapter   } from '@angular/material';
 import { myDateAdapter } from './providers/myDateAdapter';
 import { APP_DATE_FORMATS } from './providers/myDateAdapter';
@@ -99,15 +100,14 @@ export const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
-    {provide: DateAdapter, useClass: myDateAdapter} ,
     {provide: MD_DATE_FORMATS, useValue : APP_DATE_FORMATS },
+    //{provide: LOCALE_ID, useValue : 'fr-FR' },
+    {provide: DateAdapter, useClass: myDateAdapter} ,
     CompetitionsService ,LoginService, LicenciesService ,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private dateAdapter: DateAdapter<myDateAdapter>) {
-    this.dateAdapter.setLocale('fr-FR');
-  }
+
 
 
  }

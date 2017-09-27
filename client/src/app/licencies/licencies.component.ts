@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
-import { LicenciesService  }  from '../services/licencies.service' ;
+import { LicenciesService , MessageResponse   }  from '../services/licencies.service' ;
 import { MdSort,MdSnackBar,MdPaginator } from '@angular/material';
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,14 +28,27 @@ export class LicenciesComponent implements OnInit {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MdPaginator) paginator: MdPaginator;
+  
+
+
+
+  invalid = {
+    mail:"Adresse email invalide" ,
+    tel:"Téléphone email invalide" 
+
+  } ;
+
 
   meta={
-    displayForm : true ,
+    displayForm : false ,
+    
     //rang:[{"value": 1  } , {"value": 2 } ,{"value": 3 }],
-    rang:[1,2,3],
+    rang:[ '1','2','3' ],
     banque:['CA','CMB'],
+    officiel:['Non','A','B','C'],
     sexe:['F','H'] ,
-    categorie:[{"key":"Av" ,"value":"Avenirs" } , {"key":"JE" ,"value":"Jeune" } ,{"key":"JU" ,"value":"Junior" },{"key":"SE" ,"value":"Senior" },{"key":"MA" ,"value":"Master" }] ,
+    type:[{"name":"Ren" ,"value":"R" } , {"name":"Nou" ,"value":"N" } ] ,
+    categorie:[{"name":"Avenirs" ,"value":"AV" } , {"name":"Jeune" ,"value":"JE" } ,{"name":"Junior" ,"value":"JU" },{"name":"Senior" ,"value":"SE" },{"name":"Master" ,"value":"MA" }] ,
     total : 0,
     totdisp :0
   }
@@ -47,75 +60,94 @@ export class LicenciesComponent implements OnInit {
           
        }
 
- 
+       
+       saveForm() {
+        
+        this.meta.displayForm=false;
+        localStorage.setItem('key' ,JSON.stringify ( this.dataForm.value )  );
+        
+        
+          this.licservice.store( this.dataForm.value ).subscribe( 
+            
+            ( data: MessageResponse )  =>  { console.log( JSON.stringify(data)  ) ;  this.showSnackBar( data.message  , data.success );  },
+            (err: HttpErrorResponse)  => { 
+              if (err.error instanceof Error) {
+                this.showSnackBar("Client-side error occured.", false );
+              } else {
+                this.showSnackBar("Server-side error occured." +err.statusText  , false );
+              }
+        
+             },
+          () => {
+              
+             
+          });
+        
+        
+        
+        
+        }
+
 
        initForm() {
         
             //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
         
             this.dataForm = this.formBuilder.group({
-              id: ['-1', [Validators.required] ],
-              nom: ['', [Validators.required] ],
-              prenom:  ['', [Validators.required] ],
-              date:  [ null, [Validators.required] ],
-              sexe:  ['', [Validators.required] ], 
+              id: ['-1' ],
+              nom: [ null , [Validators.required] ],
+              prenom:  [ null , [Validators.required] ],
+              date:  [ new Date() , [Validators.required] ],
+              sexe:  [ null , [Validators.required] ], 
 
-              categorie:  ['', [Validators.required] ], 
-              rang:  [  , [Validators.required] ], 
-              entr:  [false, [Validators.required] ], 
+              categorie:  [ null  ], 
+              rang:  [ null  ], 
+              officiel:  [ null   ], 
+              entr:  [ null  ], 
             
 
 
-              adresse:  ['', [Validators.required] ],
-              code_postal:  ['', [Validators.required] ],
-              ville:  [ '' , [Validators.required] ],
+              adresse:  [ null , [Validators.required] ],
+              code_postal:  [ null , [Validators.required] ],
+              ville:  [ null  , [Validators.required] ],
               
-              telephone1:  ['', [Validators.required] ],
-              telephone2:  ['', [Validators.required] ],
-              telephone3:  ['', [Validators.required] ],
+              telephone1:  [ null , [Validators.required] ],
+              telephone2:  [ null ],
+              telephone3:  [ null ],
 
-              email1:  ['', [Validators.required] ],
-              email2:  ['', [Validators.required] ],
-              email3:  ['', [Validators.required] ],
-              licence:  [ null , [Validators.required] ],
+              email1:  [ null , [Validators.required , Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ] ],
+              email2:  [ null  ,[Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
+              email3:  [ null  ,[Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
+              licence:  [ null  ],
 
               commentaires:  [ null  ],
-              inscriptions:  [ false , [Validators.required] ],
+     
+              carte:  [ '0' ],
 
-              date_inscription:  [ false , [Validators.required] ],
-              date_valide:  [ false , [Validators.required] ],
-              conirmation_email:  [ false , [Validators.required] ],
-  
-              carte:  ['', [Validators.required] ],
-
-              auto_parentale:  [ false , [Validators.required] ] ,
-              cert_medical:  [ false , [Validators.required] ],
-              fiche_medicale:  [ false , [Validators.required] ],
-
-              photo:  [ false , [Validators.required] ],
-              paye:  [ false , [Validators.required] ],
-              reglement:  [ false , [Validators.required] ],
-              cotisation:  [false , [Validators.required] ],
-
-              tarif:  [ 0.0 , [Validators.required] ],
-              cheque1:  [ null , [Validators.required] ],
-              cheque2:  [ null , [Validators.required] ],
-              cheque3:  [ null , [Validators.required] ],
-              ch_sport:  [ null , [Validators.required] ],
-
-
-              num_cheque1:  ['' , [Validators.required] ],
-              num_cheque2:  [ '', [Validators.required] ],
-              num_cheque3:  ['', [Validators.required] ],
-              num_sport:  [ '' , [Validators.required] ],
-
-              banque:  [ "" ],
-              espece:  [ 0.0 ],
-              
-              nbre_chvac10:  [ 0 , [Validators.required] ],
-              nbre_chvac20:  [ 0 , [Validators.required] ],
-              type:  [ 'N' , [Validators.required] ],
-              valide:  [ false , [Validators.required] ],
+              auto_parentale:  [ false  ] ,
+              cert_medical:  [ false  ],
+              fiche_medicale:  [ false  ],
+              photo:  [ false  ],
+              paye:  [ false  ],
+              reglement:  [ false  ],
+              tarif:  [ null  ],
+              cotisation: new FormControl({value:'',disabled: true }) ,
+              especes:  [ 0.0  ],
+              cheque1:  [ null  ],
+              cheque2:  [ null  ],
+              cheque3:  [ null ],
+              ch_sport:  [null],
+              coup_sport:  [null],
+              num_cheque1:  [null],
+              num_cheque2:  [null],
+              num_cheque3:  [null],
+              num_sport:  [null],
+              num_coupsport:  [null],
+              nbre_chvac10:  [null],
+              nbre_chvac20:  [null],
+              banque:  [null],
+              type:  [ "N" , [Validators.required]  ],
+              valide:  [ false  ],
               
               
         
@@ -126,20 +158,59 @@ export class LicenciesComponent implements OnInit {
 
             });
         
-        
+       //     this.customValidator();
           }
 
 
 
 
+    customValidator() {
+
+      this.dataForm.get('telephone2').valueChanges.subscribe(
+        
+            (value: any) => {
+            console.log( value.length  ) ;
+
+                if ( value.length > 0 ) {
+                    this.dataForm.get('telephone2').setValidators([Validators.required]);
+                } 
+                this.dataForm.get('telephone2').updateValueAndValidity();
+
+           
 
 
-
-
-
-
-
-
+            } ) ;
+        this.dataForm.get('telephone3').valueChanges.subscribe(
+          
+              (value: any) => {
+              console.log( value.length  ) ;
+  
+                  if ( value.length > 0 ) {
+                      this.dataForm.get('telephone3').setValidators([Validators.required]);
+                  } 
+                  this.dataForm.get('telephone3').updateValueAndValidity();
+              } ) ;
+        this.dataForm.get('email2').valueChanges.subscribe(
+          
+              (value: any) => {
+              console.log( value.length  ) ;
+  
+                  if ( value.length > 0 ) {
+                      this.dataForm.get('email2').setValidators([Validators.required]);
+                  } 
+                  this.dataForm.get('email2').updateValueAndValidity();
+              } ) ;
+        this.dataForm.get('email3').valueChanges.subscribe(
+          
+              (value: any) => {
+              console.log( value.length  ) ;
+  
+                  if ( value.length > 0 ) {
+                      this.dataForm.get('email3').setValidators([Validators.required]);
+                  } 
+                  this.dataForm.get('email3').updateValueAndValidity();
+              } ) ;
+    }
 
 
 
@@ -148,7 +219,13 @@ export class LicenciesComponent implements OnInit {
     
     
     
-        this.initForm();
+          this.initForm();
+         
+
+
+
+
+
     
           this.licservice.list().subscribe(
           ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
@@ -181,6 +258,80 @@ export class LicenciesComponent implements OnInit {
           });
     
       }
+
+
+      editForm( id ) {
+
+        this.meta.displayForm=true;
+        this.dataForm.reset();
+        this.dataForm.get('type').setValue("N");
+        this.dataForm.get('id').setValue("-1");
+        
+
+        var d = new Date(); // today!
+        var x = 5; // go back 5 days!
+        d.setDate(d.getDate() - 500);
+
+      //  this.dataForm.get('date').setValue( d );
+
+
+         // ( this.dataForm == undefined  ) ? this.initForm()  :  this.dataForm.reset(); 
+         //this.dataForm.reset(); 
+          if( id != -1 )
+          {  
+              let response= this.searchId( id ) ;
+              this.dataForm.setValue(response );  ///, { onlySelf: true });
+        
+          }
+      
+
+
+        
+
+
+      }
+        searchId( id )  {
+          let item :any ;
+          let d =   this.dataSource.datas;
+          for (var i = 0; i < d.length ; i++) {
+            item = d[i];
+            if( item.id == id )  
+            {
+           /*   ( item.verif == '0' ) ? item.verif = false : item.verif = true ;
+              ( item.choixnages == '0' ) ? item.choixnages = false : item.choixnages = true ;
+              item.debut = new Date( item.debut );
+              item.fin = new Date( item.fin );*/
+              item.date = new Date( item.date );
+              
+            
+    
+              break;
+            }  
+    
+          }
+    
+          return item ;
+    
+    }
+
+      cancelForm() {
+
+        this.meta.displayForm=false;
+
+
+
+        
+      }
+
+
+
+
+
+
+
+
+
+
 
       showSnackBar( message , info)
       {

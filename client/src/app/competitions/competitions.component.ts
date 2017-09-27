@@ -9,7 +9,8 @@ import 'rxjs/add/operator/map';
 
 
 import {CompetitionsService , MessageResponse }  from '../services/competitions.service' ;
-
+import { DateAdapter   } from '@angular/material';
+import { myDateAdapter } from '../providers/myDateAdapter';
 
 import { MdSort,MdSnackBar } from '@angular/material';
 
@@ -34,9 +35,9 @@ export class CompetitionsComponent implements OnInit {
   
 
 
-  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MdSnackBar  ) {
+  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MdSnackBar , private  dateAdapter: DateAdapter<myDateAdapter> ) {
 
-   
+     // this.dateAdapter.setLocale('fr-FR');
 
 
 
@@ -49,9 +50,11 @@ export class CompetitionsComponent implements OnInit {
 
   meta={
     displayForm : false ,
-    "bassin":[{"type":"25" ,"value":"25"  } , {"type":"50" ,"value":"50"  }  ] ,
-    "categories":[{"type":"Avenirs" ,"value":"av"  } , {"type":"Poussins" ,"value":"po"  } , {"type":"Benjamins" ,"value":"ben"  } ,{"type":"Minimes" ,"value":"mi"  } , {"type":"Cadets" ,"value":"ca"  }, {"type":"Juniors" ,"value":"ju"  }, {"type":"Seniors" ,"value":"se"  } , {"type":"Masters" ,"value":"ma"  }],
-    "type": [{"type":"Stage" ,"value":"stage"  } , {"type":"Compétition" ,"value":"compet"  } ]
+    "bassin":[{"name":"25" ,"value":"25"  } , {"name":"50" ,"value":"50"  }  ] ,
+    "categories":{"av": false ,"je": false ,"dep": false,"reg": false,"ir": false,"nat": false,"ma": false } ,
+    "type": [{"name":"Stage" ,"value":"stage"  } , {"name":"Compétition" ,"value":"compet"  } ] ,
+    "entraineur": [{"name":"E1" ,"value":"e1@test.fr"  } , {"name":"E2" ,"value":"e2@test.fr"   } , {"name":"E3" ,"value":"e3@test.fr"   }] 
+
   };
 
 
@@ -60,27 +63,28 @@ export class CompetitionsComponent implements OnInit {
     //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
 
     this.dataForm = this.formBuilder.group({
-      id: ['-1', [Validators.required] ],
+      id: [ -1  ],
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
       //categories: [  this.formBuilder.array([new FormControl( 'sf'),new FormControl('ff'),new FormControl('ll')]) , [Validators.required] ],
       //categories:  this.formBuilder.array([new FormControl( {value: 'false', type:'av'  } ),new FormControl( {value: 'false', type:'ben'} ),new FormControl({value: 'false', type:'mi'}  )]) , 
       //categories:  this.formBuilder.array([{value: true, type:'av'  } ,{value: false, type:'po'  } ] )  , 
 
-      categories:  this.formBuilder.group({ap: true, ben:false , mi:true , dep:false , reg :false , nat :false , mast :false }  )  , 
+     categories:  this.formBuilder.group( this.meta.categories  )  , 
+     // categories:  [ "" ],
       bassin:  [ "25" , [Validators.required] ],
       type:  ['compet', [Validators.required] ],
       debut:  [ new Date('2017-05-12') , [Validators.required] ],
       fin:  [ new Date()   , [Validators.required] ],
-      heure:  ['07:00', [Validators.required] ],
-      limite_club:  [ new Date() , [Validators.required] ],
+      heure:  ['07', [Validators.required] ],
+      limite:  [ new Date() , [Validators.required] ],
       verif:  [ false , [Validators.required] ],
       choixnages:  [ false , [Validators.required] ],
       
-      max:  ['0', [Validators.required] ],
-      entraineur:  ['ok', [Validators.required] ] ,
-
-     commentaires:  ['']
+      max:  [ 0 , [Validators.required] ],
+      entraineur:  [ null, [Validators.required] ] ,
+      lien:  [ null ] ,
+      commentaires:  ['']
     });
 
 
@@ -92,9 +96,6 @@ cancelForm() {
 
   this.meta.displayForm=false;
 
-
-
-  
 }
 
 
@@ -115,10 +116,16 @@ showSnackBar( message , info)
 saveForm() {
 
 this.meta.displayForm=false;
-localStorage.setItem('key' ,JSON.stringify ( this.dataForm.value )  );
+let obj = this.dataForm.value ;
+Object.keys(obj).forEach(function (key) {
+  if(typeof obj[key] === 'undefined'  ||  obj[key] === null  ){
+     delete obj[key];
+   }
+ });
 
 
-  this.compService.store( this.dataForm.value ).subscribe( 
+   console.log( JSON.stringify( obj )  );
+  this.compService.store( obj ).subscribe( 
     
     ( data: MessageResponse )  =>  { console.log( JSON.stringify(data)  ) ;  this.showSnackBar( data.message  , data.success );  },
     (err: HttpErrorResponse)  => { 
@@ -141,30 +148,31 @@ localStorage.setItem('key' ,JSON.stringify ( this.dataForm.value )  );
 
 
 
-//this.cities.patchValue(['LA', 'MTV']);
+
+
 
  updateForm( id )  {
 
  this.meta.displayForm=true;
+ this.dataForm.reset();  
 
- // ( this.dataForm == undefined  ) ? this.initForm()  :  this.dataForm.reset(); 
- //this.dataForm.reset(); 
   if( id != -1 )
   {  
       let response= this.searchId( id ) ;
-      delete response['limite_affichage'] ;delete response['lien'] ;
-      //delete response['choixnages'] ;
-      //delete response['limite_club'] ;
-      delete response['limite'] ;
-      response['commentaires']="";
+         
+      
 
+      console.log( response );
       this.dataForm.setValue(response, { onlySelf: true });
   }
-  else {
-    this.dataForm = undefined ;
-    this.initForm(); 
 
-  }
+  else {
+          this.dataForm.get('id').setValue(-1);
+          this.dataForm.get('max').setValue(0);
+          this.dataForm.get('verif').setValue(false);
+          this.dataForm.get('choixnages').setValue(false);
+          this.dataForm.get('categories').setValue( this.meta.categories );
+        }
 
 
  }
@@ -181,7 +189,7 @@ searchId( id )  {
           ( item.choixnages == '0' ) ? item.choixnages = false : item.choixnages = true ;
            item.debut = new Date( item.debut );
            item.fin = new Date( item.fin );
-           item.limite_club = new Date( item.limite_club );
+           item.limite = new Date( item.limite );
            
 
           break;

@@ -8,8 +8,9 @@
   <form  name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate>  
 
   
-  <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="10px"  >
+  <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayoutGap="10px" fxLayout.lt-sm="column" >
           
+  
     
           <md-form-field fxFlex="20" >
           <input mdInput placeholder="Nom" formControlName="nom"    >
@@ -20,67 +21,80 @@
           </md-form-field>
     
           <md-form-field fxFlex="10"  >
-            <input mdInput [mdDatepicker]="date"  placeholder="Date" (click)="debut.open()"  formControlName="date" >
-            <md-datepicker-toggle mdSuffix [for]="date"  ></md-datepicker-toggle>
-            <md-datepicker #date></md-datepicker>
+            
+            <input mdInput [mdDatepicker]="day"  placeholder="Date" (click)="day.open()"  formControlName="date" >
+            <md-datepicker-toggle mdSuffix [for]="day"  ></md-datepicker-toggle>
+            <md-datepicker #day></md-datepicker>
          </md-form-field>
 
 
-         <div>
-            <md-select placeholder="Sexe" formControlName="sexe" fxFlex="4" >
-                <md-option *ngFor="let s of meta.sexe"    [value]="s"   >{{s}} </md-option>
+  
+        
+            <md-select placeholder="Sexe" formControlName="sexe" fxFlex="4"   >
+                <md-option *ngFor="let s of meta.sexe"     [value]="s"   >{{s}} </md-option>
             </md-select> 
-         </div>
+  
   
   </div> 
   
   
-  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' fxLayoutGap="10px" >
+  <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayoutGap="10px" fxLayout.lt-sm="column" >
       
       <md-form-field fxFlex="25" >
       <input mdInput placeholder="Adresse" formControlName="adresse"    >
       </md-form-field>
 
       <md-form-field fxFlex="8" >
-      <input mdInput placeholder="Code Postal" formControlName="code_postal"    >
+      <input mdInput #postalCode maxLength="5"  placeholder="Code Postal" formControlName="code_postal"    >
+      <md-hint align="end">{{postalCode.value.length}} / 5</md-hint>
       </md-form-field>
     
       <md-form-field fxFlex="20" >
       <input mdInput placeholder="Ville" formControlName="ville"    >
       </md-form-field>
-     
-    
-  
-    
-  
   
   </div> 
   
-  <div fxLayout="row" fxLayoutAlign="start center"  style='margin-top:10px' fxLayoutGap="10px" >
+
+
+
+  <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"   fxLayoutGap="35px" fxLayout.lt-sm="column"  >
       
       <md-form-field fxFlex="18" >
       <input mdInput placeholder="Email*" formControlName="email1"    >
+      <md-icon mdSuffix>email</md-icon>
+      <md-hint align="start" *ngIf="(dataForm.get('email1').hasError('required') ||  dataForm.get('email1').hasError('pattern') ) && dataForm.get('email1').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          {{invalid.mail}}</md-hint>
       </md-form-field>
 
       <md-form-field fxFlex="18" >
       <input mdInput placeholder="Email" formControlName="email2"    >
+      <md-hint align="start" *ngIf="( dataForm.get('email2').hasError('pattern') ) && dataForm.get('email2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          {{ invalid.mail}}</md-hint>
       </md-form-field>
     
       <md-form-field fxFlex="18" >
       <input mdInput placeholder="Email" formControlName="email3"    >
+      <md-hint align="start" *ngIf="( dataForm.get('email3').hasError('pattern') ) && dataForm.get('email3').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          {{ invalid.mail}}</md-hint>
       </md-form-field>
      
     
       <md-form-field fxFlex="8" >
           <input mdInput placeholder="Télephone*" formControlName="telephone1"   maxlength="10" >
+          <md-icon mdSuffix>phone</md-icon>
           </md-form-field>
     
           <md-form-field fxFlex="8" >
           <input mdInput placeholder="Télephone" formControlName="telephone2"   maxlength="10"  >
+          <md-icon mdSuffix>phone</md-icon>
+          <md-hint align="start" *ngIf="( dataForm.get('telephone2').hasError('required') ) && dataForm.get('telephone2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+              *Le Téléphone....              </md-hint>
           </md-form-field>
         
           <md-form-field fxFlex="8" >
           <input mdInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"   >
+          <md-icon mdSuffix>phone</md-icon>
           </md-form-field>
   
     
@@ -99,38 +113,59 @@
 
 
 
-  <div fxLayout="row" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+  <div fxLayout="row" fxLayoutAlign="center baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"   fxLayoutGap="10px">
     
 
+
+   <div>
+        <md-select placeholder="Type" formControlName="type" fxFlex="4" >
+        <md-option *ngFor="let r of meta.type"    [value]="r.value"   >{{r.name}} </md-option>
+        </md-select> 
+    </div>
+  
    
     <div>
         <md-select placeholder="Categorie" formControlName="categorie" fxFlex="4" >
-          <md-option *ngFor="let r of meta.categorie"    [value]="r.key"   >{{r.value}} </md-option>
+        <md-option *ngFor="let r of meta.categorie"    [value]="r.value"   >{{r.name}} </md-option>
         </md-select> 
-        </div>
-      <div>
+    </div>
+ 
+ 
+   <div>
       <md-select placeholder="Rang" formControlName="rang" fxFlex="4" >
-        <md-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </md-option>
+      <md-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </md-option>
       </md-select> 
-      </div>
+    </div>
 
+    <div>
+      <md-select placeholder="Officiel" formControlName="officiel" fxFlex="4" >
+      <md-option *ngFor="let r of meta.officiel"    [value]="r"   >{{r}} </md-option>
+      </md-select> 
+    </div>
+  
+    <md-form-field fxFlex="10" >
+        <input mdInput placeholder="Licence" formControlName="licence"    >
+    </md-form-field>
 
-          <md-form-field fxFlex="10" >
-              <input mdInput placeholder="Licence" formControlName="licence"    >
-            </md-form-field>
+    <md-form-field fxFlex="6" >
+      <input mdInput placeholder="Tarif (€)" formControlName="tarif"   maxlength="7" >
+   </md-form-field>
+   <md-form-field fxFlex="6"  >
+      <input mdInput placeholder="Total (€)"   class="cotisation"  formControlName="cotisation"    maxlength="7" >
+   </md-form-field>
 
-            <section class="example-section">
-            <md-checkbox  formControlName="entr" color="primary" >Entraineur</md-checkbox>
-            <md-checkbox  formControlName="entr" color="primary" >Entraineur</md-checkbox>
-            <md-checkbox  formControlName="entr" color="primary" >Entraineur</md-checkbox>
-            </section>
+    <section>
+        <md-checkbox  formControlName="entr" color="accent" >Entraineur</md-checkbox>
+    </section>
+         
 
+ 
   
 
 
 </div> 
 
-<div  fxLayout="row" fxLayoutAlign="start start"  style='margin-top:20px' fxLayoutGap="10px" >
+<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
     
 
    
@@ -140,7 +175,7 @@
         </md-select> 
         </div>
      
-        <div fxLayout="column" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+        <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
           <md-form-field fxFlex="5" >
               <input mdInput placeholder="Montant (€)" formControlName="cheque1"   >
             </md-form-field>
@@ -149,7 +184,7 @@
               </md-form-field>
            </div>
          
-           <div fxLayout="column" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+           <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
               <md-form-field fxFlex="5" >
                   <input mdInput placeholder="Montant (€)" formControlName="cheque2"    >
                 </md-form-field>
@@ -157,7 +192,7 @@
                     <input mdInput placeholder="Numéro" formControlName="num_cheque2"    >
                   </md-form-field>
                </div>
-               <div fxLayout="column" fxLayoutAlign="start start"  style='margin-top:10px' fxLayoutGap="10px" >
+               <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
                   <md-form-field fxFlex="5" >
                       <input mdInput placeholder="Montant (€)" formControlName="cheque3"    >
                     </md-form-field>
@@ -168,31 +203,65 @@
 
 </div> 
 
+<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
+        <md-form-field fxFlex="15" >
+            <input mdInput placeholder="Cheque sport (€)" formControlName="ch_sport"   >
+          </md-form-field>
+          <md-form-field fxFlex="15" >
+              <input mdInput placeholder="Numéro" formControlName="num_sport"    >
+            </md-form-field>
+            <md-form-field fxFlex="15" >
+              <input mdInput placeholder="Coupon sport (€)" formControlName="coup_sport"   >
+            </md-form-field>
+            <md-form-field fxFlex="15" >
+                <input mdInput placeholder="Numéro" formControlName="num_coupsport"    >
+              </md-form-field>
 
 
+</div> 
 
-<div  fxLayout="row" fxLayoutAlign="center center"  style='margin-top:20px'   >
+<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
   
-        <section>
+        <md-form-field fxFlex="15" >
+            <input mdInput placeholder="Nombre Ch. vacances * 10 €" formControlName="nbre_chvac10"   >
+        </md-form-field>
+        <md-form-field fxFlex="15" >
+          <input mdInput placeholder="Nombre Ch. vacances * 20 €" formControlName="nbre_chvac20"   >
+      </md-form-field>
+   
+      <md-form-field fxFlex="15" >
+          <input mdInput placeholder="Espèce €" formControlName="especes"   >
+      </md-form-field>
+
+</div>
+
+
+
+<div  fxLayout="row" fxLayoutAlign="center  baseline"    fxLayoutGap="10px"  >
+      
+         
         <md-checkbox  formControlName="cert_medical" color="primary" >Cert.Médical</md-checkbox>
         <md-checkbox  formControlName="auto_parentale" color="primary" >Auto.Parentale</md-checkbox>
-        <md-checkbox  formControlName="fiche_medicale" color="primary" >Fich.Parentale</md-checkbox>
+        <md-checkbox  formControlName="fiche_medicale" color="primary" >Fich.Médicale</md-checkbox>
         <md-checkbox  formControlName="photo" color="primary" >Auto.Photo</md-checkbox>
         <md-checkbox  formControlName="reglement" color="primary" >Réglement</md-checkbox>
-        <md-checkbox  formControlName="cotisation" color="primary" >Cotisation</md-checkbox>
-        </section>
+      
 
+        <md-checkbox  formControlName="paye" color="accent"   ><label style="color:green;font-weight: bold ">Payé</label></md-checkbox>
 
 
 
 </div> 
+
   
   
   
-  
-  <div   fxLayout="row" fxLayoutAlign="center center"  style='margin-top:20px'    >
-      <md-form-field fxFlex="75" >
-          <textarea mdInput   mdTextareaAutosize mdAutosizeMinRows="3"   formControlName="commentaires"  placeholder="Commentaires"></textarea>
+  <div   fxLayout="row" fxLayoutAlign="center baseline"  style='margin-top:20px'    >
+      
+      <md-form-field fxFlex="75"  >
+          <textarea mdInput #comment  type="text"    formControlName="commentaires"  placeholder="Commentaires" >
+          </textarea>
+      
         </md-form-field>
   </div>
   
@@ -218,7 +287,7 @@
   
   
   
-  <div class="mat-elevation-z8"     [fxShow]="!meta.displayForm"   >
+  <div class="mat-elevation-z8"     [fxShow]="!meta.displayForm"  style="margin:10px"   >
   
      
       <div>
@@ -227,7 +296,7 @@
             <input mdInput #filter placeholder="Filtre...  nom, prenom, ville">
           </md-form-field>
           
-              <button md-mini-fab color="primary"  (click)="updateForm('-1') "  > <md-icon>add</md-icon></button>
+              <button md-mini-fab color="primary"  (click)="editForm('-1') "  > <md-icon>add</md-icon></button>
               <md-chip-list>
                   <md-chip color="accent" selected="true">{{meta.totdisp}} / {{meta.total}}</md-chip>
                 </md-chip-list>
@@ -308,14 +377,18 @@
   <!-- Name Column -->
   <ng-container mdColumnDef="valide">
     <md-header-cell *mdHeaderCellDef md-sort-header>Valide</md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.valide }} </md-cell>
+    <md-cell *mdCellDef="let row">
+    <md-icon *ngIf=" row.valide == 1  "color="primary" >check_box</md-icon>
+    <md-icon *ngIf=" row.valide == 0  "color="warn" >indeterminate_check_box</md-icon>
+    
+  </md-cell>
    </ng-container>
 
    <ng-container mdColumnDef="id" >
     <md-header-cell *mdHeaderCellDef>Actions</md-header-cell>
   
     <md-cell *mdCellDef="let row"  >
-            <button md-icon-button (click)="updateForm(row.id)" >
+            <button md-icon-button (click)="editForm(row.id)" >
               <md-icon color='primary' >edit</md-icon>
             </button>
     </md-cell>
