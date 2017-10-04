@@ -344,7 +344,7 @@
   <!-- Name Column -->
   <ng-container mdColumnDef="categorie">
     <md-header-cell *mdHeaderCellDef md-sort-header>Catégorie </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.categorie}} </md-cell>
+    <md-cell *mdCellDef="let row"> {{row.categorie | uppercase }} </md-cell>
   </ng-container>
 
 
@@ -411,24 +411,32 @@
   
   [length]="dataSource?.datas?.length"
   [pageIndex]="0"
-  [pageSize]="50"
-  [pageSizeOptions]="[5, 10]">
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10 ,25]">
 </md-paginator>
 
   <md-toolbar color="white"  >
 <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-around  center"   >
 
-      <md-select placeholder="Sexe"  color="primary" >
+      <md-select placeholder="Sexe"  color="primary"   [(ngModel)]="myfilter.sexe"   (ngModelChange)="toFilter($event)"   >
+          <md-option value="" >-</md-option>  
           <md-option value="F" >Femme</md-option>
           <md-option value="H">Homme</md-option>
         </md-select>
 
-        <md-select placeholder="Catégories"  color="primary" >
-            <md-option value="av" >Avenirs</md-option>
-            <md-option value="be">Benjamins</md-option>
+        <md-select placeholder="Catégories"  color="primary" [(ngModel)]="myfilter.categorie" (ngModelChange)="toFilter($event )"  >
+            <md-option value="" >-</md-option>    
+          <md-option  *ngFor="let c of meta.categorie" [value]="c.value" >{{c.name}}</md-option>
+          
           </md-select>
 
-          <md-select placeholder="Type"  color="primary" >
+          <md-select placeholder="Niveau"  color="primary"  >
+            <md-option  *ngFor="let c of meta.niveau" value="c.value" >{{c.name}}</md-option>
+          
+          </md-select>
+
+          <md-select placeholder="Type"  color="primary"  [(ngModel)]="myfilter.type"   (ngModelChange)="toFilter($event)"   >
+              <md-option value="" >-</md-option>
               <md-option value="R" >Renouvellement</md-option>
               <md-option value="N">Nouveau</md-option>
             </md-select>

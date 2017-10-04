@@ -17,13 +17,16 @@
   
   <md-form-field fxFlex="55" fxFlexOffset="5"  >
         <input mdInput placeholder="Nom" formControlName="nom"    >
+        <md-hint align="start" *ngIf="( dataForm.get('nom').hasError('required') ||  dataForm.get('nom').hasError('minlength') ) && dataForm.get('nom').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          *Nom sur 5 charactères minimum
+          </md-hint>
         </md-form-field>
   
 
         <md-form-field fxFlex="20" >
         <input mdInput placeholder="Lieu" formControlName="lieu"   >
         <md-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-        *Le Lieu est requis sur 4 charactères minimum
+        *Lieu sur 4 charactères minimum
         </md-hint>
         </md-form-field>
 
@@ -33,7 +36,7 @@
 <div fxLayout="row" fxLayoutAlign="start baseline"  style='margin-top:10px' >
     
     <md-form-field fxFlex="15"  fxFlexOffset="5" >
-        <input mdInput [mdDatepicker]="debut"  placeholder="Début" (click)="debut.open()"  formControlName="debut" >
+        <input mdInput [mdDatepicker]="debut"  placeholder="Début" (click)="debut.open()" [min]="minDate" formControlName="debut" >
         <md-datepicker-toggle mdSuffix [for]="debut"  ></md-datepicker-toggle>
         <md-datepicker #debut></md-datepicker>
     </md-form-field>
@@ -58,28 +61,49 @@
 
 
     </div>
-    <div fxLayout="row" fxLayoutAlign="start baseline"    >
+
+    <div   fxLayout="row" fxLayoutAlign="start baseline"  style='margin-top:2px'   *ngIf="dataForm.hasError('dateError')"  >
+      <div  fxFlexOffset="5" >
+        <md-hint align="start"  [ngStyle]="{'color': 'red','font-size':'12px'}"  >
+            Les dates sont incompatibles !
+          </md-hint>
+        </div>
+        </div>
+
+  
+      
+
+    <div fxLayout="row" fxLayoutAlign="start baseline"    style='margin-top:10px' >
   
     <md-select placeholder="Bassin" name="bassin"  formControlName="bassin" fxFlex="6" fxFlexOffset="5" >
         <md-option *ngFor="let bassin of meta.bassin" [value]="bassin.value">
           {{bassin.name}}
         </md-option>
+
               </md-select>
  
 
 
-      <md-select placeholder="Type" name="type" formControlName="type"  fxFlex="10" fxFlexOffset="5" (onChange)=" dataForm.get('type').value == 'compet'     "  >
+      <md-select placeholder="Type" name="type" formControlName="type"  fxFlex="10" fxFlexOffset="5"    (ngModelChange)="setVerif()"  >
           <md-option *ngFor="let type of meta.type" [value]="type.value">
             {{type.name}}
           </md-option>
+        
         </md-select>
+     
+     
+
+
 
        
         <md-form-field fxFlex="65" [fxShow]=" dataForm.controls['type'].value === 'stage' "  fxFlex="5">
         <input mdInput placeholder="Max" formControlName="max" maxlength="3"  >
+        <md-hint align="start" *ngIf="( dataForm.get('max').hasError('required') ||  dataForm.get('max').hasError('pattern') ) && dataForm.get('max').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          *nombre>0
+          </md-hint>
         </md-form-field>
 
-        <div fxFlexOffset="2" fxFlex="15" [fxShow]=" dataForm.controls['type'].value === 'compet' "   >  
+        <div fxFlexOffset="2" fxFlex="15" [fxShow]=" dataForm.controls['type'].value === 'compet' "    >  
             <md-checkbox name="choixnages"  formControlName="choixnages"  >Avec choix des nages</md-checkbox>
             </div>
             <md-select placeholder="Entraineur" name="entraineur" formControlName="entraineur"  fxFlex="10" fxFlexOffset="2" >
@@ -91,6 +115,9 @@
 
 
 </div> 
+
+
+
 
 
 <div fxLayout="row" fxLayoutAlign="start baseline"  style='margin-top:20px' >
@@ -110,8 +137,8 @@
 
 
 
-  <div fxFlexOffset="3" fxFlex="10" >  
-  <md-checkbox name="verif"  formControlName="verif"  >Vérification</md-checkbox>
+  <div fxFlexOffset="3" fxFlex="10"  >  
+  <md-checkbox name="verif"  formControlName="verif"   >Vérification</md-checkbox>
   </div>
 
 
@@ -124,7 +151,7 @@
 
 <div   fxLayout="row" fxLayoutAlign="start center"  style='margin-top:20px'    >
     <md-form-field fxFlex="75" fxFlexOffset="5" >
-        <textarea mdInput  mdAutosizeMinRows="3"   formControlName="commentaires"  placeholder="Commentaires"></textarea>
+        <textarea mdInput   formControlName="commentaires"  placeholder="Commentaires"></textarea>
       </md-form-field>
 </div>
 
@@ -133,6 +160,9 @@
              <button md-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
              <button md-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
     </div>
+
+
+ 
 
 </form>
 <br>
@@ -182,13 +212,19 @@
 <!-- Name Column -->
 <ng-container mdColumnDef="bassin">
   <md-header-cell *mdHeaderCellDef md-sort-header>Bassin </md-header-cell>
-  <md-cell *mdCellDef="let row"> {{row.bassin}} </md-cell>
+  <md-cell *mdCellDef="let row">
+    <button md-mini-fab  *ngIf="row.bassin == '25'" disabled> {{row.bassin}}</button>
+    <button md-mini-fab  *ngIf="row.bassin == '50'" > {{row.bassin}}</button>
+  
+  </md-cell>
 </ng-container>
 
 <!-- Name Column -->
 <ng-container mdColumnDef="type">
   <md-header-cell *mdHeaderCellDef md-sort-header>Type </md-header-cell>
-  <md-cell *mdCellDef="let row"> {{row.type}} </md-cell>
+  <md-cell *mdCellDef="let row"><md-chip-list>
+   <md-chip>{{row.type}}</md-chip> </md-chip-list> </md-cell>
+
 </ng-container>
 
 
@@ -231,7 +267,13 @@
 
 
 </md-table>
+<md-paginator #paginator
 
+[length]="dataSource?.datas?.length"
+[pageIndex]="0"
+[pageSize]="10"
+[pageSizeOptions]="[5, 10 ,25]">
+</md-paginator>
 
 
 </div>

@@ -100,9 +100,9 @@ export const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
-    {provide: MD_DATE_FORMATS, useValue : APP_DATE_FORMATS },
+    //{provide: MD_DATE_FORMATS, useValue : APP_DATE_FORMATS },
     //{provide: LOCALE_ID, useValue : 'fr-FR' },
-    {provide: DateAdapter, useClass: myDateAdapter} ,
+  //  {provide: DateAdapter, useClass: myDateAdapter} ,
     CompetitionsService ,LoginService, LicenciesService ,AuthGuard],
   bootstrap: [AppComponent]
 })

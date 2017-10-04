@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild  } from '@angular/core';
+import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DataSource} from '@angular/cdk/table';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
@@ -9,11 +10,10 @@ import 'rxjs/add/operator/map';
 
 
 import {CompetitionsService , MessageResponse }  from '../services/competitions.service' ;
-import { DateAdapter   } from '@angular/material';
-import { myDateAdapter } from '../providers/myDateAdapter';
 
-import { MdSort,MdSnackBar } from '@angular/material';
 
+
+import { MdSort,MdSnackBar,MdPaginator } from '@angular/material';
 
 
 
@@ -32,10 +32,11 @@ export class CompetitionsComponent implements OnInit {
   public dataSource: MyDataSource ;
 
   @ViewChild(MdSort) sort: MdSort;
-  
+  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MdPaginator) paginator: MdPaginator;
 
 
-  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MdSnackBar , private  dateAdapter: DateAdapter<myDateAdapter> ) {
+  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MdSnackBar  ) {
 
      // this.dateAdapter.setLocale('fr-FR');
 
@@ -52,9 +53,10 @@ export class CompetitionsComponent implements OnInit {
     displayForm : false ,
     "bassin":[{"name":"25" ,"value":"25"  } , {"name":"50" ,"value":"50"  }  ] ,
     "categories":{"av": false ,"je": false ,"dep": false,"reg": false,"ir": false,"nat": false,"ma": false } ,
-    "type": [{"name":"Stage" ,"value":"stage"  } , {"name":"Compétition" ,"value":"compet"  } ] ,
-    "entraineur": [{"name":"E1" ,"value":"e1@test.fr"  } , {"name":"E2" ,"value":"e2@test.fr"   } , {"name":"E3" ,"value":"e3@test.fr"   }] 
-
+    "type": [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ,
+    "entraineur": [{"name":"E1" ,"value":"e1@test.fr"  } , {"name":"E2" ,"value":"e2@test.fr"   } , {"name":"E3" ,"value":"e3@test.fr"   }] ,
+    total : 0,
+    totdisp :0
   };
 
 
@@ -63,36 +65,88 @@ export class CompetitionsComponent implements OnInit {
     //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
 
     this.dataForm = this.formBuilder.group({
-      id: [ -1  ],
+      id: [ -1 ],
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
-      //categories: [  this.formBuilder.array([new FormControl( 'sf'),new FormControl('ff'),new FormControl('ll')]) , [Validators.required] ],
-      //categories:  this.formBuilder.array([new FormControl( {value: 'false', type:'av'  } ),new FormControl( {value: 'false', type:'ben'} ),new FormControl({value: 'false', type:'mi'}  )]) , 
-      //categories:  this.formBuilder.array([{value: true, type:'av'  } ,{value: false, type:'po'  } ] )  , 
-
+     
      categories:  this.formBuilder.group( this.meta.categories  )  , 
-     // categories:  [ "" ],
+     
       bassin:  [ "25" , [Validators.required] ],
-      type:  ['compet', [Validators.required] ],
+      type:  [ "compet" , [ Validators.required ]] ,
       debut:  [ new Date('2017-05-12') , [Validators.required] ],
       fin:  [ new Date()   , [Validators.required] ],
       heure:  ['07', [Validators.required] ],
       limite:  [ new Date() , [Validators.required] ],
-      verif:  [ false , [Validators.required] ],
-      choixnages:  [ false , [Validators.required] ],
+      verif:   [ false ] ,
+      choixnages:  [ false  ],
       
-      max:  [ 0 , [Validators.required] ],
+      max:  [ 0  ],
       entraineur:  [ null, [Validators.required] ] ,
       lien:  [ null ] ,
       commentaires:  ['']
-    });
+    },
+    {validator: this.allDateValidator  }
+  );
 
+
+
+
+
+    this.setValidator();
 
   }
 
 
+  private setValidator() {
+    
+    this.dataForm.get('type').valueChanges.subscribe(
+        (type: string) => {
+              if (type === 'compet') {
+               this.dataForm.get('max').setValidators(null);
+              } else  {
+               this.dataForm.get('max').setValidators([Validators.required,Validators.pattern('^[1-9][0-9]*$')]);
+              }
+               this.dataForm.get('max').updateValueAndValidity();
+          }
+      )
 
-cancelForm() {
+    }
+
+    allDateValidator(input: FormControl ): any {
+
+      var start , end , limite;
+      if ( input.get('debut').value == null || input.get('fin').value == null  || input.get('limite').value == null  ) 
+      {
+        return null;
+      }
+      
+      start = Date.parse( input.get('debut').value);
+      end = Date.parse( input.get( 'fin' ).value);
+      limite = Date.parse( input.get( 'limite' ).value);
+      if ( start >= end )  return {dateError:true};
+      return  (limite > start  &&  limite < end ) ? null : { dateError:true} 
+
+    }
+
+
+
+
+    setVerif() {
+
+    
+      if( this.dataForm.get('id').value == -1  )  
+      {
+        ( this.dataForm.get('verif').disabled  )  ? this.dataForm.get('verif').enable() : this.dataForm.get('verif').disable();this.dataForm.get('verif').setValue(false);
+      }
+
+
+
+    }
+
+
+
+
+  cancelForm() {
 
   this.meta.displayForm=false;
 
@@ -124,6 +178,9 @@ Object.keys(obj).forEach(function (key) {
  });
 
 
+
+
+
    console.log( JSON.stringify( obj )  );
   this.compService.store( obj ).subscribe( 
     
@@ -153,28 +210,46 @@ Object.keys(obj).forEach(function (key) {
 
  updateForm( id )  {
 
- this.meta.displayForm=true;
+
  this.dataForm.reset();  
 
   if( id != -1 )
   {  
       let response= this.searchId( id ) ;
-         
+      this.dataForm.setValue(response, { onlySelf: true });   
+     
+      if ( this.dataForm.get('type').value  == 'compet ')
+      {
+        this.meta.type =  [ {"name":"Compétition" ,"value":"compet"  } ] ;
+      }
+      else 
+      {
+        this.meta.type =  [{"name":"Stage" ,"value":"stage" }  ] ;
+      }
+
       
 
       console.log( response );
-      this.dataForm.setValue(response, { onlySelf: true });
+   
   }
 
   else {
           this.dataForm.get('id').setValue(-1);
+          this.dataForm.get('type').setValue('compet');
+          this.dataForm.get('type').enable();
+          this.dataForm.get('bassin').setValue('25');
+
           this.dataForm.get('max').setValue(0);
           this.dataForm.get('verif').setValue(false);
+          this.dataForm.get('verif').disable();
+
           this.dataForm.get('choixnages').setValue(false);
           this.dataForm.get('categories').setValue( this.meta.categories );
+          this.meta.type =  [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ;
+
         }
 
-
+        this.meta.displayForm=true;
  }
 
 
@@ -219,8 +294,32 @@ searchId( id )  {
 
       this.initForm();
 
+      this.dataForm.valueChanges
+       .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(data => {
+       
+        if ( this.meta.displayForm ) 
+        {
+          console.log('Form changes', data)
+
+        }
+       
+      })
+
       this.compService.list().subscribe(
-      ( data: any[] ) => this.dataSource = new MyDataSource(data ,  this.sort ) ,  
+        ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
+          
+            Observable.fromEvent(this.filter.nativeElement, 'keyup')
+            .debounceTime(150)
+            .distinctUntilChanged()
+            .subscribe(() => {
+              if (!this.dataSource) { return; }
+              this.dataSource.filter = this.filter.nativeElement.value;
+            });
+          
+          } ,
+    
       (err: HttpErrorResponse)  => { 
         if (err.error instanceof Error) {
           this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
@@ -230,7 +329,7 @@ searchId( id )  {
   
        },
       () => {
-          console.log("end ok " + this.dataSource   ) ;
+         // console.log("end ok " + this.dataSource   ) ;
         //  console.log("search Id .... " + this.updateForm (10)  );
          // console.log("search Id .... " + Object.keys ( this.searchId(10) )  );
         // this.updateForm (10) 
@@ -247,46 +346,80 @@ searchId( id )  {
 
 }
 
+
 export class MyDataSource extends DataSource<any> {
   /** Connect function called by the table to retrieve one stream containing the data to render. */
+  _filterChange = new BehaviorSubject('');
+  get filter(): string { return this._filterChange.value; }
+  set filter(filter: string) { this._filterChange.next(filter); }
 
-  constructor(public datas: any[] , private mysort: MdSort ) {
+
+  constructor(public datas: any[] , private mysort: MdSort ,private mypaginator:  MdPaginator) {
     super();
+
+    this.mypaginator._intl.itemsPerPageLabel="items / page";
   }
 
 
   connect(): Observable<Element[]> {
-    //return Observable.of(this.datas);
+     
 
     const displayDataChanges = [
-      this.datas,
+     // this.datas,
       this.mysort.mdSortChange,
+      this._filterChange,
+      this.mypaginator.page
     ];
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      return this.getSortedData();
+    return Observable.merge(...displayDataChanges).map((e) => {
+
+  
+
+      const datasorted =this.getSortedData(); 
+
+      const datafilter  = datasorted.slice().filter((item: any) => {
+        let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();
+        //this.mypaginator.pageIndex =0 ;
+
+        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+      });
+      this.mypaginator.length =datafilter.length;
+      
+      if(this.mypaginator.pageIndex * this.mypaginator.pageSize >  this.mypaginator.length ) this.mypaginator.pageIndex =0;
+
+      const startIndex = this.mypaginator.pageIndex * this.mypaginator.pageSize;
+      return datafilter.splice(startIndex, this.mypaginator.pageSize);
+
+
+
+
+
     });;
 
   }
 
 
   getSortedData(): Element[] {
+    if (!this.mysort.active || this.mysort.direction == '') { return this.datas; }
+   
     const data = this.datas.slice();
-    if (!this.mysort.active || this.mysort.direction == '') { return data; }
+    console.log ("sorted..."  );
+
+   
 
     return data.sort((a, b) => {
       let propertyA: number|string = '';
       let propertyB: number|string = '';
 
-console.log (this.mysort.active );
+
 
       switch (this.mysort.active) {
-        case 'id': [propertyA, propertyB] = [a.id, b.id]; break;
+        
         case 'nom': [propertyA, propertyB] = [a.nom, b.nom]; break;
         case 'lieu': [propertyA, propertyB] = [a.lieu, b.lieu]; break;
-        case 'type': [propertyA, propertyB] = [a.type, b.type]; break;
-       // case 'progress': [propertyA, propertyB] = [a.progress, b.progress]; break;
-       // case 'color': [propertyA, propertyB] = [a.color, b.color]; break;
+        
+       
+       
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
@@ -300,4 +433,3 @@ console.log (this.mysort.active );
 
   disconnect() {}
 }
-

@@ -43,19 +43,30 @@ export class LicenciesComponent implements OnInit {
     displayForm : false ,
     
     //rang:[{"value": 1  } , {"value": 2 } ,{"value": 3 }],
-    rang:[ '1','2','3' ],
+    rang:['-' ,'1','2','3','4' ],
     banque:['CA','CMB'],
     officiel:['Non','A','B','C'],
     sexe:['F','H'] ,
     type:[{"name":"Ren" ,"value":"R" } , {"name":"Nou" ,"value":"N" } ] ,
-    categorie:[{"name":"Avenirs" ,"value":"AV" } , {"name":"Jeune" ,"value":"JE" } ,{"name":"Junior" ,"value":"JU" },{"name":"Senior" ,"value":"SE" },{"name":"Master" ,"value":"MA" }] ,
+    niveau:[{"name":"Dep" ,"value":"Dep" } , {"name":"Reg" ,"value":"Reg" } , {"name":"Nat" ,"value":"Nat" }] ,
+    categorie:[ {"name":"Avenir" ,"value":"AV" } , {"name":"Jeune" ,"value":"JE" } ,{"name":"Junior" ,"value":"JU" },{"name":"Senior" ,"value":"SE" },{"name":"Master" ,"value":"MA" }] ,
     total : 0,
     totdisp :0
   }
 
   
 
-  constructor( private formBuilder: FormBuilder, private licservice: LicenciesService , private snackBar: MdSnackBar  ) {
+myfilter = {
+ sexe:"",
+ categorie:"",
+ type:""
+
+}
+
+
+
+
+  constructor( private formBuilder: FormBuilder, private licservice: LicenciesService , private snackBar: MdSnackBar ) {
 
           
        }
@@ -100,8 +111,8 @@ export class LicenciesComponent implements OnInit {
               date:  [ new Date() , [Validators.required] ],
               sexe:  [ null , [Validators.required] ], 
 
-              categorie:  [ null  ], 
-              rang:  [ null  ], 
+              categorie:  [ null , [Validators.required] ], 
+              rang:  [ null  , [Validators.required] ], 
               officiel:  [ null   ], 
               entr:  [ null  ], 
             
@@ -218,25 +229,30 @@ export class LicenciesComponent implements OnInit {
   ngOnInit() {
     
     
-    
           this.initForm();
-         
-
-
-
-
-
     
+          Observable.fromEvent(this.filter.nativeElement, 'keyup')
+          .debounceTime(150)
+          .distinctUntilChanged()
+          .subscribe(() => {
+            if (!this.dataSource) { return; }
+            this.dataSource.filter = this.filter.nativeElement.value;
+          });
+
+
           this.licservice.list().subscribe(
-          ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
+          ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(this.sort , this.paginator) ;
+            this.dataSource.mydatafilter =data ;
           
-            Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(150)
+         /*   Observable.of( this.myfilter )
+             .debounceTime(150)
             .distinctUntilChanged()
             .subscribe(() => {
               if (!this.dataSource) { return; }
-              this.dataSource.filter = this.filter.nativeElement.value;
-            });
+              this.dataSource.myfilter = this.myfilter;
+            });*/
+
+    
           
           },  
           (err: HttpErrorResponse)  => { 
@@ -272,27 +288,20 @@ export class LicenciesComponent implements OnInit {
         var x = 5; // go back 5 days!
         d.setDate(d.getDate() - 500);
 
-      //  this.dataForm.get('date').setValue( d );
-
-
-         // ( this.dataForm == undefined  ) ? this.initForm()  :  this.dataForm.reset(); 
-         //this.dataForm.reset(); 
+   
           if( id != -1 )
           {  
               let response= this.searchId( id ) ;
               this.dataForm.setValue(response );  ///, { onlySelf: true });
         
           }
-      
-
-
         
 
 
       }
         searchId( id )  {
           let item :any ;
-          let d =   this.dataSource.datas;
+          let d =   this.dataSource.mydatafilter;
           for (var i = 0; i < d.length ; i++) {
             item = d[i];
             if( item.id == id )  
@@ -302,9 +311,7 @@ export class LicenciesComponent implements OnInit {
               item.debut = new Date( item.debut );
               item.fin = new Date( item.fin );*/
               item.date = new Date( item.date );
-              
-            
-    
+      
               break;
             }  
     
@@ -325,9 +332,46 @@ export class LicenciesComponent implements OnInit {
 
 
 
+      toFilter( $event ) {
+
+console.log( this.myfilter );
+if (!this.dataSource) { return; }
+this.dataSource.myfilter = this.myfilter;
+      }
 
 
 
+        refreshData() {
+
+          this.licservice.list().subscribe(
+            ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource.mydatafilter = data; ;
+            
+              
+
+            /*  Observable.fromEvent(this.filter.nativeElement, 'keyup')
+              .debounceTime(150)
+              .distinctUntilChanged()
+              .subscribe(() => {
+                if (!this.dataSource) { return; }
+                this.dataSource.filter = this.filter.nativeElement.value;
+              });*/
+            
+            },  
+            (err: HttpErrorResponse)  => { 
+              if (err.error instanceof Error) {
+                this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+              } else {
+                this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+              }
+        
+             },
+            () => {
+                    
+      
+      
+            });
+
+        }
 
 
 
@@ -338,11 +382,23 @@ export class LicenciesComponent implements OnInit {
           let style= "snack-success";
         if ( !info )  style="snack-error";
       
+      
+
+
         this.snackBar.open( message  , "", {
           duration: 2000,
           extraClasses: [ style ]
           
         });
+
+        if ( info ) {
+          
+                    this.refreshData();
+          }
+
+
+
+
       
       }
 
@@ -360,41 +416,79 @@ export class MyDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
+  _myfilterChange = new BehaviorSubject('');
+  get myfilter(): any { return this._myfilterChange.value; }
+  set myfilter(myfilter: any) { this._myfilterChange.next(myfilter); }
 
-  constructor(public datas: any[] , private mysort: MdSort ,private mypaginator:  MdPaginator) {
+  _mydataChange = new BehaviorSubject([]);
+  get mydatafilter(): any[]   { return this._mydataChange.value; }
+  set mydatafilter(d: any[] ) { this._mydataChange.next(d); }
+
+
+  constructor( /*public datas: any[] ,*/  private mysort: MdSort ,private mypaginator:  MdPaginator) {
     super();
 
     this.mypaginator._intl.itemsPerPageLabel="items / page";
+   
   }
 
 
   connect(): Observable<Element[]> {
-    //return Observable.of(this.datas);
+     
 
     const displayDataChanges = [
-     // this.datas,
+      this._mydataChange,
       this.mysort.mdSortChange,
       this._filterChange,
+      this._myfilterChange,
       this.mypaginator.page
     ];
 
     return Observable.merge(...displayDataChanges).map((e) => {
 
+  console.log("update...");
 
       const datasorted =this.getSortedData(); 
 
       const datafilter  = datasorted.slice().filter((item: any) => {
-        let searchStr = (item.nom + item.prenom + item.ville ).toLowerCase();
+        let searchStr = (item.nom +" "+ item.prenom +" "+ item.ville ).toLowerCase();
         //this.mypaginator.pageIndex =0 ;
 
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
-      this.mypaginator.length =datafilter.length;
+
+
+      const datafilter2  = datafilter.slice().filter((item: any) => {
+      let flag  = false;
+     
+
+      if ( ! this.myfilter )  return true;;
+
+      if ( this.myfilter.sexe == ""  ) {  flag=true }
+      else if ( item.sexe == this.myfilter.sexe  ) {flag=true;}
+      else {flag=false }
+     
+      if ( this.myfilter.categorie == ""  ) {  flag=flag && true }
+      else if (  item.categorie == this.myfilter.categorie.toLowerCase() ) { flag=flag && true}
+      else {flag=false }
+     
+      if ( this.myfilter.type == ""  ) {  flag=flag && true }
+      else if (  item.type == this.myfilter.type ) { flag=flag && true}
+      else {flag=false }
+
+
+
+          return   flag ;
+      });
+
+
+
+      this.mypaginator.length =datafilter2.length;
       
       if(this.mypaginator.pageIndex * this.mypaginator.pageSize >  this.mypaginator.length ) this.mypaginator.pageIndex =0;
 
       const startIndex = this.mypaginator.pageIndex * this.mypaginator.pageSize;
-      return datafilter.splice(startIndex, this.mypaginator.pageSize);
+      return datafilter2.splice(startIndex, this.mypaginator.pageSize);
 
 
 
@@ -406,9 +500,10 @@ export class MyDataSource extends DataSource<any> {
 
 
   getSortedData(): Element[] {
-    if (!this.mysort.active || this.mysort.direction == '') { return this.datas; }
+    if (!this.mysort.active || this.mysort.direction == '') { return this.mydatafilter; }
    
-    const data = this.datas.slice();
+    const data = this.mydatafilter.slice();
+    //const data = this.datas.slice();
     console.log ("sorted..."  );
 
    

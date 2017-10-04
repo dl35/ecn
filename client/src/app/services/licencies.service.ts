@@ -13,6 +13,8 @@ export class LicenciesService {
   constructor(private http: HttpClient) {}
 
   list(){
+console.log( "list.....");
+
     return  this.http.get('/api/private/licencies') ;
    }
 
