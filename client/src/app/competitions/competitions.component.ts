@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import {DataSource} from '@angular/cdk/table';
+import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -366,7 +366,7 @@ export class MyDataSource extends DataSource<any> {
 
     const displayDataChanges = [
      // this.datas,
-      this.mysort.mdSortChange,
+   //   this.mysort.sortChange,
       this._filterChange,
       this.mypaginator.page
     ];
@@ -375,7 +375,8 @@ export class MyDataSource extends DataSource<any> {
 
   
 
-      const datasorted =this.getSortedData(); 
+      const datasorted =this.datas;
+      //this.getSortedData(); 
 
       const datafilter  = datasorted.slice().filter((item: any) => {
         let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();

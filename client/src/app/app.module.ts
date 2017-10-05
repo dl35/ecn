@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule } from './material.module';
 import { MdNativeDateModule ,  MD_DATE_FORMATS  } from '@angular/material';
 
 import { DateAdapter   } from '@angular/material';

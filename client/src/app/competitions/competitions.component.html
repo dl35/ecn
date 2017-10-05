@@ -14,7 +14,9 @@
 
 <div fxLayout="row" fxLayoutAlign="start center"  >
         
-  
+
+ 
+
   <md-form-field fxFlex="55" fxFlexOffset="5"  >
         <input mdInput placeholder="Nom" formControlName="nom"    >
         <md-hint align="start" *ngIf="( dataForm.get('nom').hasError('required') ||  dataForm.get('nom').hasError('minlength') ) && dataForm.get('nom').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >

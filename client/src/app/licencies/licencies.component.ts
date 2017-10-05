@@ -3,7 +3,7 @@ import { LicenciesService , MessageResponse   }  from '../services/licencies.ser
 import { MdSort,MdSnackBar,MdPaginator } from '@angular/material';
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import {DataSource} from '@angular/cdk/table';
+import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -438,7 +438,7 @@ export class MyDataSource extends DataSource<any> {
 
     const displayDataChanges = [
       this._mydataChange,
-      this.mysort.mdSortChange,
+    //  this.mysort.sortChange,
       this._filterChange,
       this._myfilterChange,
       this.mypaginator.page
@@ -448,7 +448,8 @@ export class MyDataSource extends DataSource<any> {
 
   console.log("update...");
 
-      const datasorted =this.getSortedData(); 
+      //const datasorted =this.getSortedData(); 
+      const datasorted =this.mydatafilter;
 
       const datafilter  = datasorted.slice().filter((item: any) => {
         let searchStr = (item.nom +" "+ item.prenom +" "+ item.ville ).toLowerCase();
@@ -498,7 +499,7 @@ export class MyDataSource extends DataSource<any> {
 
   }
 
-
+/*
   getSortedData(): Element[] {
     if (!this.mysort.active || this.mysort.direction == '') { return this.mydatafilter; }
    
@@ -529,7 +530,7 @@ export class MyDataSource extends DataSource<any> {
       return (valueA < valueB ? -1 : 1) * (this.mysort.direction == 'asc' ? 1 : -1);
     });
   }
-
+*/
 
 
   disconnect() {}
