@@ -1,37 +1,37 @@
-<md-toolbar color="primary">
+<mat-toolbar color="primary">
     <span>Login</span>
-  </md-toolbar>
+  </mat-toolbar>
   
   <form   autocomplete="off" [formGroup]="dataForm"   novalidate>  
 
   <div style="margin-top:35px" >
       <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100"> 
-        <md-icon color="primary" >perm_identity</md-icon>
-        <md-form-field  fxFlex="40" >
-          <input mdInput placeholder="Utilisateur"  formControlName="user"  >
-          <md-error>une adresse email valide est requise</md-error>
-          <md-hint>Veuillez saisir votre adresse email</md-hint>
-        </md-form-field>
+        <mat-icon color="primary" >perm_identity</mat-icon>
+        <mat-form-field  fxFlex="40" >
+          <input matInput placeholder="Utilisateur"  formControlName="user"  >
+          <mat-error>une adresse email valide est requise</mat-error>
+          <mat-hint>Veuillez saisir votre adresse email</mat-hint>
+        </mat-form-field>
       </div>
       </div>
 
       <div style="margin-top:15px" >
           <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100"> 
-            <md-icon color="primary" >lock</md-icon>
-            <md-form-field  fxFlex="40" >
-              <input mdInput placeholder="Mot de passe"   formControlName="pwd"  >
-              <md-error>un mot de passe requis</md-error>
-              <md-hint>Veuillez saisir votre mot de passe</md-hint>
-            </md-form-field>
+            <mat-icon color="primary" >lock</mat-icon>
+            <mat-form-field  fxFlex="40" >
+              <input matInput placeholder="Mot de passe"   formControlName="pwd"  >
+              <mat-error>un mot de passe requis</mat-error>
+              <mat-hint>Veuillez saisir votre mot de passe</mat-hint>
+            </mat-form-field>
           </div>
           </div>
           
           <div  style="margin-top:15px" >
           <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" fxLayoutGap="20px">
-          <button md-raised-button color="primary"  [disabled]="dataForm.invalid"  (click)="doSignUp()"  >
-              <md-icon>play_arrow</md-icon>
+          <button mat-raised-button color="primary"  [disabled]="dataForm.invalid"  (click)="doSignUp()"  >
+              <mat-icon>play_arrow</mat-icon>
               Login</button>
-              <md-error [fxShow]='meta.error'  >{{meta.message}}</md-error>
+              <mat-error [fxShow]='meta.error'  >{{meta.message}}</mat-error>
             </div>
        
           </div>

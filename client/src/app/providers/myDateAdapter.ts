@@ -1,4 +1,4 @@
-import {NativeDateAdapter}  from '@angular/material'; 
+import {MatNativeDateAdapter }  from '@angular/material'; 
 
 
 
@@ -20,7 +20,7 @@ export const APP_DATE_FORMATS =
 
 
 
-export class myDateAdapter extends NativeDateAdapter {
+export class myDateAdapter extends MatNativeDateAdapter {
   
 
   private _to2digit(n: number) {

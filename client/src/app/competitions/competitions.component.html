@@ -1,7 +1,5 @@
 
 
-
-
 <div class="example-container mat-elevation-z10" fxLayout="column"  [fxShow]="meta.displayForm"   >
 
     <br/>
@@ -14,61 +12,62 @@
 
 <div fxLayout="row" fxLayoutAlign="start center"  >
         
-
  
 
-  <md-form-field fxFlex="55" fxFlexOffset="5"  >
-        <input mdInput placeholder="Nom" formControlName="nom"    >
-        <md-hint align="start" *ngIf="( dataForm.get('nom').hasError('required') ||  dataForm.get('nom').hasError('minlength') ) && dataForm.get('nom').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+  <mat-form-field fxFlex="55" fxFlexOffset="5"  >
+        <input matInput placeholder="Nom" formControlName="nom"    >
+        <mat-hint align="start" *ngIf="( dataForm.get('nom').hasError('required') ||  dataForm.get('nom').hasError('minlength') ) && dataForm.get('nom').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
           *Nom sur 5 charactères minimum
-          </md-hint>
-        </md-form-field>
+          </mat-hint>
+        </mat-form-field>
   
 
-        <md-form-field fxFlex="20" >
-        <input mdInput placeholder="Lieu" formControlName="lieu"   >
-        <md-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+        <mat-form-field fxFlex="20" >
+        <input matInput placeholder="Lieu" formControlName="lieu"   >
+        <mat-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
         *Lieu sur 4 charactères minimum
-        </md-hint>
-        </md-form-field>
+        </mat-hint>
+        </mat-form-field>
 
 </div> 
 
 
 <div fxLayout="row" fxLayoutAlign="start baseline"  style='margin-top:10px' >
     
-    <md-form-field fxFlex="15"  fxFlexOffset="5" >
-        <input mdInput [mdDatepicker]="debut"  placeholder="Début" (click)="debut.open()" [min]="minDate" formControlName="debut" >
-        <md-datepicker-toggle mdSuffix [for]="debut"  ></md-datepicker-toggle>
-        <md-datepicker #debut></md-datepicker>
-    </md-form-field>
-    <md-form-field fxFlex="15"  >
-        <input mdInput [mdDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()" formControlName="fin">
-        <md-datepicker-toggle mdSuffix [for]="fin"></md-datepicker-toggle>
-        <md-datepicker #fin></md-datepicker>
-    </md-form-field>
-    
-    <md-form-field fxFlex="15"  >
-        <input mdInput [mdDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()" formControlName="limite" >
-        <md-datepicker-toggle mdSuffix [for]="limite"></md-datepicker-toggle>
-        <md-datepicker #limite></md-datepicker>
-    </md-form-field>
-  
-    <md-select placeholder="Heure" name="heure"  formControlName="heure" fxFlex="6" fxFlexOffset="5"  >
-        <md-option *ngFor="let n of ['07','08','09','10','11','12','13','14']" [value]="n">
-          {{n}}h
-        </md-option>
-      </md-select>
 
+    <mat-form-field fxFlex="15"  fxFlexOffset="5" >
+        <input matInput [matDatepicker]="debut"  placeholder="Début" (click)="debut.open()" [min]="minDate" formControlName="debut" >
+        <mat-datepicker-toggle matSuffix [for]="debut"  ></mat-datepicker-toggle>
+        <mat-datepicker #debut></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field fxFlex="15"  >
+        <input matInput [matDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()" formControlName="fin">
+        <mat-datepicker-toggle matSuffix [for]="fin"></mat-datepicker-toggle>
+        <mat-datepicker #fin></mat-datepicker>
+    </mat-form-field>
+    
+    <mat-form-field fxFlex="15"  >
+        <input matInput [matDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()" formControlName="limite" >
+        <mat-datepicker-toggle matSuffix [for]="limite"></mat-datepicker-toggle>
+        <mat-datepicker #limite></mat-datepicker>
+    </mat-form-field>
+
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="6" fxFlexOffset="5" >
+            <mat-select placeholder="Heure" name="heure"  formControlName="heure"   >
+        <mat-option *ngFor="let n of ['07','08','09','10','11','12','13','14']" [value]="n">
+          {{n}}h
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
 
     </div>
 
     <div   fxLayout="row" fxLayoutAlign="start baseline"  style='margin-top:2px'   *ngIf="dataForm.hasError('dateError')"  >
       <div  fxFlexOffset="5" >
-        <md-hint align="start"  [ngStyle]="{'color': 'red','font-size':'12px'}"  >
+        <mat-hint align="start"  [ngStyle]="{'color': 'red','font-size':'12px'}"  >
             Les dates sont incompatibles !
-          </md-hint>
+          </mat-hint>
         </div>
         </div>
 
@@ -76,43 +75,48 @@
       
 
     <div fxLayout="row" fxLayoutAlign="start baseline"    style='margin-top:10px' >
-  
-    <md-select placeholder="Bassin" name="bassin"  formControlName="bassin" fxFlex="6" fxFlexOffset="5" >
-        <md-option *ngFor="let bassin of meta.bassin" [value]="bassin.value">
+      
+      
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="6" fxFlexOffset="5" >
+    <mat-select placeholder="Bassin" name="bassin"  formControlName="bassin" >
+        <mat-option *ngFor="let bassin of meta.bassin" [value]="bassin.value">
           {{bassin.name}}
-        </md-option>
+        </mat-option>
 
-              </md-select>
- 
+              </mat-select>
+ </mat-form-field>
 
-
-      <md-select placeholder="Type" name="type" formControlName="type"  fxFlex="10" fxFlexOffset="5"    (ngModelChange)="setVerif()"  >
-          <md-option *ngFor="let type of meta.type" [value]="type.value">
+              <mat-form-field [floatPlaceholder]="auto"  fxFlex="10" fxFlexOffset="5"   >
+      <mat-select placeholder="Type" name="type" formControlName="type"     (ngModelChange)="setVerif()"  >
+          <mat-option *ngFor="let type of meta.type" [value]="type.value">
             {{type.name}}
-          </md-option>
+          </mat-option>
         
-        </md-select>
+        </mat-select>
      
-     
+     </mat-form-field>
 
 
 
        
-        <md-form-field fxFlex="65" [fxShow]=" dataForm.controls['type'].value === 'stage' "  fxFlex="5">
-        <input mdInput placeholder="Max" formControlName="max" maxlength="3"  >
-        <md-hint align="start" *ngIf="( dataForm.get('max').hasError('required') ||  dataForm.get('max').hasError('pattern') ) && dataForm.get('max').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+        <mat-form-field fxFlex="65" [fxShow]=" dataForm.controls['type'].value === 'stage' "  fxFlex="5">
+        <input matInput placeholder="Max" formControlName="max" maxlength="3"  >
+        <mat-hint align="start" *ngIf="( dataForm.get('max').hasError('required') ||  dataForm.get('max').hasError('pattern') ) && dataForm.get('max').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
           *nombre>0
-          </md-hint>
-        </md-form-field>
+          </mat-hint>
+        </mat-form-field>
 
         <div fxFlexOffset="2" fxFlex="15" [fxShow]=" dataForm.controls['type'].value === 'compet' "    >  
-            <md-checkbox name="choixnages"  formControlName="choixnages"  >Avec choix des nages</md-checkbox>
+            <mat-checkbox name="choixnages"  formControlName="choixnages"  >Avec choix des nages</mat-checkbox>
             </div>
-            <md-select placeholder="Entraineur" name="entraineur" formControlName="entraineur"  fxFlex="10" fxFlexOffset="2" >
-                <md-option *ngFor="let entr of meta.entraineur" [value]="entr.value">
+
+            <mat-form-field [floatPlaceholder]="auto"  fxFlex="10" fxFlexOffset="2"  >
+            <mat-select placeholder="Entraineur" name="entraineur" formControlName="entraineur"  >
+                <mat-option *ngFor="let entr of meta.entraineur" [value]="entr.value">
                   {{entr.name}}
-                </md-option>
-              </md-select>
+                </mat-option>
+              </mat-select>
+            </mat-form-field> 
 
 
 
@@ -126,13 +130,13 @@
 
     <div fxFlexOffset="5" fxFlex="50"   fxLayout="row" fxLayoutAlign="start center"   formGroupName  ="categories"  >
        <span>Categories:&nbsp;&nbsp;&nbsp;</span>
-       <md-checkbox formControlName="av"   >Av</md-checkbox>&nbsp;
-       <md-checkbox formControlName="je"   >Je</md-checkbox>&nbsp;
-       <md-checkbox formControlName="dep"   >Dep</md-checkbox>&nbsp;
-       <md-checkbox formControlName="reg"   >Reg</md-checkbox>&nbsp;
-       <md-checkbox formControlName="ir"   >Ir</md-checkbox>&nbsp;
-       <md-checkbox formControlName="nat"   >Nat</md-checkbox>&nbsp;
-       <md-checkbox formControlName="ma"   >Mas</md-checkbox>&nbsp;
+       <mat-checkbox formControlName="av"   >Av</mat-checkbox>&nbsp;
+       <mat-checkbox formControlName="je"   >Je</mat-checkbox>&nbsp;
+       <mat-checkbox formControlName="dep"   >Dep</mat-checkbox>&nbsp;
+       <mat-checkbox formControlName="reg"   >Reg</mat-checkbox>&nbsp;
+       <mat-checkbox formControlName="ir"   >Ir</mat-checkbox>&nbsp;
+       <mat-checkbox formControlName="nat"   >Nat</mat-checkbox>&nbsp;
+       <mat-checkbox formControlName="ma"   >Mas</mat-checkbox>&nbsp;
 
      
     </div>
@@ -140,7 +144,7 @@
 
 
   <div fxFlexOffset="3" fxFlex="10"  >  
-  <md-checkbox name="verif"  formControlName="verif"   >Vérification</md-checkbox>
+  <mat-checkbox name="verif"  formControlName="verif"   >Vérification</mat-checkbox>
   </div>
 
 
@@ -152,15 +156,15 @@
 
 
 <div   fxLayout="row" fxLayoutAlign="start center"  style='margin-top:20px'    >
-    <md-form-field fxFlex="75" fxFlexOffset="5" >
-        <textarea mdInput   formControlName="commentaires"  placeholder="Commentaires"></textarea>
-      </md-form-field>
+    <mat-form-field fxFlex="75" fxFlexOffset="5" >
+        <textarea matInput   formControlName="commentaires"  placeholder="Commentaires"></textarea>
+      </mat-form-field>
 </div>
 
   <div fxLayout="row" fxLayoutAlign="center center"  >
    
-             <button md-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
-             <button md-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
+             <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
+             <button mat-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
     </div>
 
 
@@ -180,81 +184,81 @@
    
       
     <div class="example-header">
-        <md-form-field floatPlaceholder="never">
-          <input mdInput #filter placeholder="Filtre...">
-        </md-form-field>
+        <mat-form-field floatPlaceholder="never">
+          <input matInput #filter placeholder="Filtre...">
+        </mat-form-field>
         
-            <button md-mini-fab color="primary"  (click)="updateForm('-1') "  > <md-icon>add</md-icon></button>
+            <button mat-mini-fab color="primary"  (click)="updateForm('-1') "  > <mat-icon>add</mat-icon></button>
         
       </div>
 
 
-<md-table class="mat-table"  #table [dataSource]="dataSource" mdSort>
+<mat-table class="mat-table"  #table [dataSource]="dataSource" matSort>
 
 
 
 <!-- Name Column -->
-<ng-container mdColumnDef="nom">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Nom </md-header-cell>
-  <md-cell *mdCellDef="let row" [ngStyle]="{'color': row.verif == 1 ? 'green' : 'red'}"  > {{row.nom}} </md-cell>
+<ng-container matColumnDef="nom">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Nom </mat-header-cell>
+  <mat-cell *matCellDef="let row" [ngStyle]="{'color': row.verif == 1 ? 'green' : 'red'}"  > {{row.nom}} </mat-cell>
 </ng-container>
 
 <!-- Name Column -->
-<ng-container mdColumnDef="lieu">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Lieu</md-header-cell>
-  <md-cell *mdCellDef="let row" > {{row.lieu | lowercase}} </md-cell>
+<ng-container matColumnDef="lieu">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Lieu</mat-header-cell>
+  <mat-cell *matCellDef="let row" > {{row.lieu | lowercase}} </mat-cell>
 </ng-container>
 
 <!-- Name Column -->
-<ng-container mdColumnDef="categories">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Categories </md-header-cell>
-  <md-cell *mdCellDef="let row"> {{row.categories.av}} </md-cell>
+<ng-container matColumnDef="categories">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Categories </mat-header-cell>
+  <mat-cell *matCellDef="let row"> {{row.categories.av}} </mat-cell>
 </ng-container>
 
 <!-- Name Column -->
-<ng-container mdColumnDef="bassin">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Bassin </md-header-cell>
-  <md-cell *mdCellDef="let row">
-    <button md-mini-fab  *ngIf="row.bassin == '25'" disabled> {{row.bassin}}</button>
-    <button md-mini-fab  *ngIf="row.bassin == '50'" > {{row.bassin}}</button>
+<ng-container matColumnDef="bassin">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Bassin </mat-header-cell>
+  <mat-cell *matCellDef="let row">
+    <button mat-mini-fab  *ngIf="row.bassin == '25'" disabled> {{row.bassin}}</button>
+    <button mat-mini-fab  *ngIf="row.bassin == '50'" > {{row.bassin}}</button>
   
-  </md-cell>
+  </mat-cell>
 </ng-container>
 
 <!-- Name Column -->
-<ng-container mdColumnDef="type">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Type </md-header-cell>
-  <md-cell *mdCellDef="let row"><md-chip-list>
-   <md-chip>{{row.type}}</md-chip> </md-chip-list> </md-cell>
+<ng-container matColumnDef="type">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Type </mat-header-cell>
+  <mat-cell *matCellDef="let row"><mat-chip-list>
+   <mat-chip>{{row.type}}</mat-chip> </mat-chip-list> </mat-cell>
 
 </ng-container>
 
 
 <!-- Name Column -->
-<ng-container mdColumnDef="debut">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Début </md-header-cell>
-  <md-cell *mdCellDef="let row"> {{row.debut | date: 'dd MMM yyyy' }} </md-cell>
+<ng-container matColumnDef="debut">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Début </mat-header-cell>
+  <mat-cell *matCellDef="let row"> {{row.debut | date: 'dd MMM yyyy' }} </mat-cell>
 </ng-container>
 
 <!-- Name Column -->
-<ng-container mdColumnDef="fin">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Fin</md-header-cell>
-  <md-cell *mdCellDef="let row"> {{row.fin | date: 'dd MMM yyyy' }} </md-cell>
+<ng-container matColumnDef="fin">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Fin</mat-header-cell>
+  <mat-cell *matCellDef="let row"> {{row.fin | date: 'dd MMM yyyy' }} </mat-cell>
  </ng-container>
 
 
- <ng-container mdColumnDef="id" >
-  <md-header-cell *mdHeaderCellDef>Actions</md-header-cell>
+ <ng-container matColumnDef="id" >
+  <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
 
-  <md-cell *mdCellDef="let row"  >
-          <button md-icon-button (click)="updateForm(row.id)" >
-            <md-icon color='primary' >edit</md-icon>
+  <mat-cell *matCellDef="let row"  >
+          <button mat-icon-button (click)="updateForm(row.id)" >
+            <mat-icon color='primary' >edit</mat-icon>
           </button>
-          <button md-icon-button>
-              <md-icon color='primary' (click)="deleteItem(row.id)"  >delete</md-icon>
+          <button mat-icon-button>
+              <mat-icon color='primary' (click)="deleteItem(row.id)"  >delete</mat-icon>
             </button>
    
-  </md-cell>
+  </mat-cell>
 </ng-container>
 
 
@@ -262,20 +266,20 @@
   <!-- Header and Row Declarations -->
 
 
-  <md-header-row *mdHeaderRowDef="['nom','lieu','categories','bassin','type', 'debut', 'fin' ,'id'  ]"></md-header-row>
-  <md-row *mdRowDef="let row; columns: ['nom','lieu','categories','bassin','type', 'debut', 'fin', 'id'  ]"></md-row>
+  <mat-header-row *matHeaderRowDef="['nom','lieu','categories','bassin','type', 'debut', 'fin' ,'id'  ]"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['nom','lieu','categories','bassin','type', 'debut', 'fin', 'id'  ]"></mat-row>
 
 
 
 
-</md-table>
-<md-paginator #paginator
+</mat-table>
+<mat-paginator #paginator
 
 [length]="dataSource?.datas?.length"
 [pageIndex]="0"
 [pageSize]="10"
 [pageSizeOptions]="[5, 10 ,25]">
-</md-paginator>
+</mat-paginator>
 
 
 </div>

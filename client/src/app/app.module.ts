@@ -10,14 +10,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
-import { MdNativeDateModule ,  MD_DATE_FORMATS  } from '@angular/material';
+import {
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  MAT_DATE_LOCALE_PROVIDER,
+  MAT_DATE_FORMATS
+} from '@angular/material';
 
-import { DateAdapter   } from '@angular/material';
+//import { M   } from '@angular/material';
+
+/*
 import { myDateAdapter } from './providers/myDateAdapter';
 import { APP_DATE_FORMATS } from './providers/myDateAdapter';
 
-import { CdkTableModule } from '@angular/cdk/table';
 
+*/
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -93,8 +100,6 @@ export const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    MdNativeDateModule,
-    CdkTableModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
@@ -103,6 +108,7 @@ export const routes: Routes = [
     //{provide: MD_DATE_FORMATS, useValue : APP_DATE_FORMATS },
     //{provide: LOCALE_ID, useValue : 'fr-FR' },
   //  {provide: DateAdapter, useClass: myDateAdapter} ,
+  {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     CompetitionsService ,LoginService, LicenciesService ,AuthGuard],
   bootstrap: [AppComponent]
 })

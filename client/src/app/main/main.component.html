@@ -1,49 +1,49 @@
-<md-toolbar color="primary"  >
+<mat-toolbar color="primary"  >
   <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" >
       <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
       
-       <button md-raised-button color="primary"  routerLink="/licencies" ><md-icon>account_circle</md-icon>&nbsp;Licencies</button>
+       <button mat-raised-button color="primary"  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
      
 
-      <button md-raised-button color="primary"  routerLink="/competitions" ><md-icon>pool</md-icon>&nbsp;Competitions</button>
-      <button md-raised-button color="primary"  routerLink="/engagements" ><md-icon>airport_shuttle</md-icon>&nbsp;Engagements</button>  
+      <button mat-raised-button color="primary"  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
+      <button mat-raised-button color="primary"  routerLink="/engagements" ><mat-icon>airport_shuttle</mat-icon>&nbsp;Engagements</button>  
       
       
-      <button md-raised-button color="primary"  routerLink="/mailto" ><md-icon>email</md-icon>&nbsp;Mailto</button>
-      <button md-raised-button color="primary"  routerLink="/" >Click me!</button>
-      <button md-button   ><md-icon>delete</md-icon></button>  
+      <button mat-raised-button color="primary"  routerLink="/mailto" ><mat-icon>email</mat-icon>&nbsp;Mailto</button>
+      <button mat-raised-button color="primary"  routerLink="/" >Click me!</button>
+      <button mat-button   ><mat-icon>delete</mat-icon></button>  
 
-      <button md-icon-button [mdMenuTriggerFor]="menu">
-          <md-icon>more_vert</md-icon>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
         </button>
-        <md-menu #menu="mdMenu">
-          <button md-menu-item>
-            <md-icon>dialpad</md-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
             <span>Redial</span>
           </button>
-          <button md-menu-item disabled>
-            <md-icon>voicemail</md-icon>
+          <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
             <span>Check voicemail</span>
           </button>
-          <button md-menu-item>
-            <md-icon>notifications_off</md-icon>
+          <button mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
             <span>Disable alerts</span>
           </button>
-        </md-menu>
+        </mat-menu>
       
       </div>
 
       <div  fxFlexOffset="20"  fxFlex="20"    fxLayoutAlign="end center"  >
        
-      <button md-raised-button color="primary"  routerLink="/login" >
-        <md-icon>exit_to_app</md-icon>
+      <button mat-raised-button color="primary"  routerLink="/login" >
+        <mat-icon>exit_to_app</mat-icon>
         Disconnect</button>
          
       </div>
 
 
   </div> 
-</md-toolbar>
+</mat-toolbar>
 
 
 

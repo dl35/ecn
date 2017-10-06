@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import {DataSource} from '@angular/cdk/collections';
+import {DataSource} from '@angular/cdk/table';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -13,7 +13,7 @@ import {CompetitionsService , MessageResponse }  from '../services/competitions.
 
 
 
-import { MdSort,MdSnackBar,MdPaginator } from '@angular/material';
+import { MatSort ,MatSnackBar ,MatPaginator } from '@angular/material';
 
 
 
@@ -31,12 +31,12 @@ export class CompetitionsComponent implements OnInit {
   public dataForm: FormGroup ;
   public dataSource: MyDataSource ;
 
-  @ViewChild(MdSort) sort: MdSort;
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MdSnackBar  ) {
+  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MatSnackBar  ) {
 
      // this.dateAdapter.setLocale('fr-FR');
 
@@ -354,7 +354,7 @@ export class MyDataSource extends DataSource<any> {
   set filter(filter: string) { this._filterChange.next(filter); }
 
 
-  constructor(public datas: any[] , private mysort: MdSort ,private mypaginator:  MdPaginator) {
+  constructor(public datas: any[] , private mysort: MatSort ,private mypaginator:  MatPaginator) {
     super();
 
     this.mypaginator._intl.itemsPerPageLabel="items / page";

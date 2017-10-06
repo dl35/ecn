@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
 import { LicenciesService , MessageResponse   }  from '../services/licencies.service' ;
-import { MdSort,MdSnackBar,MdPaginator } from '@angular/material';
+import { MatSort,MatSnackBar,MatPaginator } from '@angular/material';
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import { DataSource } from '@angular/cdk/collections';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
@@ -25,9 +25,9 @@ export class LicenciesComponent implements OnInit {
 
   public dataForm: FormGroup ;
   public dataSource: MyDataSource ;
-  @ViewChild(MdSort) sort: MdSort;
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   
 
 
@@ -66,7 +66,7 @@ myfilter = {
 
 
 
-  constructor( private formBuilder: FormBuilder, private licservice: LicenciesService , private snackBar: MdSnackBar ) {
+  constructor( private formBuilder: FormBuilder, private licservice: LicenciesService , private snackBar: MatSnackBar ) {
 
           
        }
@@ -425,7 +425,7 @@ export class MyDataSource extends DataSource<any> {
   set mydatafilter(d: any[] ) { this._mydataChange.next(d); }
 
 
-  constructor( /*public datas: any[] ,*/  private mysort: MdSort ,private mypaginator:  MdPaginator) {
+  constructor( /*public datas: any[] ,*/  private mysort: MatSort ,private mypaginator:  MatPaginator) {
     super();
 
     this.mypaginator._intl.itemsPerPageLabel="items / page";

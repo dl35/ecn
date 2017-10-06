@@ -1,5 +1,3 @@
-
-
 <div class="mat-elevation-z10" fxLayout="column"   [fxShow]="meta.displayForm"   style="margin:10px"  fxLayoutGap="10px">
   
       <br/>
@@ -12,46 +10,46 @@
           
   
     
-          <md-form-field fxFlex="20" >
-          <input mdInput placeholder="Nom" formControlName="nom"    >
-          </md-form-field>
+          <mat-form-field fxFlex="20" >
+          <input matInput placeholder="Nom" formControlName="nom"    >
+          </mat-form-field>
     
-          <md-form-field fxFlex="20" >
-          <input mdInput placeholder="Prénom" formControlName="prenom"    >
-          </md-form-field>
+          <mat-form-field fxFlex="20" >
+          <input matInput placeholder="Prénom" formControlName="prenom"    >
+          </mat-form-field>
     
-          <md-form-field fxFlex="10"  >
+          <mat-form-field fxFlex="10"  >
             
-            <input mdInput [mdDatepicker]="day"  placeholder="Date" (click)="day.open()"  formControlName="date" >
-            <md-datepicker-toggle mdSuffix [for]="day"  ></md-datepicker-toggle>
-            <md-datepicker #day></md-datepicker>
-         </md-form-field>
+            <input matInput [matDatepicker]="day"  placeholder="Date" (click)="day.open()"  formControlName="date" >
+            <mat-datepicker-toggle matSuffix [for]="day"  ></mat-datepicker-toggle>
+            <mat-datepicker #day></mat-datepicker>
+         </mat-form-field>
 
 
   
-        
-            <md-select placeholder="Sexe" formControlName="sexe" fxFlex="4"   >
-                <md-option *ngFor="let s of meta.sexe"     [value]="s"   >{{s}} </md-option>
-            </md-select> 
-  
+         <mat-form-field [floatPlaceholder]="auto"    fxFlex="4"  >
+            <mat-select placeholder="Sexe" formControlName="sexe"  >
+                <mat-option *ngFor="let s of meta.sexe"     [value]="s"   >{{s}} </mat-option>
+            </mat-select> 
+          </mat-form-field>
   
   </div> 
   
   
   <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayoutGap="10px" fxLayout.lt-sm="column" >
       
-      <md-form-field fxFlex="25" >
-      <input mdInput placeholder="Adresse" formControlName="adresse"    >
-      </md-form-field>
+      <mat-form-field fxFlex="25" >
+      <input matInput placeholder="Adresse" formControlName="adresse"    >
+      </mat-form-field>
 
-      <md-form-field fxFlex="8" >
-      <input mdInput #postalCode maxLength="5"  placeholder="Code Postal" formControlName="code_postal"    >
-      <md-hint align="end">{{postalCode.value.length}} / 5</md-hint>
-      </md-form-field>
+      <mat-form-field fxFlex="8" >
+      <input matInput #postalCode maxLength="5"  placeholder="Code Postal" formControlName="code_postal"    >
+      <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+      </mat-form-field>
     
-      <md-form-field fxFlex="20" >
-      <input mdInput placeholder="Ville" formControlName="ville"    >
-      </md-form-field>
+      <mat-form-field fxFlex="20" >
+      <input matInput placeholder="Ville" formControlName="ville"    >
+      </mat-form-field>
   
   </div> 
   
@@ -60,42 +58,42 @@
 
   <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"   fxLayoutGap="35px" fxLayout.lt-sm="column"  >
       
-      <md-form-field fxFlex="18" >
-      <input mdInput placeholder="Email*" formControlName="email1"    >
-      <md-icon mdSuffix>email</md-icon>
-      <md-hint align="start" *ngIf="(dataForm.get('email1').hasError('required') ||  dataForm.get('email1').hasError('pattern') ) && dataForm.get('email1').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-          {{invalid.mail}}</md-hint>
-      </md-form-field>
+      <mat-form-field fxFlex="18" >
+      <input matInput placeholder="Email*" formControlName="email1"    >
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-hint align="start" *ngIf="(dataForm.get('email1').hasError('required') ||  dataForm.get('email1').hasError('pattern') ) && dataForm.get('email1').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          {{invalid.mail}}</mat-hint>
+      </mat-form-field>
 
-      <md-form-field fxFlex="18" >
-      <input mdInput placeholder="Email" formControlName="email2"    >
-      <md-hint align="start" *ngIf="( dataForm.get('email2').hasError('pattern') ) && dataForm.get('email2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-          {{ invalid.mail}}</md-hint>
-      </md-form-field>
+      <mat-form-field fxFlex="18" >
+      <input matInput placeholder="Email" formControlName="email2"    >
+      <mat-hint align="start" *ngIf="( dataForm.get('email2').hasError('pattern') ) && dataForm.get('email2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          {{ invalid.mail}}</mat-hint>
+      </mat-form-field>
     
-      <md-form-field fxFlex="18" >
-      <input mdInput placeholder="Email" formControlName="email3"    >
-      <md-hint align="start" *ngIf="( dataForm.get('email3').hasError('pattern') ) && dataForm.get('email3').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-          {{ invalid.mail}}</md-hint>
-      </md-form-field>
+      <mat-form-field fxFlex="18" >
+      <input matInput placeholder="Email" formControlName="email3"    >
+      <mat-hint align="start" *ngIf="( dataForm.get('email3').hasError('pattern') ) && dataForm.get('email3').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+          {{ invalid.mail}}</mat-hint>
+      </mat-form-field>
      
     
-      <md-form-field fxFlex="8" >
-          <input mdInput placeholder="Télephone*" formControlName="telephone1"   maxlength="10" >
-          <md-icon mdSuffix>phone</md-icon>
-          </md-form-field>
+      <mat-form-field fxFlex="8" >
+          <input matInput placeholder="Télephone*" formControlName="telephone1"   maxlength="10" >
+          <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
     
-          <md-form-field fxFlex="8" >
-          <input mdInput placeholder="Télephone" formControlName="telephone2"   maxlength="10"  >
-          <md-icon mdSuffix>phone</md-icon>
-          <md-hint align="start" *ngIf="( dataForm.get('telephone2').hasError('required') ) && dataForm.get('telephone2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-              *Le Téléphone....              </md-hint>
-          </md-form-field>
+          <mat-form-field fxFlex="8" >
+          <input matInput placeholder="Télephone" formControlName="telephone2"   maxlength="10"  >
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-hint align="start" *ngIf="( dataForm.get('telephone2').hasError('required') ) && dataForm.get('telephone2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
+              *Le Téléphone....              </mat-hint>
+          </mat-form-field>
         
-          <md-form-field fxFlex="8" >
-          <input mdInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"   >
-          <md-icon mdSuffix>phone</md-icon>
-          </md-form-field>
+          <mat-form-field fxFlex="8" >
+          <input matInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"   >
+          <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
   
     
   
@@ -107,55 +105,58 @@
 
 
 
-
-
-
-
-
-
-  <div fxLayout="row" fxLayoutAlign="center baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"   fxLayoutGap="10px">
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"   fxLayoutGap="10px">
     
 
 
-   <div>
-        <md-select placeholder="Type" formControlName="type" fxFlex="4" >
-        <md-option *ngFor="let r of meta.type"    [value]="r.value"   >{{r.name}} </md-option>
-        </md-select> 
-    </div>
+  
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="4"  >
+        <mat-select placeholder="Type" formControlName="type"  >
+        <mat-option *ngFor="let r of meta.type"    [value]="r.value"   >{{r.name}} </mat-option>
+        </mat-select> 
+      </mat-form-field>
+      
+    
   
    
-    <div>
-        <md-select placeholder="Categorie" formControlName="categorie" fxFlex="4" >
-        <md-option *ngFor="let r of meta.categorie"    [value]="r.value"   >{{r.name}} </md-option>
-        </md-select> 
-    </div>
- 
- 
-   <div>
-      <md-select placeholder="Rang" formControlName="rang" fxFlex="4" >
-      <md-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </md-option>
-      </md-select> 
-    </div>
-
-    <div>
-      <md-select placeholder="Officiel" formControlName="officiel" fxFlex="4" >
-      <md-option *ngFor="let r of meta.officiel"    [value]="r"   >{{r}} </md-option>
-      </md-select> 
-    </div>
   
-    <md-form-field fxFlex="10" >
-        <input mdInput placeholder="Licence" formControlName="licence"    >
-    </md-form-field>
+        <mat-form-field [floatPlaceholder]="auto"    fxFlex="10"  >
+        <mat-select placeholder="Categorie" formControlName="categorie">
+        <mat-option *ngFor="let r of meta.categorie"    [value]="r.value"   >{{r.name}} </mat-option>
+        </mat-select> 
+        </mat-form-field>
 
-    <md-form-field fxFlex="6" >
-      <input mdInput placeholder="Tarif (€)" formControlName="tarif"   maxlength="7" >
-   </md-form-field>
-   <md-form-field fxFlex="6"  >
-      <input mdInput placeholder="Total (€)"   class="cotisation"  formControlName="cotisation"    maxlength="7" >
-   </md-form-field>
+ 
+ 
+   
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="5"  >
+      <mat-select placeholder="Rang" formControlName="rang" >
+      <mat-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </mat-option>
+      </mat-select> 
+      </mat-form-field>
+   
+
+   
+        <mat-form-field [floatPlaceholder]="auto"    fxFlex="4"  >
+      <mat-select placeholder="Officiel" formControlName="officiel"  >
+      <mat-option *ngFor="let r of meta.officiel"    [value]="r"   >{{r}} </mat-option>
+      </mat-select> 
+      </mat-form-field>
+    
+  
+    <mat-form-field fxFlex="10" >
+        <input matInput placeholder="Licence" formControlName="licence"    >
+    </mat-form-field>
+
+    <mat-form-field fxFlex="6" >
+      <input matInput placeholder="Tarif (€)" formControlName="tarif"   maxlength="7" >
+   </mat-form-field>
+   <mat-form-field fxFlex="6"  >
+      <input matInput placeholder="Total (€)"   class="cotisation"  formControlName="cotisation"    maxlength="7" >
+   </mat-form-field>
 
     <section>
-        <md-checkbox  formControlName="entr" color="accent" >Entraineur</md-checkbox>
+        <mat-checkbox  formControlName="entr" color="accent" >Entraineur</mat-checkbox>
     </section>
          
 
@@ -169,69 +170,71 @@
     
 
    
-        <div>
-        <md-select placeholder="Banque" formControlName="banque" fxFlex="24" >
-          <md-option *ngFor="let r of meta.banque"    [value]="r"   >{{r}} </md-option>
-        </md-select> 
-        </div>
+       
+            <mat-form-field [floatPlaceholder]="auto"    fxFlex="10"  >
+        <mat-select placeholder="Banque" formControlName="banque"  >
+          <mat-option *ngFor="let r of meta.banque"    [value]="r"   >{{r}} </mat-option>
+        </mat-select> 
+        </mat-form-field>
+       
      
         <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
-          <md-form-field fxFlex="5" >
-              <input mdInput placeholder="Montant (€)" formControlName="cheque1"   >
-            </md-form-field>
-            <md-form-field fxFlex="10" >
-                <input mdInput placeholder="Numéro" formControlName="num_cheque1"    >
-              </md-form-field>
+          <mat-form-field fxFlex="5" >
+              <input matInput placeholder="Montant (€)" formControlName="cheque1"   >
+            </mat-form-field>
+            <mat-form-field fxFlex="10" >
+                <input matInput placeholder="Numéro" formControlName="num_cheque1"    >
+              </mat-form-field>
            </div>
          
            <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
-              <md-form-field fxFlex="5" >
-                  <input mdInput placeholder="Montant (€)" formControlName="cheque2"    >
-                </md-form-field>
-                <md-form-field fxFlex="5" >
-                    <input mdInput placeholder="Numéro" formControlName="num_cheque2"    >
-                  </md-form-field>
+              <mat-form-field fxFlex="5" >
+                  <input matInput placeholder="Montant (€)" formControlName="cheque2"    >
+                </mat-form-field>
+                <mat-form-field fxFlex="5" >
+                    <input matInput placeholder="Numéro" formControlName="num_cheque2"    >
+                  </mat-form-field>
                </div>
                <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
-                  <md-form-field fxFlex="5" >
-                      <input mdInput placeholder="Montant (€)" formControlName="cheque3"    >
-                    </md-form-field>
-                    <md-form-field fxFlex="5" >
-                        <input mdInput placeholder="Numéro" formControlName="num_cheque3"    >
-                      </md-form-field>
+                  <mat-form-field fxFlex="5" >
+                      <input matInput placeholder="Montant (€)" formControlName="cheque3"    >
+                    </mat-form-field>
+                    <mat-form-field fxFlex="5" >
+                        <input matInput placeholder="Numéro" formControlName="num_cheque3"    >
+                      </mat-form-field>
                    </div>
 
 </div> 
 
 <div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
-        <md-form-field fxFlex="15" >
-            <input mdInput placeholder="Cheque sport (€)" formControlName="ch_sport"   >
-          </md-form-field>
-          <md-form-field fxFlex="15" >
-              <input mdInput placeholder="Numéro" formControlName="num_sport"    >
-            </md-form-field>
-            <md-form-field fxFlex="15" >
-              <input mdInput placeholder="Coupon sport (€)" formControlName="coup_sport"   >
-            </md-form-field>
-            <md-form-field fxFlex="15" >
-                <input mdInput placeholder="Numéro" formControlName="num_coupsport"    >
-              </md-form-field>
+        <mat-form-field fxFlex="15" >
+            <input matInput placeholder="Cheque sport (€)" formControlName="ch_sport"   >
+          </mat-form-field>
+          <mat-form-field fxFlex="15" >
+              <input matInput placeholder="Numéro" formControlName="num_sport"    >
+            </mat-form-field>
+            <mat-form-field fxFlex="15" >
+              <input matInput placeholder="Coupon sport (€)" formControlName="coup_sport"   >
+            </mat-form-field>
+            <mat-form-field fxFlex="15" >
+                <input matInput placeholder="Numéro" formControlName="num_coupsport"    >
+              </mat-form-field>
 
 
 </div> 
 
 <div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
   
-        <md-form-field fxFlex="15" >
-            <input mdInput placeholder="Nombre Ch. vacances * 10 €" formControlName="nbre_chvac10"   >
-        </md-form-field>
-        <md-form-field fxFlex="15" >
-          <input mdInput placeholder="Nombre Ch. vacances * 20 €" formControlName="nbre_chvac20"   >
-      </md-form-field>
+        <mat-form-field fxFlex="15" >
+            <input matInput placeholder="Nombre Ch. vacances * 10 €" formControlName="nbre_chvac10"   >
+        </mat-form-field>
+        <mat-form-field fxFlex="15" >
+          <input matInput placeholder="Nombre Ch. vacances * 20 €" formControlName="nbre_chvac20"   >
+      </mat-form-field>
    
-      <md-form-field fxFlex="15" >
-          <input mdInput placeholder="Espèce €" formControlName="especes"   >
-      </md-form-field>
+      <mat-form-field fxFlex="15" >
+          <input matInput placeholder="Espèce €" formControlName="especes"   >
+      </mat-form-field>
 
 </div>
 
@@ -240,14 +243,14 @@
 <div  fxLayout="row" fxLayoutAlign="center  baseline"    fxLayoutGap="10px"  >
       
          
-        <md-checkbox  formControlName="cert_medical" color="primary" >Cert.Médical</md-checkbox>
-        <md-checkbox  formControlName="auto_parentale" color="primary" >Auto.Parentale</md-checkbox>
-        <md-checkbox  formControlName="fiche_medicale" color="primary" >Fich.Médicale</md-checkbox>
-        <md-checkbox  formControlName="photo" color="primary" >Auto.Photo</md-checkbox>
-        <md-checkbox  formControlName="reglement" color="primary" >Réglement</md-checkbox>
+        <mat-checkbox  formControlName="cert_medical" color="primary" >Cert.Médical</mat-checkbox>
+        <mat-checkbox  formControlName="auto_parentale" color="primary" >Auto.Parentale</mat-checkbox>
+        <mat-checkbox  formControlName="fiche_medicale" color="primary" >Fich.Médicale</mat-checkbox>
+        <mat-checkbox  formControlName="photo" color="primary" >Auto.Photo</mat-checkbox>
+        <mat-checkbox  formControlName="reglement" color="primary" >Réglement</mat-checkbox>
       
 
-        <md-checkbox  formControlName="paye" color="accent"   ><label style="color:green;font-weight: bold ">Payé</label></md-checkbox>
+        <mat-checkbox  formControlName="paye" color="accent"   ><label style="color:green;font-weight: bold ">Payé</label></mat-checkbox>
 
 
 
@@ -258,17 +261,17 @@
   
   <div   fxLayout="row" fxLayoutAlign="center baseline"  style='margin-top:20px'    >
       
-      <md-form-field fxFlex="75"  >
-          <textarea mdInput #comment  type="text"    formControlName="commentaires"  placeholder="Commentaires" >
+      <mat-form-field fxFlex="75"  >
+          <textarea matInput #comment  type="text"    formControlName="commentaires"  placeholder="Commentaires" >
           </textarea>
       
-        </md-form-field>
+        </mat-form-field>
   </div>
   
     <div fxLayout="row" fxLayoutAlign="center center"  >
      
-               <button md-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
-               <button md-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
+               <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
+               <button mat-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
       </div>
   
   </form>
@@ -292,106 +295,106 @@
      
       <div>
       <div fxFlex="100" fxFlexLayout="column"  fxLayoutAlign="center center" fxLayoutGap="45px" >
-          <md-form-field floatPlaceholder="never"  fxFlex="65"  >
-            <input mdInput #filter placeholder="Filtre...  nom, prenom, ville">
-          </md-form-field>
+          <mat-form-field floatPlaceholder="never"  fxFlex="65"  >
+            <input matInput #filter placeholder="Filtre...  nom, prenom, ville">
+          </mat-form-field>
           
-              <button md-mini-fab color="primary"  (click)="editForm('-1') "  > <md-icon>add</md-icon></button>
-              <md-chip-list>
-                  <md-chip color="accent" selected="true">{{meta.totdisp}} / {{meta.total}}</md-chip>
-                </md-chip-list>
+              <button mat-mini-fab color="primary"  (click)="editForm('-1') "  > <mat-icon>add</mat-icon></button>
+              <mat-chip-list>
+                  <mat-chip color="accent" selected="true">{{meta.totdisp}} / {{meta.total}}</mat-chip>
+                </mat-chip-list>
         </div>
       </div>  
   
    
 
-  <md-table     class="mat-table"  #table [dataSource]="dataSource" mdSort>
+  <mat-table     class="mat-table"  #table [dataSource]="dataSource" matSort>
   
   
   
   <!-- Name Column -->
-  <ng-container mdColumnDef="nom">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Nom </md-header-cell>
-    <md-cell *mdCellDef="let row" > {{row.nom}} </md-cell>
+  <ng-container matColumnDef="nom">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Nom </mat-header-cell>
+    <mat-cell *matCellDef="let row" > {{row.nom}} </mat-cell>
   </ng-container>
   
   <!-- Name Column -->
-  <ng-container mdColumnDef="prenom">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Prénom</md-header-cell>
-    <md-cell *mdCellDef="let row" > {{row.prenom | lowercase}} </md-cell>
+  <ng-container matColumnDef="prenom">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</mat-header-cell>
+    <mat-cell *matCellDef="let row" > {{row.prenom | lowercase}} </mat-cell>
   </ng-container>
   
   <!-- Name Column -->
-  <ng-container mdColumnDef="sexe">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Sexe</md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.sexe}} </md-cell>
+  <ng-container matColumnDef="sexe">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Sexe</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.sexe}} </mat-cell>
   </ng-container>
   
  <!-- Name Column -->
- <ng-container mdColumnDef="ville">
-  <md-header-cell *mdHeaderCellDef md-sort-header>Ville</md-header-cell>
-  <md-cell *mdCellDef="let row">{{row.ville }} </md-cell>
+ <ng-container matColumnDef="ville">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Ville</mat-header-cell>
+  <mat-cell *matCellDef="let row">{{row.ville }} </mat-cell>
  </ng-container>
 
 
 
   <!-- Name Column -->
-  <ng-container mdColumnDef="niveau">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Niveau </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.niveau}} </md-cell>
+  <ng-container matColumnDef="niveau">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Niveau </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.niveau}} </mat-cell>
   </ng-container>
   
   <!-- Name Column -->
-  <ng-container mdColumnDef="categorie">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Catégorie </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.categorie | uppercase }} </md-cell>
+  <ng-container matColumnDef="categorie">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Catégorie </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.categorie | uppercase }} </mat-cell>
   </ng-container>
 
 
 
   <!-- Name Column -->
-  <ng-container mdColumnDef="rang">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Rang </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.rang}} </md-cell>
+  <ng-container matColumnDef="rang">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Rang </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.rang}} </mat-cell>
   </ng-container>
   
   
   <!-- Name Column -->
-  <ng-container mdColumnDef="officiel">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Officiel </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.officiel }} </md-cell>
+  <ng-container matColumnDef="officiel">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Officiel </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.officiel }} </mat-cell>
   </ng-container>
   
    <!-- Name Column -->
-   <ng-container mdColumnDef="cotisation">
-      <md-header-cell *mdHeaderCellDef md-sort-header>Cotisation</md-header-cell>
-      <md-cell *mdCellDef="let row"  [ngStyle]="{'color': row.cotisation > 0 ? 'green' : 'red' , 'font-weight':'bold'}"   > {{row.cotisation}} </md-cell>
+   <ng-container matColumnDef="cotisation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Cotisation</mat-header-cell>
+      <mat-cell *matCellDef="let row"  [ngStyle]="{'color': row.cotisation > 0 ? 'green' : 'red' , 'font-weight':'bold'}"   > {{row.cotisation}} </mat-cell>
      </ng-container>
   
   <!-- Name Column -->
-  <ng-container mdColumnDef="licence">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Licence</md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.licence }} </md-cell>
+  <ng-container matColumnDef="licence">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Licence</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.licence }} </mat-cell>
    </ng-container>
 
   <!-- Name Column -->
-  <ng-container mdColumnDef="valide">
-    <md-header-cell *mdHeaderCellDef md-sort-header>Valide</md-header-cell>
-    <md-cell *mdCellDef="let row">
-    <md-icon *ngIf=" row.valide == 1  "color="primary" >check_box</md-icon>
-    <md-icon *ngIf=" row.valide == 0  "color="warn" >indeterminate_check_box</md-icon>
+  <ng-container matColumnDef="valide">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Valide</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+    <mat-icon *ngIf=" row.valide == 1  "color="primary" >check_box</mat-icon>
+    <mat-icon *ngIf=" row.valide == 0  "color="warn" >indeterminate_check_box</mat-icon>
     
-  </md-cell>
+  </mat-cell>
    </ng-container>
 
-   <ng-container mdColumnDef="id" >
-    <md-header-cell *mdHeaderCellDef>Actions</md-header-cell>
+   <ng-container matColumnDef="id" >
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
   
-    <md-cell *mdCellDef="let row"  >
-            <button md-icon-button (click)="editForm(row.id)" >
-              <md-icon color='primary' >edit</md-icon>
+    <mat-cell *matCellDef="let row"  >
+            <button mat-icon-button (click)="editForm(row.id)" >
+              <mat-icon color='primary' >edit</mat-icon>
             </button>
-    </md-cell>
+    </mat-cell>
   </ng-container>
   
   
@@ -399,70 +402,85 @@
     <!-- Header and Row Declarations -->
   
   
-    <md-header-row *mdHeaderRowDef="['nom','prenom','sexe','ville','niveau','categorie', 'rang', 'officiel' ,'cotisation' ,'licence','valide', 'id' ]"></md-header-row>
-    <md-row *mdRowDef="let row; columns: ['nom','prenom','sexe','ville','niveau','categorie', 'rang', 'officiel' ,'cotisation','licence', 'valide','id' ]"></md-row>
+    <mat-header-row *matHeaderRowDef="['nom','prenom','sexe','ville','niveau','categorie', 'rang', 'officiel' ,'cotisation' ,'licence','valide', 'id' ]"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['nom','prenom','sexe','ville','niveau','categorie', 'rang', 'officiel' ,'cotisation','licence', 'valide','id' ]"></mat-row>
   
 
 
   
-  </md-table>
+  </mat-table>
 
-  <md-paginator #paginator
+  <mat-paginator #paginator
   
   [length]="dataSource?.datas?.length"
   [pageIndex]="0"
   [pageSize]="10"
   [pageSizeOptions]="[5, 10 ,25]">
-</md-paginator>
+</mat-paginator>
 
-  <md-toolbar color="white"  >
-<div fxFlex="100" fxLayout="row" fxLayoutAlign="space-around  center"   >
+  <mat-toolbar color="white"  >
+<div fxFlex="100" fxLayout="row" fxLayoutAlign="center  center" fxLayoutGap="20px"  >
 
-      <md-select placeholder="Sexe"  color="primary"   [(ngModel)]="myfilter.sexe"   (ngModelChange)="toFilter($event)"   >
-          <md-option value="" >-</md-option>  
-          <md-option value="F" >Femme</md-option>
-          <md-option value="H">Homme</md-option>
-        </md-select>
+    <mat-form-field [floatPlaceholder]="auto"   fxFlex="4"      >
+      <mat-select placeholder="Sexe"  color="primary"   [(ngModel)]="myfilter.sexe"   (ngModelChange)="toFilter($event)"   >
+          <mat-option value="" >-</mat-option>  
+          <mat-option value="F" >F</mat-option>
+          <mat-option value="H">H</mat-option>
+        </mat-select>
+        </mat-form-field>
 
-        <md-select placeholder="Catégories"  color="primary" [(ngModel)]="myfilter.categorie" (ngModelChange)="toFilter($event )"  >
-            <md-option value="" >-</md-option>    
-          <md-option  *ngFor="let c of meta.categorie" [value]="c.value" >{{c.name}}</md-option>
+        <mat-form-field [floatPlaceholder]="auto"  fxFlex="8"      >
+        <mat-select placeholder="Catégories"  color="primary" [(ngModel)]="myfilter.categorie" (ngModelChange)="toFilter($event )"  >
+            <mat-option value="" >-</mat-option>    
+          <mat-option  *ngFor="let c of meta.categorie" [value]="c.value" >{{c.name}}</mat-option>
           
-          </md-select>
+          </mat-select>
+          </mat-form-field>
 
-          <md-select placeholder="Niveau"  color="primary"  >
-            <md-option  *ngFor="let c of meta.niveau" value="c.value" >{{c.name}}</md-option>
+          <mat-form-field [floatPlaceholder]="auto"  fxFlex="8"      >
+          <mat-select placeholder="Niveau"  color="primary"  >
+            <mat-option  *ngFor="let c of meta.niveau" value="c.value" >{{c.name}}</mat-option>
           
-          </md-select>
+          </mat-select>
+          </mat-form-field>
 
-          <md-select placeholder="Type"  color="primary"  [(ngModel)]="myfilter.type"   (ngModelChange)="toFilter($event)"   >
-              <md-option value="" >-</md-option>
-              <md-option value="R" >Renouvellement</md-option>
-              <md-option value="N">Nouveau</md-option>
-            </md-select>
+          <mat-form-field [floatPlaceholder]="auto" fxFlex="6"    >
+          <mat-select placeholder="Type"  color="primary"  [(ngModel)]="myfilter.type"   (ngModelChange)="toFilter($event)"   >
+              <mat-option value="" >-</mat-option>
+              <mat-option value="R" >R</mat-option>
+              <mat-option value="N">N</mat-option>
+            </mat-select>
+            </mat-form-field>
 
-            <md-select placeholder="Paye"  color="primary" >
-                <md-option value="0" >Non</md-option>
-                <md-option value="1">Oui</md-option>
-              </md-select>
+            <mat-form-field [floatPlaceholder]="auto"  fxFlex="6"     >
+            <mat-select placeholder="Paye"  color="primary" >
+                <mat-option value="0" >Non</mat-option>
+                <mat-option value="1">Oui</mat-option>
+              </mat-select>
+              </mat-form-field>
 
-              <md-select placeholder="Cert.médical"  color="primary" >
-                  <md-option value="0" >Non</md-option>
-                  <md-option value="1">Oui</md-option>
-                </md-select>
+              <mat-form-field [floatPlaceholder]="auto"   fxFlex="8"     >
+              <mat-select placeholder="Cert.médical"  color="primary" >
+                  <mat-option value="0" >Non</mat-option>
+                  <mat-option value="1">Oui</mat-option>
+                </mat-select>
+                </mat-form-field>
 
+              <mat-form-field [floatPlaceholder]="auto"  fxFlex="8"     >
+              <mat-select placeholder="Fich.médical"  color="primary" >
+                  <mat-option value="0" >Non</mat-option>
+                  <mat-option value="1">Oui</mat-option>
+                </mat-select>
+                </mat-form-field>
 
-              <md-select placeholder="Fich.médical"  color="primary" >
-                  <md-option value="0" >Non</md-option>
-                  <md-option value="1">Oui</md-option>
-                </md-select>
-
-              <md-select placeholder="Auto.parentale"  color="primary" >
-                  <md-option value="0" >Non</md-option>
-                  <md-option value="1">Oui</md-option>
-                </md-select>
+                <mat-form-field [floatPlaceholder]="auto"   fxFlex="8"     >
+              <mat-select placeholder="Auto.parentale"  color="primary" >
+                  <mat-option value="0" >Non</mat-option>
+                  <mat-option value="1">Oui</mat-option>
+                </mat-select>
+                </mat-form-field>
  </div>
-  </md-toolbar>
+  </mat-toolbar>
 
 
 
