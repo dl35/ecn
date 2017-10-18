@@ -52,7 +52,7 @@ export class CompetitionsComponent implements OnInit {
   meta={
     displayForm : false ,
     "bassin":[{"name":"25" ,"value":"25"  } , {"name":"50" ,"value":"50"  }  ] ,
-    "categories":{"av": false ,"je": false ,"dep": false,"reg": false,"ir": false,"nat": false,"ma": false } ,
+    "categories":{"av": false ,"je": false ,"dep": false,"reg": false,"nat": false,"ma": false } ,
     "type": [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ,
     "entraineur": [{"name":"E1" ,"value":"e1@test.fr"  } , {"name":"E2" ,"value":"e2@test.fr"   } , {"name":"E3" ,"value":"e3@test.fr"   }] ,
     total : 0,
@@ -123,8 +123,8 @@ export class CompetitionsComponent implements OnInit {
       start = Date.parse( input.get('debut').value);
       end = Date.parse( input.get( 'fin' ).value);
       limite = Date.parse( input.get( 'limite' ).value);
-      if ( start >= end )  return {dateError:true};
-      return  (limite > start  &&  limite < end ) ? null : { dateError:true} 
+      return  ( start <=  end && limite < start  ) ?  null :  {dateError:true};
+      
 
     }
 
@@ -167,6 +167,33 @@ showSnackBar( message , info)
 }
 
 
+
+
+refreshData() {
+  
+            this.compService.list().subscribe(
+              ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource.datas = data; ;
+              
+              },  
+              (err: HttpErrorResponse)  => { 
+                if (err.error instanceof Error) {
+                  this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+                } else {
+                  this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+                }
+          
+               },
+              () => {
+                      
+        
+        
+              });
+  
+          }
+
+
+
+
 saveForm() {
 
 this.meta.displayForm=false;
@@ -181,10 +208,18 @@ Object.keys(obj).forEach(function (key) {
 
 
 
+
+
+
+
    console.log( JSON.stringify( obj )  );
   this.compService.store( obj ).subscribe( 
     
-    ( data: MessageResponse )  =>  { console.log( JSON.stringify(data)  ) ;  this.showSnackBar( data.message  , data.success );  },
+    ( data: MessageResponse )  =>
+      { console.log( JSON.stringify(data)  ) ;
+        this.showSnackBar( data.message  , data.success );  
+        this.refreshData(); 
+      },
     (err: HttpErrorResponse)  => { 
       if (err.error instanceof Error) {
         this.showSnackBar("Client-side error occured.", false );
@@ -227,9 +262,7 @@ Object.keys(obj).forEach(function (key) {
         this.meta.type =  [{"name":"Stage" ,"value":"stage" }  ] ;
       }
 
-      
 
-      console.log( response );
    
   }
 
@@ -272,6 +305,8 @@ searchId( id )  {
 
       }
 
+
+
       return item ;
 
 }
@@ -308,7 +343,7 @@ searchId( id )  {
       })
 
       this.compService.list().subscribe(
-        ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
+        ( data: any[] ) =>{this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
           
             Observable.fromEvent(this.filter.nativeElement, 'keyup')
             .debounceTime(150)
@@ -329,7 +364,7 @@ searchId( id )  {
   
        },
       () => {
-         // console.log("end ok " + this.dataSource   ) ;
+          console.log("end ok " + this.dataSource.datas   ) ;
         //  console.log("search Id .... " + this.updateForm (10)  );
          // console.log("search Id .... " + Object.keys ( this.searchId(10) )  );
         // this.updateForm (10) 
@@ -365,8 +400,8 @@ export class MyDataSource extends DataSource<any> {
      
 
     const displayDataChanges = [
-     // this.datas,
-   //   this.mysort.sortChange,
+      this.datas,
+      this.mysort.sortChange,
       this._filterChange,
       this.mypaginator.page
     ];
@@ -375,8 +410,7 @@ export class MyDataSource extends DataSource<any> {
 
   
 
-      const datasorted =this.datas;
-      //this.getSortedData(); 
+      const datasorted = this.getSortedData(); 
 
       const datafilter  = datasorted.slice().filter((item: any) => {
         let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();

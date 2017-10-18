@@ -134,7 +134,6 @@
        <mat-checkbox formControlName="je"   >Je</mat-checkbox>&nbsp;
        <mat-checkbox formControlName="dep"   >Dep</mat-checkbox>&nbsp;
        <mat-checkbox formControlName="reg"   >Reg</mat-checkbox>&nbsp;
-       <mat-checkbox formControlName="ir"   >Ir</mat-checkbox>&nbsp;
        <mat-checkbox formControlName="nat"   >Nat</mat-checkbox>&nbsp;
        <mat-checkbox formControlName="ma"   >Mas</mat-checkbox>&nbsp;
 
@@ -209,18 +208,13 @@
   <mat-cell *matCellDef="let row" > {{row.lieu | lowercase}} </mat-cell>
 </ng-container>
 
-<!-- Name Column -->
-<ng-container matColumnDef="categories">
-  <mat-header-cell *matHeaderCellDef mat-sort-header>Categories </mat-header-cell>
-  <mat-cell *matCellDef="let row"> {{row.categories.av}} </mat-cell>
-</ng-container>
 
 <!-- Name Column -->
 <ng-container matColumnDef="bassin">
   <mat-header-cell *matHeaderCellDef mat-sort-header>Bassin </mat-header-cell>
   <mat-cell *matCellDef="let row">
-    <button mat-mini-fab  *ngIf="row.bassin == '25'" disabled> {{row.bassin}}</button>
-    <button mat-mini-fab  *ngIf="row.bassin == '50'" > {{row.bassin}}</button>
+    <button mat-mini-fab   *ngIf="row.bassin == '25'" disabled> {{row.bassin}}</button>
+    <button mat-mini-fab color="primary"  *ngIf="row.bassin == '50'" > {{row.bassin}}</button>
   
   </mat-cell>
 </ng-container>
@@ -266,8 +260,8 @@
   <!-- Header and Row Declarations -->
 
 
-  <mat-header-row *matHeaderRowDef="['nom','lieu','categories','bassin','type', 'debut', 'fin' ,'id'  ]"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['nom','lieu','categories','bassin','type', 'debut', 'fin', 'id'  ]"></mat-row>
+  <mat-header-row *matHeaderRowDef="['nom','lieu','bassin','type', 'debut', 'fin' ,'id'  ]"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['nom','lieu','bassin','type', 'debut', 'fin', 'id'  ]"></mat-row>
 
 
 
