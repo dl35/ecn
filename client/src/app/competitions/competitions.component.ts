@@ -123,6 +123,9 @@ export class CompetitionsComponent implements OnInit {
       start = Date.parse( input.get('debut').value);
       end = Date.parse( input.get( 'fin' ).value);
       limite = Date.parse( input.get( 'limite' ).value);
+
+      
+
       return  ( start <=  end && limite < start  ) ?  null :  {dateError:true};
       
 
@@ -253,7 +256,7 @@ Object.keys(obj).forEach(function (key) {
       let response= this.searchId( id ) ;
       this.dataForm.setValue(response, { onlySelf: true });   
      
-      if ( this.dataForm.get('type').value  == 'compet ')
+      if ( this.dataForm.get('type').value  === 'compet')
       {
         this.meta.type =  [ {"name":"Compétition" ,"value":"compet"  } ] ;
       }

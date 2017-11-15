@@ -36,7 +36,7 @@
     
 
     <mat-form-field fxFlex="15"  fxFlexOffset="5" >
-        <input matInput [matDatepicker]="debut"  placeholder="Début" (click)="debut.open()" [min]="minDate" formControlName="debut" >
+        <input matInput [matDatepicker]="debut"  placeholder="Début" (click)="debut.open()"  formControlName="debut" >
         <mat-datepicker-toggle matSuffix [for]="debut"  ></mat-datepicker-toggle>
         <mat-datepicker #debut></mat-datepicker>
     </mat-form-field>
@@ -213,10 +213,9 @@
 <ng-container matColumnDef="bassin">
   <mat-header-cell *matHeaderCellDef mat-sort-header>Bassin </mat-header-cell>
   <mat-cell *matCellDef="let row">
-    <button mat-mini-fab   *ngIf="row.bassin == '25'" disabled> {{row.bassin}}</button>
-    <button mat-mini-fab color="primary"  *ngIf="row.bassin == '50'" > {{row.bassin}}</button>
-  
-  </mat-cell>
+    <mat-chip color="primary" *ngIf="row.bassin == '25'" selected="false">{{row.bassin}}</mat-chip>
+    <mat-chip color="primary" *ngIf="row.bassin == '50'" selected="true">{{row.bassin}}</mat-chip>
+ </mat-cell>
 </ng-container>
 
 <!-- Name Column -->

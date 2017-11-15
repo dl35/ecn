@@ -41,7 +41,7 @@ import { LicenciesComponent } from './licencies/licencies.component';
 import { CompetitionsService } from './services/competitions.service';
 import { LoginService } from './services/login.service';
 import { LicenciesService } from './services/licencies.service';
-
+import { EngagementsService } from './services/engagements.service';
 
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guard/auth.guards';
@@ -109,7 +109,7 @@ export const routes: Routes = [
     //{provide: LOCALE_ID, useValue : 'fr-FR' },
   //  {provide: DateAdapter, useClass: myDateAdapter} ,
   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
-    CompetitionsService ,LoginService, LicenciesService ,AuthGuard],
+    CompetitionsService ,LoginService, LicenciesService, EngagementsService ,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
