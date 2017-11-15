@@ -9,7 +9,7 @@
       <div fxLayout="row" fxLayoutAlign="center center"  >
 
       <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
-          <mat-select placeholder="Compétitions"  (change)="changeCompet($event)" >
+          <mat-select placeholder="Compétitions" #compet (change)="changeCompet($event)" >
               <mat-option *ngFor="let compet of meta.competitions" [value]="compet.id">
                 {{ compet.nom }} [{{ compet.lieu }}]
               </mat-option>
@@ -21,7 +21,7 @@
 
   </div>
   
-      <div fxLayout="row" fxLayoutAlign="center center"  [fxShow]="meta.displayForm"  >
+      <div fxLayout="row" fxLayoutAlign="center center"  [fxShow]="meta.init && meta.displayForm"  >
           
           <div  class="engage-body mat-elevation-z8"    fxFlex="65"  >
              
@@ -68,7 +68,7 @@
                     <br>
                     <div fxLayout="row" fxLayoutAlign="center center"  >
                       
-                                <button mat-raised-button color="primary" [disabled]="dataForm.invalid"  (click)="saveForm()" >Valider</button>
+                                <button mat-raised-button color="primary" [disabled]="dataForm.invalid"  (click)="create(compet.value)" >Valider</button>
                                
                        </div>
                        <br>
@@ -83,7 +83,7 @@
 
 
 
-<div class="engage-body mat-elevation-z8"     [fxShow]="!meta.displayForm"   >
+<div class="engage-body mat-elevation-z8"     [fxShow]=" meta.init && !meta.displayForm"   >
     
        
           

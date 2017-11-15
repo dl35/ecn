@@ -39,6 +39,7 @@ export class EngagementsComponent implements OnInit {
 
   meta={
     displayForm : false ,
+    init:false,
     competitions:[],
     engagements:[],
     total : 0,
@@ -62,6 +63,7 @@ export class EngagementsComponent implements OnInit {
     this.engageService.listCompetitions().subscribe(
       ( datas: any[] ) =>{
         this.meta.competitions=datas;
+       
         } ,
   
     (err: HttpErrorResponse)  => { 
@@ -113,6 +115,8 @@ export class EngagementsComponent implements OnInit {
 
    private  changeCompet(e) {
        
+     if( !this.meta.init )  { this.meta.init = true; }
+
      if ( this.meta.displayForm )  this.meta.displayForm=false; 
          
         let id = e.value;
@@ -133,18 +137,29 @@ export class EngagementsComponent implements OnInit {
     
          },
         () => {
-            console.log( this.meta.engagements  );
+           
+          this.dataForm.reset();
     
         });
     }
 
 
 
-saveForm() {
-  console.log("save form..."+ this.dataForm.controls['av1'].value  ) ;
+create( id ) {
+  
+
+  let json={mode:'create'};
+
+  Object.keys(this.dataForm.controls).forEach(key => {
+
+    if ( this.dataForm.get(key).value  )
+    json[key]=this.dataForm.get(key).value ;
+    
+  });
+
+   
  
- /*
-    this.engageService.createEngagement(id).subscribe(
+    this.engageService.createEngagement(id,json).subscribe(
       ( response: any[] ) =>{
         
         if ( response.length == 0 ) this.meta.displayForm=true;
@@ -159,7 +174,7 @@ saveForm() {
 
 
     });
-*/
+
 
 }
 

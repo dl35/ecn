@@ -20,24 +20,24 @@ export class EngagementsService {
     return  this.http.get('/api/private/engagements/'+id) ;
    }
 
-   createEngagement( data ){
+   createEngagement( id,json ){
       // post data.id et data.filtre 
-    return  this.http.post('/api/private/engagements' , data) ;
+    return  this.http.post('/api/private/engagements'+id , json) ;
    }
 
-    appendEngagement( idLicencie ){
+    appendEngagement( id,json ){
     // ajoute une liste de licencies
     let data={};
-     return  this.http.post('/api/private/engagements' , data) ;
+     return  this.http.post('/api/private/engagements'+id , json) ;
     }
 
-    delete( id ){
-      // ajoute une liste de licencies
+    removeAll( id ){
+      // delete tous les engagements 
        return  this.http.delete ('/api/private/engagements/'+id ) ;
     }
 
     remove( id ){
-      // ajoute une liste de licencies
+      // delete 1 licencie de engagement
        return  this.http.delete ('/api/private/engagements/'+id ) ;
     }
 
