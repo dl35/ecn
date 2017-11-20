@@ -41,7 +41,7 @@ export class EngagementsComponent implements OnInit {
     displayForm : false ,
     init:false,
     competitions:[],
-    engagements:[],
+    //engagements:[],
     total : 0,
     totdisp :0
   };
@@ -115,8 +115,7 @@ export class EngagementsComponent implements OnInit {
 
    private  changeCompet(e) {
        
-     if( !this.meta.init )  { this.meta.init = true; }
-
+     if( !this.meta.init )  this.meta.init=true;
      if ( this.meta.displayForm )  this.meta.displayForm=false; 
          
         let id = e.value;
@@ -145,25 +144,25 @@ export class EngagementsComponent implements OnInit {
 
 
 
-create( id ) {
-  
-
-  let json={mode:'create'};
+create( idcompet ) {
+let data={};
 
   Object.keys(this.dataForm.controls).forEach(key => {
+    if ( this.dataForm.get(key).value )
+    {
+      data[key]=true;
+    }
 
-    if ( this.dataForm.get(key).value  )
-    json[key]=this.dataForm.get(key).value ;
+
     
   });
 
-   
- 
-    this.engageService.createEngagement(id,json).subscribe(
+console.log(data);
+
+    this.engageService.createEngagement(idcompet,data).subscribe(
       ( response: any[] ) =>{
         
-        if ( response.length == 0 ) this.meta.displayForm=true;
-        else  this.meta.engagements=response;
+       console.log("ok");
         } ,
 
     (err: HttpErrorResponse)  => { 

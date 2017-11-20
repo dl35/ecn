@@ -20,9 +20,11 @@ export class EngagementsService {
     return  this.http.get('/api/private/engagements/'+id) ;
    }
 
-   createEngagement( id,json ){
+
+   createEngagement( id,data ){
       // post data.id et data.filtre 
-    return  this.http.post('/api/private/engagements'+id , json) ;
+    return  this.http.post('/api/private/engagements/'+id , data) ;
+
    }
 
     appendEngagement( id,json ){
