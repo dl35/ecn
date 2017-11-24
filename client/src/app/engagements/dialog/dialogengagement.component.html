@@ -1,0 +1,44 @@
+<div class="engage-body mat-elevation-z10"  fxLayout="column"   style="min-height:50%;" >
+
+  <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="25">
+
+
+
+    <button   mat-raised-button    color="primary"  (click)="sendNotification()"  >
+       <mat-icon class="mat-24" >email</mat-icon> Notification
+    </button>
+
+      <mat-form-field  fxFlex="25"   >
+        <mat-select placeholder="Présence" disableRipple  (change)="setPresence($event)" >
+          <mat-option value="1">Oui</mat-option>
+          <mat-option value="0">Non</mat-option>
+          <mat-option value="-1">At</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+       <mat-form-field  fxFlex="25" (change)="setExtranat($event)" >
+        <mat-select placeholder="Extranat" >
+          <mat-option value="1">Oui</mat-option>
+          <mat-option value="0">Non</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row"  fxLayoutAlign="center center" fxFlex="100" >
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>
+
+  </div>
+
+  
+    
+ 
+    
+    
+   

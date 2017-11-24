@@ -27,10 +27,8 @@ export class EngagementsService {
 
    }
 
-    appendEngagement( id,json ){
-    // ajoute une liste de licencies
-    let data={};
-     return  this.http.post('/api/private/engagements'+id , json) ;
+    updateEngagement( id,json ){
+    return  this.http.put('/api/private/engagements/'+id , json) ;
     }
 
     removeAll( id ){
