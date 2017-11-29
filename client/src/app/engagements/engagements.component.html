@@ -11,7 +11,7 @@
       <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
           <mat-select placeholder="Compétitions" #compet (change)="changeCompet($event)" >
               <mat-option *ngFor="let compet of meta.competitions" [value]="compet.id">
-                {{ compet.nom }} [{{ compet.lieu }}]
+                {{ compet.nom }} [{{ compet.lieu }}][{{ compet.id }}]
               </mat-option>
             </mat-select>
        
@@ -91,14 +91,14 @@
           
            <div fxLayout="row"  fxLayoutAlign="space-around center" >
            
-            <button mat-mini-fab color="primary"  (click)="sendMail('-1') " matTooltip="Envoyer les mails!"  > <mat-icon>contact_mail</mat-icon></button>
+            <button mat-mini-fab color="primary"  (click)="sendMail(compet.value) " matTooltip="Envoyer les mails!"  > <mat-icon>contact_mail</mat-icon></button>
             <mat-form-field floatPlaceholder="never"  fxFlex="50" >
               
            
               <input matInput #filter placeholder="Filtre...">
             </mat-form-field>
             
-                <button mat-mini-fab color="primary"  (click)="addLic() "  matTooltip="Ajouter licenciés!"   > <mat-icon>add</mat-icon></button>
+                <button mat-mini-fab color="primary"  (click)="addEngage('-1') "  matTooltip="Ajouter licenciés!"   > <mat-icon>add</mat-icon></button>
                
           </div>
     
@@ -110,20 +110,31 @@
     <!-- Name Column -->
     <ng-container matColumnDef="nom">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Nom </mat-header-cell>
-      <mat-cell *matCellDef="let row"  > {{row.nom}} </mat-cell>
+      
+      <mat-cell *matCellDef="let row" style="font-size:11px;"  >
+        <div *ngIf="row.id ==-1" ></div>
+        <div *ngIf="row.id !=-1" > {{row.nom}} - {{row.id_licencies}}</div>
+      </mat-cell>
+   
     </ng-container>
     
     <!-- Name Column -->
     <ng-container matColumnDef="prenom">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</mat-header-cell>
-      <mat-cell *matCellDef="let row" > {{row.prenom | lowercase}} </mat-cell>
+      <mat-cell *matCellDef="let row" >
+          <div *ngIf="row.id ==-1" ></div>
+          <div *ngIf="row.id !=-1" >{{row.prenom | lowercase}}</div>
+         </mat-cell>
     </ng-container>
     
     
     <!-- Name Column -->
     <ng-container matColumnDef="notification">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Notification </mat-header-cell>
-      <mat-cell *matCellDef="let row" > {{row.notification}} </mat-cell>
+      <mat-cell *matCellDef="let row" > 
+         <div *ngIf="row.id ==-1" ></div>
+          <div *ngIf="row.id !=-1" >{{row.notification}}</div>
+        </mat-cell>
   
     </ng-container>
     
@@ -160,18 +171,25 @@
     <!-- Name Column -->
     <ng-container matColumnDef="presence">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Présence</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.presence | uppercase }} </mat-cell>
+        <mat-cell *matCellDef="let row">{{row.presence | uppercase}}
+        </mat-cell>
        </ng-container>
     
       <!-- Name Column -->
       <ng-container matColumnDef="extranat">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Extranat</mat-header-cell>
           <mat-cell *matCellDef="let row">
-              <mat-chip-list>
-                 
-                  <mat-chip color="primary" *ngIf="row.extranat == '0'" selected="false">{{row.extranat}}</mat-chip>
-                  <mat-chip color="primary" *ngIf="row.extranat == '1'" selected="true">{{row.extranat}}</mat-chip>
-                  </mat-chip-list>   
+              
+                  <div *ngIf="row.id ==-1" ></div>
+                   <div *ngIf="row.id !=-1" > <mat-chip-list>
+                      
+                       <mat-chip color="primary" *ngIf="row.extranat == '0'" selected="false">{{row.extranat}}</mat-chip>
+                       <mat-chip color="primary" *ngIf="row.extranat == '1'" selected="true">{{row.extranat}}</mat-chip>
+                       </mat-chip-list></div>
+              
+
+
+                
           
           </mat-cell>
          </ng-container>
@@ -181,14 +199,17 @@
           <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         
           <mat-cell *matCellDef="let row"  >
+              <div *ngIf="row.id ==-1" ></div>
+              <div *ngIf="row.id !=-1" >
                   <button mat-icon-button (click)="edit(row.id)" >
                     <mat-icon color='primary' >edit</mat-icon>
                   </button>
+                </div>
           </mat-cell>
         </ng-container>
     <!-- Header and Row Declarations -->
       <mat-header-row *matHeaderRowDef="['nom','prenom','notification','categorie','sexe', 'rang', 'date' ,'presence','extranat','id']"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: ['nom','prenom','notification','categorie','sexe', 'rang', 'date' ,'presence','extranat','id']"></mat-row>
+      <mat-row     *matRowDef="let row; columns: ['nom','prenom','notification','categorie','sexe', 'rang', 'date' ,'presence','extranat','id']"></mat-row>
     
     
     

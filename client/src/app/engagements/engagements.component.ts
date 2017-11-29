@@ -10,10 +10,10 @@ import 'rxjs/add/operator/map';
 
 import {EngagementsService  }  from '../services/engagements.service' ;
 
-
+import {DialogengagementComponent  }  from './dialog/dialogengagement.component' ;
 
 import { MatSort ,MatSnackBar ,MatPaginator } from '@angular/material';
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
@@ -38,6 +38,7 @@ export class EngagementsComponent implements OnInit {
 
 
   meta={
+    
     displayForm : false ,
     init:false,
     competitions:[],
@@ -47,7 +48,7 @@ export class EngagementsComponent implements OnInit {
   };
 
 
-  constructor( private formBuilder: FormBuilder, private engageService: EngagementsService , private snackBar: MatSnackBar  ) {
+  constructor( private formBuilder: FormBuilder, private engageService: EngagementsService , private snackBar: MatSnackBar ,public dialog: MatDialog ) {
     
          // this.dateAdapter.setLocale('fr-FR');
     
@@ -113,6 +114,65 @@ export class EngagementsComponent implements OnInit {
      
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private edit(id) {
+let row= this.searchId(id) ;
+
+// notif_unique,extranat,
+  let dialogRef = this.dialog.open(DialogengagementComponent , {
+    width: '75%',
+    height:'50%',
+    data: { option: "action" , row:row }
+  });
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+searchId( id )  {
+  let item :any ;
+  let d =   this.dataSource.datas;
+  for (var i = 0; i < d.length ; i++) {
+    item = d[i];
+    if( item.id == id )  
+    {
+      break;
+    }  
+
+  }
+
+  return item ;
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private sendMail(idcompet) {
+  let dialogRef = this.dialog.open(DialogengagementComponent , {
+    width: '65%',
+    height:'35%',
+    data: { option: "mails" , idcompet: idcompet  }
+  });
+  
+  
+  }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+private addEngage(idcompet) {
+  let dialogRef = this.dialog.open(DialogengagementComponent , {
+    width: '75%',
+    height:'50%',
+    data: { option: "add" , idcompet: idcompet }
+  });
+  
+  
+  }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+private deleteEngage(idcompet) {
+  let dialogRef = this.dialog.open(DialogengagementComponent , {
+    width: '75%',
+    height:'50%',
+    data: { option: "add" , idcompet: idcompet }
+  });
+  
+  
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
    private  changeCompet(e) {
        
      if( !this.meta.init )  this.meta.init=true;

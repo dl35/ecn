@@ -1,27 +1,21 @@
-<div class="engage-body mat-elevation-z10"  fxLayout="column"   style="min-height:50%;" >
+<div class="engage-body mat-elevation-z10"  fxLayout="column" fxFlex="80"  fxLayoutAlign="center center" style="min-height:50%;" *ngIf="params.option=='action'" >
 
-  <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="25">
+  <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="80">
 
 
 
-    <button   mat-raised-button    color="primary"  (click)="sendNotification()"  >
-       <mat-icon class="mat-24" >email</mat-icon> Notification
+    <button   mat-raised-button    color="primary"  (click)="sendNotification(params?.row.id)"  >
+       <mat-icon class="mat-24" >email</mat-icon> Notification ({{params?.row.notification}})
     </button>
 
-      <mat-form-field  fxFlex="25"   >
-        <mat-select placeholder="Présence" disableRipple  (change)="setPresence($event)" >
-          <mat-option value="1">Oui</mat-option>
-          <mat-option value="0">Non</mat-option>
-          <mat-option value="-1">At</mat-option>
-        </mat-select>
-      </mat-form-field>
+   
+     
+      <section>
+          <mat-checkbox class="example-margin" [checked]="params?.row.extranat == '1' " [value]="params?.row.extranat"  (change)="setExtranat($event.source.value)"   >Extranat</mat-checkbox>
+      </section>
+      
 
-       <mat-form-field  fxFlex="25" (change)="setExtranat($event)" >
-        <mat-select placeholder="Extranat" >
-          <mat-option value="1">Oui</mat-option>
-          <mat-option value="0">Non</mat-option>
-        </mat-select>
-      </mat-form-field>
+
 
     </div>
 
@@ -37,8 +31,64 @@
   </div>
 
   
+   <!-- notification all  --> 
+
+  <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='mails'" >
     
+       <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50">
+        <button   mat-raised-button   fxFlex="50" color="primary"  (click)="sendAllNotification()"  [disabled]="reponse.show" >
+           <mat-icon class="mat-24" >email</mat-icon>Envoyer les Notifications par emails
+        </button>
+        </div>
+        <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;" >
+            <mat-progress-bar mode="indeterminate" [fxShow]="reponse.progress" ></mat-progress-bar>
+        </div>
+
+   
+        <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;" [fxShow]="reponse.show">
+         
+            <mat-chip-list>
+                <mat-chip color="error"   selected="true" *ngIf="reponse.error"  >{{reponse?.text}}</mat-chip>
+                <mat-chip color="accent"  selected="true" *ngIf="!reponse.error" >{{reponse?.text}}</mat-chip>
+              </mat-chip-list>
+        </div>
+
+
+        <div fxLayout="row"  fxLayoutAlign="center center" fxFlex="100" style="margin-top: 4px;" >
+            <mat-dialog-actions>
+              <button
+                mat-raised-button
+                color="primary"
+                mat-dialog-close>Quitter</button>
+            </mat-dialog-actions>
+          </div>
+    
+      </div>
  
     
-    
+     <!-- add all  -->   
    
+     <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='add' "  fxLayoutAlign="space-around center" >
+      
+<br><br>
+
+         <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="100" >
+          <mat-form-field>
+          <mat-select placeholder="Categories"  >
+            <mat-option *ngFor="let cat of categories" [value]="cat.value">
+              {{cat.name}}
+            </mat-option>
+          </mat-select>
+          </mat-form-field>
+        </div>
+         
+     
+          <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;">
+              
+          </div>
+  
+     
+   
+  
+      
+        </div>
