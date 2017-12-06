@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class DialogengagementComponent  {
 
   
-  params={row:null};
+  params={idcompet:-1,row:null};
   reponse={progress:false,show:false,error:null,text:null};
   
   categories =[ 
@@ -94,7 +94,7 @@ sendAllNotification(){
   this.reponse.progress=true;
 
   this.engageService.updateEngagement( this.params.idcompet , data ).subscribe(
-    ( response: any[] ) =>{
+    ( response: any ) =>{
         
       console.log( "..........." , response );
       this.reponse.show=true;

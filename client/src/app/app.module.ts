@@ -10,6 +10,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
+
+
+
+
+
 import {
   DateAdapter,
   MAT_DATE_LOCALE,
@@ -44,10 +49,14 @@ import { CompetitionsService } from './services/competitions.service';
 import { LoginService } from './services/login.service';
 import { LicenciesService } from './services/licencies.service';
 import { EngagementsService } from './services/engagements.service';
+import {MailtoService} from './services/mailto.service';
+
 
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guard/auth.guards';
 import { MainComponent } from './main/main.component';
+
+
 
 
 /*
@@ -95,7 +104,7 @@ export const routes: Routes = [
     LoginComponent,
     DialogengagementComponent,
     MainComponent,
-
+    
   ],
   entryComponents:[
     DialogengagementComponent
@@ -108,6 +117,7 @@ export const routes: Routes = [
     MaterialModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
+  
     RouterModule.forRoot(routes)
   ],
   providers: [
@@ -115,7 +125,7 @@ export const routes: Routes = [
     //{provide: LOCALE_ID, useValue : 'fr-FR' },
   //  {provide: DateAdapter, useClass: myDateAdapter} ,
   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
-    CompetitionsService ,LoginService, LicenciesService, EngagementsService ,AuthGuard],
+    CompetitionsService ,MailtoService, LoginService, LicenciesService, EngagementsService ,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

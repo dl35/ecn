@@ -1,3 +1,86 @@
-<p>
-  mailto works!
-</p>
+<div class="engage-body mat-elevation-z10" fxLayoutAlign="space-around  center" fxLayout="row"    >
+  
+         
+     
+
+      <br/>
+      <br/>
+      <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="20"  style='max-height: 500px;' *ngIf="selectedOption==-1" >
+
+          
+          <mat-form-field [floatPlaceholder]="auto" fxLayoutAlign="space-around  center"  fxLayout="row"  style="margin-top:45px"  >
+              <mat-select placeholder="Filtre" (change)="selchk.checked=false;setFilter($event)"    >
+                  <mat-option  value="-1"  >-</mat-option>
+                  <mat-option *ngFor="let f of datas?.filtre" [value]="f.n"  >
+                    {{f.v}}
+                  </mat-option>
+                </mat-select>
+                
+            </mat-form-field>
+           
+            <div  fxLayoutAlign="center" fxLayout="row"   >
+                <section>
+                    <mat-checkbox #selchk  (change)="($event.checked) ? sellic.selectAll():sellic.deselectAll()" >selection</mat-checkbox>
+            
+                  </section>
+            </div>
+
+
+      
+          <mat-selection-list  style="flex-grow: 1;overflow: auto;margin-top:25px;max-height: 500px;"   #sellic   >
+              <mat-list-option *ngFor="let l of datas?.lic" [value]="l.id"  >
+                   {{l.nom}} {{l.prenom}} {{l.categorie}}{{l.rang}}
+              </mat-list-option>
+            </mat-selection-list>
+
+
+
+
+
+
+      </div>
+
+      <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="75"   >
+        <br>  
+        <div  fxLayoutAlign="space-around  center" fxLayout="row"     >
+
+            <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
+                <mat-select placeholder="Compétitions..."  [(value)]="selectedOption" >
+                    <mat-option  value="-1"  >-</mat-option>
+                    <mat-option *ngFor="let c of datas?.comp" [value]="c.id"  >
+                      {{c.nom}}-{{c.lieu}}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+        
+          <div  fxLayoutAlign="space-around  center" fxLayout="row"   *ngIf="selectedOption!=-1"  >
+              <section>
+                  <mat-checkbox color="primary" >ok</mat-checkbox>
+                  <mat-checkbox color="warn" >ko</mat-checkbox>
+                  <mat-checkbox color="accent"  >at</mat-checkbox>
+                </section>
+          </div>
+        
+     
+          <div  fxLayoutAlign="center center" fxLayout="row"   >
+                    <form>
+                    <mat-form-field>
+                      <input matInput placeholder="Sujet" >
+                    </mat-form-field>
+                  </form>
+          </div>
+
+          <div fxLayoutAlign="center center" fxLayout="row"     >
+              <button mat-raised-button color="primary">Envoyer</button>
+            </div>
+
+
+
+        </div>
+  
+
+        
+</div>      
+
+  
