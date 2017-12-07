@@ -12,11 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class DialogengagementComponent  {
 
   
-<<<<<<< HEAD
-  params={row:null,idcompet:-1};
-=======
+
   params={idcompet:-1,row:null};
->>>>>>> a57e1376a3d42fa1ff3649013052479c968a7625
   reponse={progress:false,show:false,error:null,text:null};
   
   categories =[ 

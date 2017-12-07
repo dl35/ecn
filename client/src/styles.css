@@ -1,11 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-<<<<<<< HEAD
-@import "~https://fonts.googleapis.com/css?family=Roboto:400,700" ;
-=======
 @import "~https://fonts.googleapis.com/icon?family=Roboto:400,700";
->>>>>>> a57e1376a3d42fa1ff3649013052479c968a7625
 
 body {
     margin: 0;
