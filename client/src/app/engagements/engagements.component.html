@@ -10,7 +10,7 @@
 
       <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
           <mat-select placeholder="Compétitions" #compet (change)="changeCompet($event)" >
-              <mat-option *ngFor="let compet of meta.competitions" [value]="compet.id">
+              <mat-option  *ngFor="let compet of meta.competitions" [value]="compet.id">
                 {{ compet.nom }} [{{ compet.lieu }}][{{ compet.id }}]
               </mat-option>
             </mat-select>
@@ -26,15 +26,15 @@
           <div  class="engage-body mat-elevation-z8"    fxFlex="65"  >
              
               <section class="example-section">
-                  <button mat-button color="primary">Avenirs:</button>
-                  <mat-checkbox class="example-margin" formControlName="av1" >1</mat-checkbox>
+                  <button style="font-weight:700" mat-button color="primary">Avenirs:</button>
+                  <mat-checkbox   class="example-margin" formControlName="av1" >1</mat-checkbox>
                   <mat-checkbox class="example-margin" formControlName="av2" >2</mat-checkbox>
                 </section>
 
-                
+               
                 <section class="example-section">
-                  <button mat-button color="primary">Jeunes:</button>
-                  <mat-checkbox class="example-margin" formControlName="je1">1</mat-checkbox>
+                  <button style="font-weight:600" mat-button color="primary">Jeunes:</button>
+                  <mat-checkbox  class="example-margin" formControlName="je1">1</mat-checkbox>
                   <mat-checkbox class="example-margin" formControlName="je2">2</mat-checkbox>
                   <mat-checkbox class="example-margin" formControlName="je3">3</mat-checkbox>
                 </section>
