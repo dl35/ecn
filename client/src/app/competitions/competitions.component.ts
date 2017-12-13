@@ -59,18 +59,14 @@ export class CompetitionsComponent implements OnInit {
     totdisp :0
   };
 
-
-  initForm() {
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  createForm() {
     //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
-
     this.dataForm = this.formBuilder.group({
       id: [ -1 ],
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
-     
-     categories:  this.formBuilder.group( this.meta.categories  )  , 
-     
+      categories:  this.formBuilder.group( this.meta.categories  )  , 
       bassin:  [ "25" , [Validators.required] ],
       type:  [ "compet" , [ Validators.required ]] ,
       debut:  [ new Date('2017-05-12') , [Validators.required] ],
@@ -79,7 +75,6 @@ export class CompetitionsComponent implements OnInit {
       limite:  [ new Date() , [Validators.required] ],
       verif:   [ false ] ,
       choixnages:  [ false  ],
-      
       max:  [ 0  ],
       entraineur:  [ null, [Validators.required] ] ,
       lien:  [ null ] ,
@@ -87,17 +82,12 @@ export class CompetitionsComponent implements OnInit {
     },
     {validator: this.allDateValidator  }
   );
-
-
-
-
-
-    this.setValidator();
+  this.setValidator();
 
   }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-  private setValidator() {
+private setValidator() {
     
     this.dataForm.get('type').valueChanges.subscribe(
         (type: string) => {
@@ -111,8 +101,8 @@ export class CompetitionsComponent implements OnInit {
       )
 
     }
-
-    allDateValidator(input: FormControl ): any {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private  allDateValidator(input: FormControl ): any {
 
       var start , end , limite;
       if ( input.get('debut').value == null || input.get('fin').value == null  || input.get('limite').value == null  ) 
@@ -129,33 +119,20 @@ export class CompetitionsComponent implements OnInit {
       return  ( start <=  end && limite < start  ) ?  null :  {dateError:true};
       
 
-    }
-
-
-
-
-    setVerif() {
-
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private setVerif() {
     
-      if( this.dataForm.get('id').value == -1  )  
+if( this.dataForm.get('id').value == -1  )  
       {
         ( this.dataForm.get('verif').disabled  )  ? this.dataForm.get('verif').enable() : this.dataForm.get('verif').disable();this.dataForm.get('verif').setValue(false);
       }
-
-
-
-    }
-
-
-
-
-  cancelForm() {
-
+  }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+cancelForm() {
   this.meta.displayForm=false;
-
 }
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 showSnackBar( message , info)
 {
     let style= "snack-success";
@@ -330,7 +307,7 @@ searchId( id )  {
 
 
 
-      this.initForm();
+      this.createForm();
 
       this.dataForm.valueChanges
        .debounceTime(400)

@@ -1,15 +1,17 @@
-<div class="engage-body mat-elevation-z10" fxLayoutAlign="space-around  center" fxLayout="row"    >
+<div class="engage-body mat-elevation-z10" fxLayoutAlign="space-around  center" fxLayout="row"   [formGroup]="mailForm"  >
   
-         
+
      
 
       <br/>
       <br/>
-      <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="20"  style='max-height: 500px;' *ngIf="selectedOption==-1" >
+
+
+      <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="20"  style='max-height: 500px;' *ngIf="mailForm.get('idcompet').value==-1" >
 
           
           <mat-form-field [floatPlaceholder]="auto" fxLayoutAlign="space-around  center"  fxLayout="row"  style="margin-top:45px"  >
-              <mat-select placeholder="Filtre" (change)="selchk.checked=false;setFilter($event)"    >
+              <mat-select placeholder="Filtre" (change)="selchk.checked=false;sellic.deselectAll();setFilter($event)"    >
                   <mat-option  value="-1"  >-</mat-option>
                   <mat-option *ngFor="let f of datas?.filtre" [value]="f.n"  >
                     {{f.v}}
@@ -20,32 +22,52 @@
            
             <div  fxLayoutAlign="center" fxLayout="row"   >
                 <section>
-                    <mat-checkbox #selchk  (change)="($event.checked) ? sellic.selectAll():sellic.deselectAll()" >selection</mat-checkbox>
+                    <mat-checkbox #selchk  (change)="($event.checked) ? sellic.selectAll():sellic.deselectAll() ;($event.checked) ? addAll():removeAll()" >selection</mat-checkbox>
             
                   </section>
             </div>
 
-
-      
-          <mat-selection-list  style="flex-grow: 1;overflow: auto;margin-top:25px;max-height: 500px;"   #sellic   >
-              <mat-list-option *ngFor="let l of datas?.lic" [value]="l.id"  >
+             
+         
+          <mat-selection-list  style="flex-grow: 1;overflow: auto;margin-top:25px;max-height: 500px;" (selectionChange)="setChange($event.option.value)"  #sellic dense >
+            
+            <mat-list-option *ngFor="let l of datas?.lic" [value]="l.id"     >
                    {{l.nom}} {{l.prenom}} {{l.categorie}}{{l.rang}}
               </mat-list-option>
+            
+           
             </mat-selection-list>
-
+       
 
 
 
 
 
       </div>
+ 
+
 
       <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="75"   >
+          <br>  
+          <div  fxLayoutAlign="space-around  center" fxLayout="row"     >
+              
+                          <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
+                              <mat-select placeholder="From"  formControlName="from" >
+                                  <mat-option>-</mat-option>
+                                  <mat-option *ngFor="let c of datas?.from" [value]="c" >
+                                      {{c}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>  
         <br>  
+
+       
+        
         <div  fxLayoutAlign="space-around  center" fxLayout="row"     >
 
             <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
-                <mat-select placeholder="Compétitions..."  [(value)]="selectedOption" >
+                <mat-select placeholder="Compétitions..."   formControlName="idcompet" >
                     <mat-option  value="-1"  >-</mat-option>
                     <mat-option *ngFor="let c of datas?.comp" [value]="c.id"  >
                       {{c.nom}}-{{c.lieu}}
@@ -53,32 +75,35 @@
                   </mat-select>
               </mat-form-field>
           </div>
-        
-          <div  fxLayoutAlign="space-around  center" fxLayout="row"   *ngIf="selectedOption!=-1"  >
-              <section>
-                  <mat-checkbox color="primary" >ok</mat-checkbox>
-                  <mat-checkbox color="warn" >ko</mat-checkbox>
-                  <mat-checkbox color="accent"  >at</mat-checkbox>
-                </section>
-          </div>
-        
+       
      
-          <div  fxLayoutAlign="center center" fxLayout="row"   >
-                    <form>
-                    <mat-form-field>
-                      <input matInput placeholder="Sujet" >
-                    </mat-form-field>
-                  </form>
+          <div  formGroupName="type" fxLayoutAlign="space-around  center" fxLayout="row"   *ngIf="mailForm.get('idcompet').value!='-1'"   >
+          <section>
+                  <mat-checkbox color="primary"  formControlName="ok" ><span style='color:green' >Ok</span></mat-checkbox>
+                  <mat-checkbox color="accent"  formControlName="at" ><span style='color:blue' >At</span></mat-checkbox>
+                  <mat-checkbox color="warn"  formControlName="ko" ><span style='color:red' >Ko</span></mat-checkbox>
+          </section>
+        </div>
+          
+          <div  fxLayoutAlign="center center" fxLayout="row"    >
+           <mat-form-field style="width:50%" >
+                      <input matInput placeholder="Sujet du mail" formControlName="subject"  >
+           </mat-form-field>
           </div>
 
+          <div  fxLayoutAlign="center center" fxLayout="row"   >
+            <mat-form-field style="width:50%" >
+              <textarea matInput placeholder="corps du mail" formControlName="body" matTextareaAutosize matAutosizeMaxRows="5" ></textarea>
+            </mat-form-field>
+         </div>
+       
           <div fxLayoutAlign="center center" fxLayout="row"     >
-              <button mat-raised-button color="primary">Envoyer</button>
+              <button mat-raised-button color="primary" (click)="sendMail()" [disabled]="mailForm.invalid"  >Envoyer</button>
             </div>
-
+        
 
 
         </div>
-  
 
         
 </div>      
