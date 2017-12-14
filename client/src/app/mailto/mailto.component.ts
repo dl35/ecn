@@ -56,7 +56,7 @@ private createForm() {
     body:  [null, Validators.required], 
     subject:  [null, Validators.required], 
     idcompet: '-1'  ,
-    type :this.formBuilder.group( {"at": false ,"ok": false ,"ko": false }  ),
+    type :this.formBuilder.group( {"at": true ,"ok": true ,"ko": true }  ),
     idlic: this.formBuilder.array([]),
     from: [null, Validators.required], 
 
@@ -65,9 +65,6 @@ private createForm() {
 );
 
 }
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private myValidator(myform: FormControl ): any {
     let tarray = <FormArray> myform.get('idlic') ;  
@@ -141,7 +138,7 @@ private setFilter(p) {
   let d =   this.licencies;
   for (var i = 0; i < d.length ; i++) {
    let item = d[i];
-    if( item.categorie == p.value )  
+    if( item.categorie.toLowerCase() == p.value )  
     {
       values.push(item);
     }  

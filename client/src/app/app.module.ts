@@ -55,6 +55,7 @@ import {MailtoService} from './services/mailto.service';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guard/auth.guards';
 import { MainComponent } from './main/main.component';
+import { MytestComponent } from './mytest/mytest.component';
 
 
 
@@ -83,6 +84,7 @@ export const routes: Routes = [
   { path: 'engagements', component: EngagementsComponent },
   { path: 'competitions', component: CompetitionsComponent },
   { path: 'mailto', component: MailtoComponent  },
+  { path: 'mytest', component: MytestComponent  },
 ]},
 
   { path: '**',   component: LoginComponent   }
@@ -104,6 +106,7 @@ export const routes: Routes = [
     LoginComponent,
     DialogengagementComponent,
     MainComponent,
+    MytestComponent,
     
   ],
   entryComponents:[

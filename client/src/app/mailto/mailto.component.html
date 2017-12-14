@@ -49,7 +49,7 @@
 
       <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="75"   >
           <br>  
-          <div  fxLayoutAlign="space-around  center" fxLayout="row"     >
+          <div  fxLayoutAlign="space-around  center" fxLayout="row"   >
               
                           <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
                               <mat-select placeholder="From"  formControlName="from" >
@@ -67,10 +67,10 @@
         <div  fxLayoutAlign="space-around  center" fxLayout="row"     >
 
             <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
-                <mat-select placeholder="Compétitions..."   formControlName="idcompet" >
+                <mat-select placeholder="Compétitions en cours..."   formControlName="idcompet" >
                     <mat-option  value="-1"  >-</mat-option>
                     <mat-option *ngFor="let c of datas?.comp" [value]="c.id"  >
-                      {{c.nom}}-{{c.lieu}}
+                      {{c.nom}} {{c.lieu}}
                     </mat-option>
                   </mat-select>
               </mat-form-field>

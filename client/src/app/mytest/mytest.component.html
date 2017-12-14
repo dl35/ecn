@@ -1,0 +1,33 @@
+<mat-sidenav-container class="engage-body" fxFlex >
+
+
+    
+  <mat-sidenav #sidenav opened="true" mode="side" style='width:300px' >
+      <div fxLayout="column" fxLayoutAlign="space-around center" fxFlex="100" >
+    <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p>
+    <p>
+      <mat-radio-group class="example-radio-group" >
+        <label>Mode:</label>
+        <mat-radio-button value="over">Over</mat-radio-button>
+        <mat-radio-button value="side">Side</mat-radio-button>
+        <mat-radio-button value="push">Push</mat-radio-button>
+      </mat-radio-group>
+    </p>
+  </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content color="accent"  >
+      <div fxLayout="column" fxLayoutAlign="space-around center"  >
+
+    <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p>
+    <p>
+      <mat-radio-group class="example-radio-group" >
+        <label>Mode:</label>
+        <mat-radio-button value="over">Over</mat-radio-button>
+        <mat-radio-button value="side">Side</mat-radio-button>
+        <mat-radio-button value="push">Push</mat-radio-button>
+      </mat-radio-group>
+    </p>
+  </div>   
+  </mat-sidenav-content>
+</mat-sidenav-container>
