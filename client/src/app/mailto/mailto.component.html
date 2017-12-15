@@ -7,7 +7,7 @@
       <br/>
 
 
-      <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="20"  style='max-height: 500px;' *ngIf="mailForm.get('idcompet').value==-1" >
+      <div class="engage-body mat-elevation-z10" fxLayout="column"  fxFlex="20"  style='max-height: 500px;' *ngIf="!mailForm.get('idcompet').value" >
 
           
           <mat-form-field [floatPlaceholder]="auto" fxLayoutAlign="space-around  center"  fxLayout="row"  style="margin-top:45px"  >
@@ -52,7 +52,7 @@
           <div  fxLayoutAlign="space-around  center" fxLayout="row"   >
               
                           <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
-                              <mat-select placeholder="From"  formControlName="from" >
+                              <mat-select placeholder="From*"  formControlName="from" >
                                   <mat-option>-</mat-option>
                                   <mat-option *ngFor="let c of datas?.from" [value]="c" >
                                       {{c}}
@@ -68,7 +68,7 @@
 
             <mat-form-field [floatPlaceholder]="auto"    fxFlex="65"  >
                 <mat-select placeholder="Compétitions en cours..."   formControlName="idcompet" >
-                    <mat-option  value="-1"  >-</mat-option>
+                    <mat-option>-</mat-option>
                     <mat-option *ngFor="let c of datas?.comp" [value]="c.id"  >
                       {{c.nom}} {{c.lieu}}
                     </mat-option>
@@ -77,30 +77,63 @@
           </div>
        
      
-          <div  formGroupName="type" fxLayoutAlign="space-around  center" fxLayout="row"   *ngIf="mailForm.get('idcompet').value!='-1'"   >
+          <div  formGroupName="type" fxLayoutAlign="space-around  center" fxLayout="row"   *ngIf="mailForm.get('idcompet').value"   >
           <section>
                   <mat-checkbox color="primary"  formControlName="ok" ><span style='color:green' >Ok</span></mat-checkbox>
                   <mat-checkbox color="accent"  formControlName="at" ><span style='color:blue' >At</span></mat-checkbox>
                   <mat-checkbox color="warn"  formControlName="ko" ><span style='color:red' >Ko</span></mat-checkbox>
+                 
           </section>
-        </div>
           
+        </div>
+        <div  fxLayoutAlign="space-around  center" fxLayout="row"   *ngIf="mailForm.get('idcompet').value!='-1'"   >
+            
+            <mat-error *ngIf="mailForm.invalid"  style='font-size:12px'>{{getErrorType()}}</mat-error>
+          </div>
+        
+
+
           <div  fxLayoutAlign="center center" fxLayout="row"    >
            <mat-form-field style="width:50%" >
-                      <input matInput placeholder="Sujet du mail" formControlName="subject"  >
+                      <input matInput placeholder="Sujet du mail*" formControlName="subject"  >
+                      <mat-error *ngIf="mailForm.get('subject').invalid"  style='float:right'>{{getErrorSubject()}}</mat-error>
            </mat-form-field>
           </div>
 
+          <!--
           <div  fxLayoutAlign="center center" fxLayout="row"   >
             <mat-form-field style="width:50%" >
-              <textarea matInput placeholder="corps du mail" formControlName="body" matTextareaAutosize matAutosizeMaxRows="5" ></textarea>
+              <textarea matInput placeholder="corps du mail*" formControlName="body" matTextareaAutosize matAutosizeMaxRows="5" ></textarea>
+              <mat-error *ngIf="mailForm.get('body').invalid"  style='float:right'>{{getErrorBody()}}</mat-error>
             </mat-form-field>
          </div>
+        -->
+         <div fxLayout="row" fxLayoutAlign="center center" >
+            <div class="content-container" fxLayout="column" fxLayoutAlign="stretch" fxFlex="70" formControlName="body" >
+                   
+              <quill  [config]="config" fxFlex="auto" [value]="body"  style="max-height:200px;height:150px;overflow: auto"
+                 (blur)="onEditorBlur($event)"
+                  (focus)="onEditorFocus($event)" 
+                  (editorCreate)="onEditorCreate($event)" 
+                  (valueChange)="onValueChange($event)" 
+                  (contentChange)="onContentChange($event)"
+                  
+                  (selectionChange)="onSelectionChange($event)">
+              </quill>
+           
+            </div>
+            
+          </div>
+
+
+
        
           <div fxLayoutAlign="center center" fxLayout="row"     >
               <button mat-raised-button color="primary" (click)="sendMail()" [disabled]="mailForm.invalid"  >Envoyer</button>
             </div>
-        
+            <div fxLayoutAlign="center center" fxLayout="row"     >
+                <mat-error *ngIf="mailForm.invalid"  style='font-size:12px' >{{getErrorForm()}}</mat-error>
+              </div>
 
 
         </div>
@@ -108,4 +141,3 @@
         
 </div>      
 
-  

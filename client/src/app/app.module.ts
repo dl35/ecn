@@ -11,7 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 
-
+import { QuillModule } from 'ngx-quill-wrapper';
+import { QUILL_CONFIG } from 'ngx-quill-wrapper';
+import { QuillConfigInterface } from 'ngx-quill-wrapper';
 
 
 
@@ -58,7 +60,12 @@ import { MainComponent } from './main/main.component';
 import { MytestComponent } from './mytest/mytest.component';
 
 
-
+const DEFAULT_QUILL_CONFIG: QuillConfigInterface = {
+  theme: 'snow',
+  modules: {
+    toolbar: true
+  }
+};
 
 /*
 export const routes: Routes = [
@@ -120,13 +127,14 @@ export const routes: Routes = [
     MaterialModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-  
+    QuillModule ,
     RouterModule.forRoot(routes)
   ],
   providers: [
     //{provide: MD_DATE_FORMATS, useValue : APP_DATE_FORMATS },
     //{provide: LOCALE_ID, useValue : 'fr-FR' },
   //  {provide: DateAdapter, useClass: myDateAdapter} ,
+  { provide: QUILL_CONFIG,useValue: DEFAULT_QUILL_CONFIG },
   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     CompetitionsService ,MailtoService, LoginService, LicenciesService, EngagementsService ,AuthGuard],
   bootstrap: [AppComponent]

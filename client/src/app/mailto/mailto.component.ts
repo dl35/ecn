@@ -3,7 +3,7 @@ import { FormBuilder, FormControl , FormGroup, FormArray, Validators } from '@an
 import { MatSnackBar } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import {MailtoService  }  from '../services/mailto.service' ;
-
+import { QuillComponent, QuillDirective, QuillConfigInterface } from 'ngx-quill-wrapper';
 
 @Component({
   selector: 'app-mailto',
@@ -20,9 +20,23 @@ export class MailtoComponent implements OnInit {
   private selectAll=false;
 
 
+  private toolbar: any = [
+    [{ 'size': ['small', false, 'large'] }],
+    ['bold', 'italic'],
+    //[{ 'color': [] }, { 'background': [] }],
+    [{ 'align': [] }, { 'list': 'bullet' }]
+  ];
+
+  public config: QuillConfigInterface = {
+    theme: 'snow',
+    readOnly: false
+  };
+
   constructor( private formBuilder: FormBuilder, private mailtoService: MailtoService , private snackBar: MatSnackBar  ) {}
 
   ngOnInit() {
+
+    this.config.modules = { toolbar: this.toolbar };
     this.createForm();
 
     this.mailtoService.get().subscribe(
@@ -55,7 +69,7 @@ private createForm() {
    
     body:  [null, Validators.required], 
     subject:  [null, Validators.required], 
-    idcompet: '-1'  ,
+    idcompet: [null]  ,
     type :this.formBuilder.group( {"at": true ,"ok": true ,"ko": true }  ),
     idlic: this.formBuilder.array([]),
     from: [null, Validators.required], 
@@ -69,9 +83,9 @@ private createForm() {
 private myValidator(myform: FormControl ): any {
     let tarray = <FormArray> myform.get('idlic') ;  
     let gtype = <FormGroup> myform.get('type') ;  
-    if ( myform.get('idcompet').value == '-1' &&  tarray.length == 0 )  return {myError:true} ;
-    else  if ( myform.get('idcompet').value != '-1' && gtype.get('ok').value == false && gtype.get('ko').value == false && gtype.get('at').value == false )
-    return {myError:true};
+    if (  !myform.get('idcompet').value &&  tarray.length == 0 )  return {formError:true} ;
+    else  if ( myform.get('idcompet').value  && gtype.get('ok').value == false && gtype.get('ko').value == false && gtype.get('at').value == false )
+    return {typeError:true};
     else null;
       }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,12 +163,33 @@ private setFilter(p) {
  this.selectAll=false;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private getErrorSubject() {
+  return this.mailForm.get('subject').hasError('required') ? 'Saisir un sujet' :'';
+  
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private getErrorBody() {
+  return this.mailForm.get('body').hasError('required') ? 'Saisir un contenu' :'';
+  
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private getErrorType() {
+  return this.mailForm.hasError('typeError') ? 'Au moins un critère' :'';
+  
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private getErrorForm() {
+  return this.mailForm.hasError('formError') ? 'Choisir une compétition ou faire une selection' :'';
+  
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+onContentChange(event){
+  this.mailForm.get('body').setValue=event.html;
+ 
+console.log(event.html);
 
-
-
-
-
+}
 
 
 }
