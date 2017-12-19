@@ -12,4 +12,13 @@ export class MytestComponent implements OnInit {
   ngOnInit() {
   }
 
+edisabled:boolean=true;
+
+dotest() {
+
+this.edisabled=!this.edisabled;
+
+}
+
+
 }

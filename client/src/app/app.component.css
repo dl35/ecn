@@ -12,3 +12,21 @@ ul#menu_horizontal li {
   list-style-type : none; /* Car sinon les puces se placent n'importe où */
   }
   
+
+
+  ::ng-deep snack-bar-container.snack-error {
+    background: #FF0000;
+  }
+  
+  ::ng-deep .snack-error-class .mat-simple-snackbar {
+    color: white;
+  }
+
+
+  ::ng-deep snack-bar-container.snack-success {
+    background: green;
+  }
+  
+  ::ng-deep .snack-success .mat-simple-snackbar {
+    color: white;
+  }

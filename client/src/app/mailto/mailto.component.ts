@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild,    ElementRef} from '@angular/core';
 import { FormBuilder, FormControl , FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import {MailtoService  }  from '../services/mailto.service' ;
-import { QuillComponent, QuillDirective, QuillConfigInterface } from 'ngx-quill-wrapper';
 
+import {QuillModule} from 'ngx-quill';
 @Component({
   selector: 'app-mailto',
   templateUrl: './mailto.component.html',
@@ -14,29 +14,25 @@ export class MailtoComponent implements OnInit {
 
 
   private mailForm: FormGroup;
+ 
+
   private licencies=null; 
   private from=null;
   private datas={'from':null,'lic':null,'comp':null,'filtre':[{"n":"av","v":"Avenirs" } ,{"n":"je","v":"Jeunes" },{"n":"ju","v":"Juniors" },{"n":"se","v":"Seniors" },{"n":"ma","v":"Masters" }, {"n":"of","v":"Officiels" }              ]} 
   private selectAll=false;
 
-
-  private toolbar: any = [
-    [{ 'size': ['small', false, 'large'] }],
-    ['bold', 'italic'],
-    //[{ 'color': [] }, { 'background': [] }],
-    [{ 'align': [] }, { 'list': 'bullet' }]
-  ];
-
-  public config: QuillConfigInterface = {
-    theme: 'snow',
-    readOnly: false
+  quilltoobar={
+    toolbar: [
+      ['bold', 'italic','underline', 'strike'],['link'],[{ 'align': [] }],[{ 'list': 'ordered'}, { 'list': 'bullet' }]
+    ]
   };
+
+
 
   constructor( private formBuilder: FormBuilder, private mailtoService: MailtoService , private snackBar: MatSnackBar  ) {}
 
   ngOnInit() {
 
-    this.config.modules = { toolbar: this.toolbar };
     this.createForm();
 
     this.mailtoService.get().subscribe(
@@ -45,7 +41,7 @@ export class MailtoComponent implements OnInit {
         this.datas.lic=datas.lic;
         this.datas.comp=datas.comp;
         this.datas.from=datas.from;
-
+        this.showSnackBar("initialisation ok", true );
         } ,
   
     (err: HttpErrorResponse)  => { 
@@ -66,8 +62,7 @@ export class MailtoComponent implements OnInit {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private createForm() {
   this.mailForm = this.formBuilder.group({
-   
-    body:  [null, Validators.required], 
+    body: [null, Validators.required], 
     subject:  [null, Validators.required], 
     idcompet: [null]  ,
     type :this.formBuilder.group( {"at": true ,"ok": true ,"ko": true }  ),
@@ -89,11 +84,42 @@ private myValidator(myform: FormControl ): any {
     else null;
       }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-get type(): FormArray { return this.mailForm.get('type') as FormArray; }
+
+private showSnackBar( message , info)
+{
+  let style= "snack-success";
+  if ( !info )  style="snack-error";
+  this.snackBar.open( message  , "", {
+    duration: 2000,
+    extraClasses: [ style ]
+  });
+
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private sendMail() {
+
+  let json=  this.mailForm.value ;
+  ( json.idcompet ) ? delete json.idlic  : delete json.type  ;
+ 
+  this.mailtoService.post( json ).subscribe(
+    ( datas: any ) =>{
+      this.showSnackBar( datas.message  , true );
+      this.mailForm.get('body').setValue("") ;
+      
+      } ,
+
+  (err: HttpErrorResponse)  => { 
+   
+    if (err.error instanceof Error) {
+      this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+    } else {
+      this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+    }
+
+   },
+  () => {
   
-console.log( JSON.stringify ( this.mailForm.value ) );
+  });
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,17 +205,13 @@ private getErrorType() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private getErrorForm() {
-  return this.mailForm.hasError('formError') ? 'Choisir une compétition ou faire une selection' :'';
+  return this.mailForm.hasError('formError') ? 'Choisir une compétition ou faire une sélection' :'';
   
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-onContentChange(event){
-  this.mailForm.get('body').setValue=event.html;
- 
-console.log(event.html);
 
-}
+
+
 
 
 }

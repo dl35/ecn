@@ -18,9 +18,8 @@ export class MailtoService {
         return  this.http.get('/api/private/mailto') ;
        }
     
-       post(id,data){
-         
-         let url = '/api/private/mailto/'+id;
+       post(data){
+         let url = '/api/private/mailto';
          return  this.http.post( url,data) ;
 
        }
