@@ -17,8 +17,8 @@ import { MatSort ,MatSnackBar ,MatPaginator } from '@angular/material';
 
 
 
-import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
-
+import { FormBuilder, FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 
 @Component({
@@ -52,7 +52,6 @@ export class CompetitionsComponent implements OnInit {
   meta={
     displayForm : false ,
     "bassin":[{"name":"25" ,"value":"25"  } , {"name":"50" ,"value":"50"  }  ] ,
-    "categories":{"av": false ,"je": false ,"dep": false,"reg": false,"nat": false,"ma": false } ,
     "type": [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ,
     "entraineur": [{"name":"E1" ,"value":"e1@test.fr"  } , {"name":"E2" ,"value":"e2@test.fr"   } , {"name":"E3" ,"value":"e3@test.fr"   }] ,
     total : 0,
@@ -66,13 +65,21 @@ export class CompetitionsComponent implements OnInit {
       id: [ -1 ],
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
-      categories:  this.formBuilder.group( this.meta.categories  )  , 
+      //categories: new FormArray[ {t:new FormControl("10")}   ]   , 
+      categories: new FormGroup({
+        av: new FormControl(false),
+        je: new FormControl(true),
+        dep: new FormControl(false),
+        reg: new FormControl(false),
+        nat: new FormControl(false),
+        ma: new FormControl(false)
+      },this.catValidator),
       bassin:  [ "25" , [Validators.required] ],
       type:  [ "compet" , [ Validators.required ]] ,
-      debut:  [ new Date('2017-05-12') , [Validators.required] ],
-      fin:  [ new Date()   , [Validators.required] ],
+      debut:  [ new Date() , [Validators.required] ],
+      fin:  [ null  , [Validators.required] ],
       heure:  ['07', [Validators.required] ],
-      limite:  [ new Date() , [Validators.required] ],
+      limite:  [ null  , [Validators.required] ],
       verif:   [ false ] ,
       choixnages:  [ false  ],
       max:  [ 0  ],
@@ -84,11 +91,23 @@ export class CompetitionsComponent implements OnInit {
   );
   this.setValidator();
 
+ 
   }
+ 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private catValidator(gcat: FormGroup ) {
 
+ let res=false;
+   Object.keys( gcat.controls).forEach(key => {
+     if( gcat.get(key).value ) { res=true;}
+   });
+   if (res)  return null  ;
+   else  return {catError:true};
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setValidator() {
-    
     this.dataForm.get('type').valueChanges.subscribe(
         (type: string) => {
               if (type === 'compet') {
@@ -99,7 +118,6 @@ private setValidator() {
                this.dataForm.get('max').updateValueAndValidity();
           }
       )
-
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private  allDateValidator(input: FormControl ): any {
@@ -114,11 +132,27 @@ private  allDateValidator(input: FormControl ): any {
       end = Date.parse( input.get( 'fin' ).value);
       limite = Date.parse( input.get( 'limite' ).value);
 
-      
-
       return  ( start <=  end && limite < start  ) ?  null :  {dateError:true};
       
 
+
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private onDateStart(event: MatDatepickerInputEvent<Date> ) {
+  let start=new Date(event.value);
+  if( this.dataForm.get('fin').value == null  )
+  {
+    this.dataForm.get('fin').setValue( start ) ;
+  }
+
+
+  if( this.dataForm.get('limite').value == null )
+  {
+    let limite=new Date(start);
+    limite.setDate( limite.getDate()-10 );
+    this.dataForm.get('limite').setValue( limite ) ;
+  }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setVerif() {
@@ -147,7 +181,7 @@ showSnackBar( message , info)
 }
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 refreshData() {
   
@@ -172,7 +206,7 @@ refreshData() {
           }
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 saveForm() {
 
@@ -218,7 +252,7 @@ Object.keys(obj).forEach(function (key) {
 
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -257,7 +291,7 @@ Object.keys(obj).forEach(function (key) {
           this.dataForm.get('verif').disable();
 
           this.dataForm.get('choixnages').setValue(false);
-          this.dataForm.get('categories').setValue( this.meta.categories );
+       //   this.dataForm.get('categories').setValue( this.meta.categories );
           this.meta.type =  [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ;
 
         }
@@ -265,7 +299,7 @@ Object.keys(obj).forEach(function (key) {
         this.meta.displayForm=true;
  }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 searchId( id )  {
       let item :any ;
       let d =   this.dataSource.datas;
@@ -301,7 +335,7 @@ searchId( id )  {
 
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ngOnInit() {
 
@@ -362,6 +396,10 @@ searchId( id )  {
 }
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export class MyDataSource extends DataSource<any> {
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   _filterChange = new BehaviorSubject('');

@@ -37,22 +37,7 @@
     margin-left: 32px;
   }*/
 
-  ::ng-deep snack-bar-container.snack-error {
-    background: #FF0000;
-  }
-  
-  ::ng-deep .snack-error-class .mat-simple-snackbar {
-    color: white;
-  }
-
-
-  ::ng-deep snack-bar-container.snack-success {
-    background: green;
-  }
-  
-  ::ng-deep .snack-success .mat-simple-snackbar {
-    color: white;
-  }
+ 
 
 
 
