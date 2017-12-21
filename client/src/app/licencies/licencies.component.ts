@@ -56,12 +56,7 @@ export class LicenciesComponent implements OnInit {
 
   
 
-myfilter = {
- sexe:"",
- categorie:"",
- type:""
-
-}
+  myfilter={sexe:'', categorie:'', type:''};
 
 
 
@@ -300,14 +295,14 @@ myfilter = {
 
       }
         searchId( id )  {
-          let item :any ;
+          let item:any;
           let d =   this.dataSource.mydatafilter;
           for (var i = 0; i < d.length ; i++) {
             item = d[i];
-            if( item.id == id )  
+            if( item.id === id )  
             {
-           /*   ( item.verif == '0' ) ? item.verif = false : item.verif = true ;
-              ( item.choixnages == '0' ) ? item.choixnages = false : item.choixnages = true ;
+           /*   ( item.verif === '0' ) ? item.verif = false : item.verif = true ;
+              ( item.choixnages === '0' ) ? item.choixnages = false : item.choixnages = true ;
               item.debut = new Date( item.debut );
               item.fin = new Date( item.fin );*/
               item.date = new Date( item.date );
@@ -379,13 +374,13 @@ this.dataSource.myfilter = this.myfilter;
 
       showSnackBar( message , info)
       {
-          let style= "snack-success";
-        if ( !info )  style="snack-error";
+          let style='snack-success';
+        if ( !info )  style='snack-error';
       
       
 
 
-        this.snackBar.open( message  , "", {
+        this.snackBar.open( message,'', {
           duration: 2000,
           extraClasses: [ style ]
           
@@ -428,7 +423,7 @@ export class MyDataSource extends DataSource<any> {
   constructor( /*public datas: any[] ,*/  private mysort: MatSort ,private mypaginator:  MatPaginator) {
     super();
 
-    this.mypaginator._intl.itemsPerPageLabel="items / page";
+    this.mypaginator._intl.itemsPerPageLabel='items / page';
    
   }
 
@@ -446,7 +441,7 @@ export class MyDataSource extends DataSource<any> {
 
     return Observable.merge(...displayDataChanges).map((e) => {
 
-  console.log("update...");
+  console.log('update...');
 
       const datasorted =this.getSortedData(); 
       
@@ -465,16 +460,16 @@ export class MyDataSource extends DataSource<any> {
 
       if ( ! this.myfilter )  return true;;
 
-      if ( this.myfilter.sexe == ""  ) {  flag=true }
-      else if ( item.sexe == this.myfilter.sexe  ) {flag=true;}
+      if ( this.myfilter.sexe === ''  ) {  flag=true }
+      else if ( item.sexe === this.myfilter.sexe  ) {flag=true;}
       else {flag=false }
      
-      if ( this.myfilter.categorie == ""  ) {  flag=flag && true }
-      else if (  item.categorie == this.myfilter.categorie.toLowerCase() ) { flag=flag && true}
+      if ( this.myfilter.categorie === ''  ) {  flag=flag && true }
+      else if (  item.categorie === this.myfilter.categorie.toLowerCase() ) { flag=flag && true}
       else {flag=false }
      
-      if ( this.myfilter.type == ""  ) {  flag=flag && true }
-      else if (  item.type == this.myfilter.type ) { flag=flag && true}
+      if ( this.myfilter.type === ''  ) {  flag=flag && true }
+      else if (  item.type === this.myfilter.type ) { flag=flag && true}
       else {flag=false }
 
 
@@ -501,7 +496,7 @@ export class MyDataSource extends DataSource<any> {
 
 
   getSortedData(): Element[] {
-    if (!this.mysort.active || this.mysort.direction == '') { return this.mydatafilter; }
+    if (!this.mysort.active || this.mysort.direction === '') { return this.mydatafilter; }
    
     const data = this.mydatafilter.slice();
     //const data = this.datas.slice();
@@ -527,7 +522,7 @@ export class MyDataSource extends DataSource<any> {
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
       let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
-      return (valueA < valueB ? -1 : 1) * (this.mysort.direction == 'asc' ? 1 : -1);
+      return (valueA < valueB ? -1 : 1) * (this.mysort.direction === 'asc' ? 1 : -1);
     });
   }
 

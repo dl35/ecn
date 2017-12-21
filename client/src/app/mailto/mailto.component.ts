@@ -18,7 +18,7 @@ export class MailtoComponent implements OnInit {
 
   private licencies=null; 
   private from=null;
-  private datas={'from':null,'lic':null,'comp':null,'filtre':[{"n":"av","v":"Avenirs" } ,{"n":"je","v":"Jeunes" },{"n":"ju","v":"Juniors" },{"n":"se","v":"Seniors" },{"n":"ma","v":"Masters" }, {"n":"of","v":"Officiels" }              ]} 
+  private datas={'from':null,'lic':null,'comp':null,'filtre':[{'n':'av','v':'Avenirs' } ,{'n':'je','v':'Jeunes' },{'n':'ju','v':'Juniors' },{'n':'se','v':'Seniors' },{'n':'ma','v':'Masters' }, {'n':'of','v':'Officiels' }              ]} 
   private selectAll=false;
 
   quilltoobar={
@@ -41,16 +41,16 @@ export class MailtoComponent implements OnInit {
         this.datas.lic=datas.lic;
         this.datas.comp=datas.comp;
         this.datas.from=datas.from;
-        this.showSnackBar("initialisation ok", true );
+        this.showSnackBar('initialisation ok', true );
         } ,
   
     (err: HttpErrorResponse)  => { 
-     /*
+     
       if (err.error instanceof Error) {
-        this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+        this.showSnackBar('Client side: '+err.status+':'+err.statusText,false);
       } else {
-        this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
-      }*/
+        this.showSnackBar('Server side: '+err.status+':'+err.statusText,false);
+      }
 
      },
     () => {
@@ -65,12 +65,12 @@ private createForm() {
     body: [null, Validators.required], 
     subject:  [null, Validators.required], 
     idcompet: [null]  ,
-    type :this.formBuilder.group( {"at": true ,"ok": true ,"ko": true }  ),
+    type :this.formBuilder.group( {'at': true ,'ok': true ,'ko': true }  ),
     idlic: this.formBuilder.array([]),
     from: [null, Validators.required], 
 
   },
-  {validator: this.myValidator  }
+  {validator:this.myValidator}
 );
 
 }
@@ -78,18 +78,17 @@ private createForm() {
 private myValidator(myform: FormControl ): any {
     let tarray = <FormArray> myform.get('idlic') ;  
     let gtype = <FormGroup> myform.get('type') ;  
-    if (  !myform.get('idcompet').value &&  tarray.length == 0 )  return {formError:true} ;
-    else  if ( myform.get('idcompet').value  && gtype.get('ok').value == false && gtype.get('ko').value == false && gtype.get('at').value == false )
+    if (  !myform.get('idcompet').value &&  tarray.length === 0 )  return {formError:true} ;
+    else  if ( myform.get('idcompet').value  && gtype.get('ok').value === false && gtype.get('ko').value === false && gtype.get('at').value === false )
     return {typeError:true};
     else null;
       }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 private showSnackBar( message , info)
 {
-  let style= "snack-success";
-  if ( !info )  style="snack-error";
-  this.snackBar.open( message  , "", {
+  let style= 'snack-success';
+  if ( !info )  style='snack-error';
+  this.snackBar.open( message  , '', {
     duration: 2000,
     extraClasses: [ style ]
   });
@@ -104,16 +103,16 @@ private sendMail() {
   this.mailtoService.post( json ).subscribe(
     ( datas: any ) =>{
       this.showSnackBar( datas.message  , true );
-      this.mailForm.get('body').setValue("") ;
+      this.mailForm.get('body').setValue('') ;
       
       } ,
 
   (err: HttpErrorResponse)  => { 
    
     if (err.error instanceof Error) {
-      this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+      this.showSnackBar('Client side: ' +err.status+':'+err.statusText, false );
     } else {
-      this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+      this.showSnackBar('Server side: ' +err.status+':'+err.statusText  , false );
     }
 
    },
@@ -136,11 +135,10 @@ private createItem( value): FormControl {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setChange(value){
   let tarray = <FormArray>this.mailForm.get('idlic') ;  
-
   let remove =false;
   for(var i=0;i<tarray.length;i++ )
    {
-    if( tarray.at(i).value == value  ) {remove=true;tarray.removeAt(i); break ;}
+    if( tarray.at(i).value === value  ) {remove=true;tarray.removeAt(i); break ;}
    }
    
   if( ! remove ) 
@@ -150,7 +148,7 @@ private setChange(value){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private addAll() {
   this.removeAll()
-  let tarray = <FormArray>this.mailForm.get('idlic') ;  
+  let tarray=<FormArray>this.mailForm.get('idlic') ;  
   let alic=this.datas.lic;
   for(let i=0 ; i < alic.length ; i++ )
    tarray.push( this.createItem(alic[i].id) ) ;
@@ -158,7 +156,7 @@ private addAll() {
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private removeAll() {
-  let tarray = <FormArray>this.mailForm.get('idlic') ;  
+  let tarray=<FormArray>this.mailForm.get('idlic') ;  
    while (0 !== tarray.length) {
     tarray.removeAt(0);
   }
@@ -168,17 +166,17 @@ private removeAll() {
 private setFilter(p) {
   this.removeAll();
 
-  if ( p.value == '-1')
+  if ( p.value === '-1')
   {
     this.datas.lic=this.licencies;
     return;
   }
 
   let values=[]; 
-  let d =   this.licencies;
+  let d=this.licencies;
   for (var i = 0; i < d.length ; i++) {
    let item = d[i];
-    if( item.categorie.toLowerCase() == p.value )  
+    if( item.categorie.toLowerCase() === p.value )  
     {
       values.push(item);
     }  

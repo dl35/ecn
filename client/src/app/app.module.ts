@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 
 
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
 
 import {
   DateAdapter,

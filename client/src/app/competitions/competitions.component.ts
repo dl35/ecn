@@ -30,6 +30,8 @@ export class CompetitionsComponent implements OnInit {
 
   public dataForm: FormGroup ;
   public dataSource: MyDataSource ;
+  public futures:boolean=false;
+  public verifiees:boolean=false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
@@ -105,7 +107,6 @@ private catValidator(gcat: FormGroup ) {
    if (res)  return null  ;
    else  return {catError:true};
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setValidator() {
     this.dataForm.get('type').valueChanges.subscribe(
@@ -123,7 +124,7 @@ private setValidator() {
 private  allDateValidator(input: FormControl ): any {
 
       var start , end , limite;
-      if ( input.get('debut').value == null || input.get('fin').value == null  || input.get('limite').value == null  ) 
+      if ( input.get('debut').value === null || input.get('fin').value === null  || input.get('limite').value === null  ) 
       {
         return null;
       }
@@ -133,21 +134,17 @@ private  allDateValidator(input: FormControl ): any {
       limite = Date.parse( input.get( 'limite' ).value);
 
       return  ( start <=  end && limite < start  ) ?  null :  {dateError:true};
-      
-
-
-
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private onDateStart(event: MatDatepickerInputEvent<Date> ) {
   let start=new Date(event.value);
-  if( this.dataForm.get('fin').value == null  )
+  if( this.dataForm.get('fin').value === null  )
   {
     this.dataForm.get('fin').setValue( start ) ;
   }
 
 
-  if( this.dataForm.get('limite').value == null )
+  if( this.dataForm.get('limite').value === null )
   {
     let limite=new Date(start);
     limite.setDate( limite.getDate()-10 );
@@ -157,19 +154,19 @@ private onDateStart(event: MatDatepickerInputEvent<Date> ) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setVerif() {
     
-if( this.dataForm.get('id').value == -1  )  
+if( this.dataForm.get('id').value === -1  )  
       {
         ( this.dataForm.get('verif').disabled  )  ? this.dataForm.get('verif').enable() : this.dataForm.get('verif').disable();this.dataForm.get('verif').setValue(false);
       }
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-cancelForm() {
+private cancelForm() {
   this.meta.displayForm=false;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-showSnackBar( message , info)
+private showSnackBar( message , info)
 {
-    let style= "snack-success";
+  let style= "snack-success";
   if ( !info )  style="snack-error";
 
   this.snackBar.open( message  , "", {
@@ -179,15 +176,24 @@ showSnackBar( message , info)
   });
 
 }
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private filterFutures() {
+this.dataSource.future=this.futures;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private filterVerifiees() {
+  this.dataSource.verifiees=this.verifiees;
+  
+  }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-refreshData() {
+private refreshData() {
   
             this.compService.list().subscribe(
-              ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource.datas = data; ;
-              
+              ( data: any[] ) =>{ 
+                this.meta.total = data.length ; 
+                this.meta.totdisp = data.length ;  
+                this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
               },  
               (err: HttpErrorResponse)  => { 
                 if (err.error instanceof Error) {
@@ -207,8 +213,7 @@ refreshData() {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-saveForm() {
+private saveForm() {
 
 this.meta.displayForm=false;
 let obj = this.dataForm.value ;
@@ -218,15 +223,7 @@ Object.keys(obj).forEach(function (key) {
    }
  });
 
-
-
-
-
-
-
-
-
-   console.log( JSON.stringify( obj )  );
+   console.log( "save from" ,JSON.stringify( obj )  );
   this.compService.store( obj ).subscribe( 
     
     ( data: MessageResponse )  =>
@@ -253,11 +250,7 @@ Object.keys(obj).forEach(function (key) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
- updateForm( id )  {
+private updateForm( id )  {
 
 
  this.dataForm.reset();  
@@ -275,9 +268,7 @@ Object.keys(obj).forEach(function (key) {
       {
         this.meta.type =  [{"name":"Stage" ,"value":"stage" }  ] ;
       }
-
-
-   
+ 
   }
 
   else {
@@ -300,19 +291,23 @@ Object.keys(obj).forEach(function (key) {
  }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-searchId( id )  {
+private searchId( id )  {
       let item :any ;
-      let d =   this.dataSource.datas;
+      const d =   this.dataSource.datas;
       for (var i = 0; i < d.length ; i++) {
-        item = d[i];
-        if( item.id == id )  
+     
+        if( d[i].id === id )  
         {
-          ( item.verif == '0' ) ? item.verif = false : item.verif = true ;
-          ( item.choixnages == '0' ) ? item.choixnages = false : item.choixnages = true ;
-           item.debut = new Date( item.debut );
-           item.fin = new Date( item.fin );
-           item.limite = new Date( item.limite );
-           
+            
+          item =Object.assign({}, d[i]);  
+          
+          ( item.verif === '0' ) ? item.verif = false : item.verif = true ;
+          ( item.choixnages === '0' ) ? item.choixnages = false : item.choixnages = true ;
+         //  item.debut = new Date( item.debut );
+         //  item.fin = new Date( item.fin );
+        //   item.limite = new Date( item.limite );
+
+          delete item.del;
 
           break;
         }  
@@ -324,25 +319,13 @@ searchId( id )  {
       return item ;
 
 }
-
-
-
  deleteItem( id ) {
-
-
  }
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  ngOnInit() {
-
-
+public ngOnInit() {
 
       this.createForm();
-
       this.dataForm.valueChanges
        .debounceTime(400)
       .distinctUntilChanged()
@@ -365,8 +348,21 @@ searchId( id )  {
             .subscribe(() => {
               if (!this.dataSource) { return; }
               this.dataSource.filter = this.filter.nativeElement.value;
+              this.dataSource.future =this.futures ;
             });
           
+           /* Observable.of(this.futures )
+            .debounceTime(150)
+            .distinctUntilChanged()
+            .subscribe(() => {
+              if (!this.dataSource) { return; }
+            
+              this.dataSource.future =this.futures ;
+            });*/
+
+
+
+
           } ,
     
       (err: HttpErrorResponse)  => { 
@@ -389,13 +385,7 @@ searchId( id )  {
 
   }
 
-
-
-
-
 }
-
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,6 +395,14 @@ export class MyDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
+
+  _futureChange = new BehaviorSubject(false);
+  get future(): boolean { return this._futureChange.value; }
+  set future( future: boolean ) { this._futureChange.next(future); }
+
+  _verifieesChange = new BehaviorSubject(false);
+  get verifiees(): boolean { return this._verifieesChange.value; }
+  set verifiees( verifiees: boolean ) { this._verifieesChange.next(verifiees); }
 
 
   constructor(public datas: any[] , private mysort: MatSort ,private mypaginator:  MatPaginator) {
@@ -421,20 +419,36 @@ export class MyDataSource extends DataSource<any> {
       this.datas,
       this.mysort.sortChange,
       this._filterChange,
+      this._futureChange,
+      this._verifieesChange,
       this.mypaginator.page
     ];
 
     return Observable.merge(...displayDataChanges).map((e) => {
-
-  
-
+      
       const datasorted = this.getSortedData(); 
 
-      const datafilter  = datasorted.slice().filter((item: any) => {
-        let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();
-        //this.mypaginator.pageIndex =0 ;
+      const datafutures  = datasorted.slice().filter((item: any) => {
+        let fut = true;
+        if( this.future )
+        { 
+           fut =( new Date(item.debut) >= new Date() ) ;
+        }
+        return fut;
+      });
 
-        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+      const dataverifiees  = datafutures.slice().filter((item: any) => {
+        let verif = true;
+        if( this.verifiees )
+        { 
+           verif =(item.verif === '1' );
+        }
+        return verif;
+      });
+
+      const datafilter  = dataverifiees.slice().filter((item: any) => {
+        let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();
+        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
       this.mypaginator.length =datafilter.length;
       
@@ -453,32 +467,30 @@ export class MyDataSource extends DataSource<any> {
 
 
   getSortedData(): Element[] {
-    if (!this.mysort.active || this.mysort.direction == '') { return this.datas; }
+    if (!this.mysort.active || this.mysort.direction === '') { return this.datas; }
    
     const data = this.datas.slice();
-    console.log ("sorted..."  );
-
    
-
     return data.sort((a, b) => {
       let propertyA: number|string = '';
       let propertyB: number|string = '';
 
 
-
       switch (this.mysort.active) {
         
-        case 'nom': [propertyA, propertyB] = [a.nom, b.nom]; break;
-        case 'lieu': [propertyA, propertyB] = [a.lieu, b.lieu]; break;
-        
-       
+        case 'nom': [propertyA, propertyB] = [a.nom.toLowerCase(), b.nom.toLowerCase()]; break;
+        case 'lieu': [propertyA, propertyB] = [a.lieu.toLowerCase(), b.lieu.toLowerCase()]; break;
+        case 'bassin': [propertyA, propertyB] = [a.bassin, b.bassin]; break;
+        case 'type': [propertyA, propertyB] = [a.type, b.type]; break;
+        case 'debut': [propertyA, propertyB] = [a.debut, b.debut]; break;
+        case 'fin': [propertyA, propertyB] = [a.fin, b.fin]; break;
        
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
       let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
-      return (valueA < valueB ? -1 : 1) * (this.mysort.direction == 'asc' ? 1 : -1);
+      return (valueA < valueB ? -1 : 1) * (this.mysort.direction === 'asc' ? 1 : -1);
     });
   }
 
