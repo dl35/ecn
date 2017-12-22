@@ -127,7 +127,7 @@
     </div>
 
   <div fxFlexOffset="3" fxFlex="10"  >  
-  <mat-checkbox name="verif"  formControlName="verif"   >Vérification</mat-checkbox>
+  <mat-checkbox   formControlName="verif"  >Vérification</mat-checkbox>
   </div>
 
 
@@ -136,8 +136,12 @@
 
 
 <div   fxLayout="row" fxLayoutAlign="start center"  style='margin-top:20px'    >
-    <mat-form-field fxFlex="75" fxFlexOffset="5" >
+    <mat-form-field fxFlex="50" fxFlexOffset="5" >
         <textarea matInput matTextareaAutosize  matAutosizeMaxRows="3" formControlName="commentaires"  placeholder="Commentaires"></textarea>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="25" fxFlexOffset="2" >
+        <input matInput   formControlName="lien"  placeholder="Lien">
       </mat-form-field>
 </div>
 
@@ -168,9 +172,9 @@
         <mat-form-field floatPlaceholder="never" fxFlex="50"  >
           <input matInput #filter placeholder="Recherche nom,lieu,type" >
         </mat-form-field>
-        <mat-checkbox color="accent" (change)="filterFutures()"  [(ngModel)]="futures">Futures</mat-checkbox>
-        <mat-checkbox color="accent" (change)="filterVerifiees()"  [(ngModel)]="verifiees" >Verifiées</mat-checkbox>
-        <button mat-mini-fab color="primary"  (click)="updateForm('-1') "  ><mat-icon>add</mat-icon></button>
+        <mat-checkbox color="accent" (change)="onFutures()"  [(ngModel)]="futures">Futures</mat-checkbox>
+        <mat-checkbox color="accent" (change)="onVerifiees()"  [(ngModel)]="verifiees" >Verifiées</mat-checkbox>
+        <button mat-mini-fab color="primary"  (click)="updateForm(null) "  ><mat-icon>add</mat-icon></button>
         
     </div>
   </div>

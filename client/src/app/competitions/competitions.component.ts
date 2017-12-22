@@ -8,15 +8,8 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 
-
 import {CompetitionsService , MessageResponse }  from '../services/competitions.service' ;
-
-
-
 import { MatSort ,MatSnackBar ,MatPaginator } from '@angular/material';
-
-
-
 import { FormBuilder, FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
@@ -39,11 +32,6 @@ export class CompetitionsComponent implements OnInit {
 
 
   constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MatSnackBar  ) {
-
-     // this.dateAdapter.setLocale('fr-FR');
-
-
-
    }
 
 
@@ -52,42 +40,43 @@ export class CompetitionsComponent implements OnInit {
   maxDate = new Date(2018, 7, 31);
 
   meta={
-    displayForm : false ,
-    "bassin":[{"name":"25" ,"value":"25"  } , {"name":"50" ,"value":"50"  }  ] ,
-    "type": [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ,
-    "entraineur": [{"name":"E1" ,"value":"e1@test.fr"  } , {"name":"E2" ,"value":"e2@test.fr"   } , {"name":"E3" ,"value":"e3@test.fr"   }] ,
+     displayForm : false ,
+    'bassin':[{'name':'25' ,'value':'25'  } , {'name':'50' ,'value':'50'  }  ] ,
+    'type': [{'name':'Stage' ,'value':'stage' } , {'name':'Compétition' ,'value':'compet'  } ] ,
+    'entraineur': [{'name':'E1' ,'value':'e1@test.fr'  } , {'name':'E2' ,'value':'e2@test.fr'   } , {'name':'E3' ,'value':'e3@test.fr'   }] ,
     total : 0,
     totdisp :0
   };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  createForm() {
+  private createForm() {
     //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
     this.dataForm = this.formBuilder.group({
-      id: [ -1 ],
+      id: new FormControl(null),
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
-      //categories: new FormArray[ {t:new FormControl("10")}   ]   , 
+      //categories: new FormArray[ {t:new FormControl('10')}   ]   , 
       categories: new FormGroup({
         av: new FormControl(false),
-        je: new FormControl(true),
+        je: new FormControl(false),
         dep: new FormControl(false),
         reg: new FormControl(false),
         nat: new FormControl(false),
         ma: new FormControl(false)
       },this.catValidator),
-      bassin:  [ "25" , [Validators.required] ],
-      type:  [ "compet" , [ Validators.required ]] ,
-      debut:  [ new Date() , [Validators.required] ],
-      fin:  [ null  , [Validators.required] ],
-      heure:  ['07', [Validators.required] ],
-      limite:  [ null  , [Validators.required] ],
-      verif:   [ false ] ,
-      choixnages:  [ false  ],
-      max:  [ 0  ],
-      entraineur:  [ null, [Validators.required] ] ,
-      lien:  [ null ] ,
-      commentaires:  ['']
+      bassin: [ '25' , [Validators.required] ],
+      type: [ 'compet' , [ Validators.required ]] ,
+      debut: [ null , [Validators.required] ],
+      fin: [ null  , [Validators.required] ],
+      heure: ['07', [Validators.required] ],
+      limite: [ null  , [Validators.required] ],
+     
+      choixnages: new FormControl(false),
+      max:new FormControl(0),
+      entraineur:  [ null, [Validators.required] ],
+      lien:new FormControl(null,Validators.pattern('')),
+      commentaires:new FormControl(null),
+      verif: new FormControl(false),
     },
     {validator: this.allDateValidator  }
   );
@@ -123,15 +112,15 @@ private setValidator() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private  allDateValidator(input: FormControl ): any {
 
-      var start , end , limite;
+    
       if ( input.get('debut').value === null || input.get('fin').value === null  || input.get('limite').value === null  ) 
       {
         return null;
       }
       
-      start = Date.parse( input.get('debut').value);
-      end = Date.parse( input.get( 'fin' ).value);
-      limite = Date.parse( input.get( 'limite' ).value);
+     const start = Date.parse( input.get('debut').value);
+     const end = Date.parse( input.get( 'fin' ).value);
+     const limite = Date.parse( input.get( 'limite' ).value);
 
       return  ( start <=  end && limite < start  ) ?  null :  {dateError:true};
 }
@@ -142,8 +131,6 @@ private onDateStart(event: MatDatepickerInputEvent<Date> ) {
   {
     this.dataForm.get('fin').setValue( start ) ;
   }
-
-
   if( this.dataForm.get('limite').value === null )
   {
     let limite=new Date(start);
@@ -153,11 +140,18 @@ private onDateStart(event: MatDatepickerInputEvent<Date> ) {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setVerif() {
-    
-if( this.dataForm.get('id').value === -1  )  
+
+if( this.dataForm.get('id').value === null  )  
+      if(this.dataForm.get('type').value === 'stage' ) 
       {
-        ( this.dataForm.get('verif').disabled  )  ? this.dataForm.get('verif').enable() : this.dataForm.get('verif').disable();this.dataForm.get('verif').setValue(false);
+        this.dataForm.get('verif').disable();
+        this.dataForm.get('verif').setValue(false);
       }
+      else {
+        this.dataForm.get('verif').enable();
+        this.dataForm.get('verif').setValue(true);
+      }
+
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private cancelForm() {
@@ -166,10 +160,10 @@ private cancelForm() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private showSnackBar( message , info)
 {
-  let style= "snack-success";
-  if ( !info )  style="snack-error";
+  let style= 'snack-success';
+  if ( !info )  style='snack-error';
 
-  this.snackBar.open( message  , "", {
+  this.snackBar.open( message  , '', {
     duration: 2000,
     extraClasses: [ style ]
     
@@ -177,14 +171,13 @@ private showSnackBar( message , info)
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private filterFutures() {
+private onFutures() {
 this.dataSource.future=this.futures;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private filterVerifiees() {
-  this.dataSource.verifiees=this.verifiees;
-  
-  }
+private onVerifiees() {
+this.dataSource.verifiees=this.verifiees;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private refreshData() {
@@ -197,9 +190,9 @@ private refreshData() {
               },  
               (err: HttpErrorResponse)  => { 
                 if (err.error instanceof Error) {
-                  this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+                  this.showSnackBar('Client-side:' +err.status+':'+err.statusText, false );
                 } else {
-                  this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+                  this.showSnackBar('Server-side: ' +err.status+':'+err.statusText  , false );
                 }
           
                },
@@ -216,14 +209,14 @@ private refreshData() {
 private saveForm() {
 
 this.meta.displayForm=false;
-let obj = this.dataForm.value ;
+const obj = this.dataForm.value ;
 Object.keys(obj).forEach(function (key) {
   if(typeof obj[key] === 'undefined'  ||  obj[key] === null  ){
      delete obj[key];
    }
  });
 
-   console.log( "save from" ,JSON.stringify( obj )  );
+   console.log( 'save from' ,JSON.stringify( obj )  );
   this.compService.store( obj ).subscribe( 
     
     ( data: MessageResponse )  =>
@@ -233,9 +226,9 @@ Object.keys(obj).forEach(function (key) {
       },
     (err: HttpErrorResponse)  => { 
       if (err.error instanceof Error) {
-        this.showSnackBar("Client-side error occured.", false );
+        this.showSnackBar('Client side error occured', false );
       } else {
-        this.showSnackBar("Server-side error occured." +err.statusText  , false );
+        this.showSnackBar('Server side error occured: ' +err.statusText  , false );
       }
 
      },
@@ -244,35 +237,47 @@ Object.keys(obj).forEach(function (key) {
      
   });
 
-
-
-
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private updateForm( id )  {
 
+console.log( "id" , id );
 
- this.dataForm.reset();  
+ 
 
-  if( id != -1 )
+  if( id !== null )
   {  
-      let response= this.searchId( id ) ;
+    console.log( "id not null " , id );  
+    const response= this.searchId( id ) ;
+   // this.dataForm.reset();  
       this.dataForm.setValue(response, { onlySelf: true });   
      
       if ( this.dataForm.get('type').value  === 'compet')
       {
-        this.meta.type =  [ {"name":"Compétition" ,"value":"compet"  } ] ;
+        this.meta.type =  [ {'name':'Compétition' ,'value':'compet'  } ] ;
       }
       else 
       {
-        this.meta.type =  [{"name":"Stage" ,"value":"stage" }  ] ;
+        this.meta.type =  [{'name':'Stage' ,'value':'stage' }  ] ;
       }
- 
+      this.dataForm.get('verif').enable();
   }
 
   else {
-          this.dataForm.get('id').setValue(-1);
+        
+    console.log( "id is null " , id );  
+   // this.dataForm.reset(); 
+    this.dataForm=null;
+
+    this.createForm();
+        // this.dataForm.get('verif').setValue(false);
+         
+console.log( this.dataForm.value );
+//this.dataForm.reset(); 
+this.dataForm.get('verif').disable();
+this.dataForm.get('verif').setValue(false);
+
+         /* this.dataForm.get('id').setValue(-1);
           this.dataForm.get('type').setValue('compet');
           this.dataForm.get('type').enable();
           this.dataForm.get('bassin').setValue('25');
@@ -282,8 +287,8 @@ private updateForm( id )  {
           this.dataForm.get('verif').disable();
 
           this.dataForm.get('choixnages').setValue(false);
-       //   this.dataForm.get('categories').setValue( this.meta.categories );
-          this.meta.type =  [{"name":"Stage" ,"value":"stage" } , {"name":"Compétition" ,"value":"compet"  } ] ;
+       //   this.dataForm.get('categories').setValue( this.meta.categories );*/
+          this.meta.type =  [{'name':'Stage' ,'value':'stage' } , {'name':'Compétition' ,'value':'compet'  } ] ;
 
         }
 
@@ -294,15 +299,15 @@ private updateForm( id )  {
 private searchId( id )  {
       let item :any ;
       const d =   this.dataSource.datas;
-      for (var i = 0; i < d.length ; i++) {
+      for (let i = 0; i < d.length ; i++) {
      
         if( d[i].id === id )  
         {
             
           item =Object.assign({}, d[i]);  
           
-          ( item.verif === '0' ) ? item.verif = false : item.verif = true ;
-          ( item.choixnages === '0' ) ? item.choixnages = false : item.choixnages = true ;
+        //  ( item.verif === '0' ) ? item.verif = false : item.verif = true ;
+       //   ( item.choixnages === '0' ) ? item.choixnages = false : item.choixnages = true ;
          //  item.debut = new Date( item.debut );
          //  item.fin = new Date( item.fin );
         //   item.limite = new Date( item.limite );
@@ -326,18 +331,18 @@ private searchId( id )  {
 public ngOnInit() {
 
       this.createForm();
-      this.dataForm.valueChanges
+    /*  this.dataForm.valueChanges
        .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(data => {
-       
+        console.log('Form changes', data);
         if ( this.meta.displayForm ) 
         {
           console.log('Form changes', data)
-
+         
         }
        
-      })
+      })*/
 
       this.compService.list().subscribe(
         ( data: any[] ) =>{this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
@@ -348,35 +353,22 @@ public ngOnInit() {
             .subscribe(() => {
               if (!this.dataSource) { return; }
               this.dataSource.filter = this.filter.nativeElement.value;
-              this.dataSource.future =this.futures ;
             });
-          
-           /* Observable.of(this.futures )
-            .debounceTime(150)
-            .distinctUntilChanged()
-            .subscribe(() => {
-              if (!this.dataSource) { return; }
-            
-              this.dataSource.future =this.futures ;
-            });*/
-
-
-
-
+       
           } ,
     
       (err: HttpErrorResponse)  => { 
         if (err.error instanceof Error) {
-          this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+          this.showSnackBar('Client-side: ' +err.status+':'+err.statusText, false );
         } else {
-          this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+          this.showSnackBar('Server side: ' +err.status+':'+err.statusText  , false );
         }
   
        },
       () => {
-          console.log("end ok " + this.dataSource.datas   ) ;
-        //  console.log("search Id .... " + this.updateForm (10)  );
-         // console.log("search Id .... " + Object.keys ( this.searchId(10) )  );
+          console.log('end ok ' + this.dataSource.datas   ) ;
+        //  console.log('search Id .... ' + this.updateForm (10)  );
+         // console.log('search Id .... ' + Object.keys ( this.searchId(10) )  );
         // this.updateForm (10) 
          
 
@@ -408,7 +400,7 @@ export class MyDataSource extends DataSource<any> {
   constructor(public datas: any[] , private mysort: MatSort ,private mypaginator:  MatPaginator) {
     super();
 
-    this.mypaginator._intl.itemsPerPageLabel="items / page";
+    this.mypaginator._intl.itemsPerPageLabel = 'items / page';
   }
 
 
@@ -429,25 +421,25 @@ export class MyDataSource extends DataSource<any> {
       const datasorted = this.getSortedData(); 
 
       const datafutures  = datasorted.slice().filter((item: any) => {
-        let fut = true;
+        let f = true;
         if( this.future )
         { 
-           fut =( new Date(item.debut) >= new Date() ) ;
+           f =( new Date(item.debut) >= new Date() ) ;
         }
-        return fut;
+        return f;
       });
 
       const dataverifiees  = datafutures.slice().filter((item: any) => {
-        let verif = true;
+        let v = true;
         if( this.verifiees )
         { 
-           verif =(item.verif === '1' );
+           v =(item.verif === '1' );
         }
-        return verif;
+        return v;
       });
 
       const datafilter  = dataverifiees.slice().filter((item: any) => {
-        let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();
+        const searchStr = (item.nom +' '+ item.lieu +' '+ item.type ).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
       this.mypaginator.length =datafilter.length;
@@ -487,8 +479,8 @@ export class MyDataSource extends DataSource<any> {
        
       }
 
-      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
       return (valueA < valueB ? -1 : 1) * (this.mysort.direction === 'asc' ? 1 : -1);
     });
