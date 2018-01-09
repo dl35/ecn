@@ -26,7 +26,7 @@ list(){
 
 store(json ) {
 
-if (json.id == "-1"  )  return this.post(json)
+if ( json.id == null  )  return this.post(json)
 else return this.put(json);
 
 }

@@ -1,0 +1,13 @@
+<div>
+<div mat-dialog-content>
+<p [style.color]="color"  > {{texte_info}}</p>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button  [mat-dialog-close]="success" cdkFocusInitial    [fxHide]="!ehidden"  >Non</button>
+  <button mat-raised-button color="primary" (click)="executeDelete()"   [fxHide]="!ehidden"  >Oui</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="success"   [fxHide]="ehidden"  [disabled]="!eprogress" >Quitter</button>
+</div>
+
+<mat-progress-bar mode="indeterminate"  [fxHide]="eprogress"  ></mat-progress-bar>
+</div>

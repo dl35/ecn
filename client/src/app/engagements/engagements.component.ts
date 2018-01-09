@@ -179,27 +179,8 @@ private deleteEngage(idcompet) {
      if ( this.meta.displayForm )  this.meta.displayForm=false; 
          
         let id = e.value;
-        this.engageService.getEngagement(id).subscribe(
-          ( response: any[] ) =>{
-             
-            if ( response.length == 0 ) { if ( !this.meta.displayForm )  this.meta.displayForm=true; }
-            else     this.dataSource = new MyDataSource( response ,  this.sort , this.paginator) ; 
-            } ,
-      
-        (err: HttpErrorResponse)  => { 
-         /*
-          if (err.error instanceof Error) {
-            this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
-          } else {
-            this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
-          }*/
-    
-         },
-        () => {
-           
-          this.dataForm.reset();
-    
-        });
+        this.refreshData( id );
+
     }
 
 
@@ -222,12 +203,13 @@ console.log(data);
     this.engageService.createEngagement(idcompet,data).subscribe(
       ( response: any[] ) =>{
         
+        this.refreshData( idcompet );
        console.log("ok");
         } ,
 
     (err: HttpErrorResponse)  => { 
 
-
+      console.log("error");
     },
     () => {
 
@@ -237,7 +219,34 @@ console.log(data);
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+private refreshData( id ){
+  this.engageService.getEngagement(id).subscribe(
+    ( response: any[] ) =>{
+       
+      if ( response.length == 0 ) { if ( !this.meta.displayForm )  this.meta.displayForm=true; }
+      else     this.dataSource = new MyDataSource( response ,  this.sort , this.paginator) ; 
+      } ,
 
+  (err: HttpErrorResponse)  => { 
+   /*
+    if (err.error instanceof Error) {
+      this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+    } else {
+      this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+    }*/
+
+   },
+  () => {
+     
+    this.dataForm.reset();
+
+  });
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 private validateCat(formGroup: FormGroup) {
   for (let key in formGroup.controls) {
     if (formGroup.controls.hasOwnProperty(key)) {

@@ -11,7 +11,7 @@ export class EngagementsService {
 
 
   listCompetitions(){
-    return  this.http.get('/api/private/competitions') ;
+    return  this.http.get('/api/private/engagements') ;
    }
 
 

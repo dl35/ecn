@@ -235,7 +235,7 @@
             <mat-icon color='primary' >edit</mat-icon>
           </button>
           <button mat-icon-button *ngIf="row.del" >
-              <mat-icon color='primary' (click)="deleteItem(row.id)"  >delete</mat-icon>
+              <mat-icon color='primary' (click)="openDialog(row.id)"  >delete</mat-icon>
             </button>
    
   </mat-cell>

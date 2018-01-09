@@ -37,6 +37,8 @@ import 'hammerjs';
 
 
 import { CompetitionsComponent } from './competitions/competitions.component';
+import { DialogConfirm } from './competitions/competitions.component';
+
 import { EngagementsComponent } from './engagements/engagements.component';
 import { MailtoComponent } from './mailto/mailto.component';
 import { LicenciesComponent } from './licencies/licencies.component';
@@ -99,6 +101,7 @@ export const routes: Routes = [
   declarations: [
     AppComponent,
     CompetitionsComponent,
+    DialogConfirm,
     EngagementsComponent,
     MailtoComponent,
     LicenciesComponent,
@@ -109,7 +112,8 @@ export const routes: Routes = [
     
   ],
   entryComponents:[
-    DialogengagementComponent
+    DialogengagementComponent,
+    DialogConfirm,
   ],
   imports: [
     BrowserModule,

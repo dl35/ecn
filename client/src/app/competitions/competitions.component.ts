@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
+import { Component, OnInit, ViewChild ,ElementRef, Inject  } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DataSource} from '@angular/cdk/table';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -31,7 +32,7 @@ export class CompetitionsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-  constructor( private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MatSnackBar  ) {
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, private compService: CompetitionsService , private snackBar: MatSnackBar  ) {
    }
 
 
@@ -55,7 +56,6 @@ export class CompetitionsComponent implements OnInit {
       id: new FormControl(null),
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
-      //categories: new FormArray[ {t:new FormControl('10')}   ]   , 
       categories: new FormGroup({
         av: new FormControl(false),
         je: new FormControl(false),
@@ -76,7 +76,7 @@ export class CompetitionsComponent implements OnInit {
       entraineur:  [ null, [Validators.required] ],
       lien:new FormControl(null,Validators.pattern('')),
       commentaires:new FormControl(null),
-      verif: new FormControl(false),
+      verif: new FormControl({value: false , disabled:true}),
     },
     {validator: this.allDateValidator  }
   );
@@ -166,7 +166,6 @@ private showSnackBar( message , info)
   this.snackBar.open( message  , '', {
     duration: 2000,
     extraClasses: [ style ]
-    
   });
 
 }
@@ -179,7 +178,22 @@ private onVerifiees() {
 this.dataSource.verifiees=this.verifiees;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private openDialog( id ): void {
+ 
+  let dialogRef = this.dialog.open(DialogConfirm, {
+    width: '50%',
+    data:{'id':id},
+    disableClose:true
+   });
 
+   dialogRef.beforeClose().subscribe(
+     (result) => { console.log(result) ; if (result) this.refreshData()  },
+     (err) => {},
+     ()=> {},
+   )
+
+ }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private refreshData() {
   
             this.compService.list().subscribe(
@@ -197,9 +211,6 @@ private refreshData() {
           
                },
               () => {
-                      
-        
-        
               });
   
           }
@@ -209,6 +220,8 @@ private refreshData() {
 private saveForm() {
 
 this.meta.displayForm=false;
+
+console.log( 'save from 1 ' ,this.dataForm.value    );
 const obj = this.dataForm.value ;
 Object.keys(obj).forEach(function (key) {
   if(typeof obj[key] === 'undefined'  ||  obj[key] === null  ){
@@ -220,7 +233,7 @@ Object.keys(obj).forEach(function (key) {
   this.compService.store( obj ).subscribe( 
     
     ( data: MessageResponse )  =>
-      { console.log( JSON.stringify(data)  ) ;
+      { 
         this.showSnackBar( data.message  , data.success );  
         this.refreshData(); 
       },
@@ -232,24 +245,23 @@ Object.keys(obj).forEach(function (key) {
       }
 
      },
-  () => {
-      
-     
-  });
+  () => {}    
+  
+  );
+
 
 }
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private updateForm( id )  {
-
-console.log( "id" , id );
-
  
 
   if( id !== null )
   {  
-    console.log( "id not null " , id );  
+    
     const response= this.searchId( id ) ;
-   // this.dataForm.reset();  
+   
       this.dataForm.setValue(response, { onlySelf: true });   
      
       if ( this.dataForm.get('type').value  === 'compet')
@@ -261,38 +273,21 @@ console.log( "id" , id );
         this.meta.type =  [{'name':'Stage' ,'value':'stage' }  ] ;
       }
       this.dataForm.get('verif').enable();
+
   }
 
   else {
-        
-    console.log( "id is null " , id );  
-   // this.dataForm.reset(); 
-    this.dataForm=null;
-
-    this.createForm();
-        // this.dataForm.get('verif').setValue(false);
-         
-console.log( this.dataForm.value );
-//this.dataForm.reset(); 
-this.dataForm.get('verif').disable();
-this.dataForm.get('verif').setValue(false);
-
-         /* this.dataForm.get('id').setValue(-1);
-          this.dataForm.get('type').setValue('compet');
-          this.dataForm.get('type').enable();
-          this.dataForm.get('bassin').setValue('25');
-
-          this.dataForm.get('max').setValue(0);
-          this.dataForm.get('verif').setValue(false);
-          this.dataForm.get('verif').disable();
-
-          this.dataForm.get('choixnages').setValue(false);
-       //   this.dataForm.get('categories').setValue( this.meta.categories );*/
-          this.meta.type =  [{'name':'Stage' ,'value':'stage' } , {'name':'Compétition' ,'value':'compet'  } ] ;
+   
+    this.dataForm.reset(); 
+    this.dataForm.get('bassin').setValue('25');
+    this.dataForm.get('type').setValue('compet');
+    this.dataForm.get('heure').setValue('07');
+    this.dataForm.get('verif').setValue(false);
+    this.dataForm.get('verif').disable();
+    this.meta.type =  [{'name':'Stage' ,'value':'stage' } , {'name':'Compétition' ,'value':'compet'  } ] ;
 
         }
-
-        this.meta.displayForm=true;
+    this.meta.displayForm=true;
  }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,23 +298,12 @@ private searchId( id )  {
      
         if( d[i].id === id )  
         {
-            
           item =Object.assign({}, d[i]);  
-          
-        //  ( item.verif === '0' ) ? item.verif = false : item.verif = true ;
-       //   ( item.choixnages === '0' ) ? item.choixnages = false : item.choixnages = true ;
-         //  item.debut = new Date( item.debut );
-         //  item.fin = new Date( item.fin );
-        //   item.limite = new Date( item.limite );
-
           delete item.del;
-
           break;
         }  
 
       }
-
-
 
       return item ;
 
@@ -331,21 +315,12 @@ private searchId( id )  {
 public ngOnInit() {
 
       this.createForm();
-    /*  this.dataForm.valueChanges
-       .debounceTime(400)
-      .distinctUntilChanged()
-      .subscribe(data => {
-        console.log('Form changes', data);
-        if ( this.meta.displayForm ) 
-        {
-          console.log('Form changes', data)
-         
-        }
-       
-      })*/
 
       this.compService.list().subscribe(
-        ( data: any[] ) =>{this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
+        ( data: any[] ) =>{
+           this.meta.total = data.length ;
+           this.meta.totdisp = data.length ;  
+           this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
           
             Observable.fromEvent(this.filter.nativeElement, 'keyup')
             .debounceTime(150)
@@ -366,13 +341,6 @@ public ngOnInit() {
   
        },
       () => {
-          console.log('end ok ' + this.dataSource.datas   ) ;
-        //  console.log('search Id .... ' + this.updateForm (10)  );
-         // console.log('search Id .... ' + Object.keys ( this.searchId(10) )  );
-        // this.updateForm (10) 
-         
-
-
       });
 
   }
@@ -433,7 +401,7 @@ export class MyDataSource extends DataSource<any> {
         let v = true;
         if( this.verifiees )
         { 
-           v =(item.verif === '1' );
+           v =(item.verif === true );
         }
         return v;
       });
@@ -489,4 +457,44 @@ export class MyDataSource extends DataSource<any> {
 
 
   disconnect() {}
+}
+
+
+@Component({
+  selector: 'confirm-dialog',
+  templateUrl: 'confirm-dialog.html',
+})
+export class DialogConfirm {
+
+  eprogress=true;
+  ehidden=true;  
+  success=false;
+  color=null;
+  texte_info="Voulez vous supprimer cette compétition?"
+  constructor(public dialogRef: MatDialogRef<DialogConfirm>, 
+              public compService :CompetitionsService,
+              @Inject(MAT_DIALOG_DATA) public data: any)
+              { }
+
+  private executeDelete(){
+      this.ehidden=false;
+      this.eprogress=!this.eprogress;
+      this.compService.delete(this.data.id).subscribe(
+        (data: MessageResponse ) =>{
+          this.texte_info=data.message;
+          if ( data.success ) { this.success=true; this.color="green"}
+          else this.color="red";
+                              },
+        (err: HttpErrorResponse) => { 
+         (err.error instanceof Error) ? this.texte_info='Client side error occured' : this.texte_info='Server side error occured: ' +err.statusText ;
+                },
+
+        () => { 
+          setTimeout( () => this.eprogress=!this.eprogress  , 1000 );
+           }
+      )
+
+
+
+  }
 }

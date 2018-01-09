@@ -104,8 +104,7 @@
 
          <div fxLayout="row" fxLayoutAlign="center center" >
             <div class="content-container" fxLayout="column" fxLayoutAlign="stretch" fxFlex="70"  >
-              <quill-editor placeholder="Saisir un contenu"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
-              <mat-error *ngIf="mailForm.get('body').dirty && mailForm.get('body').invalid"  style='float:right'>{{getErrorBody()}}</mat-error>
+              <quill-editor placeholder="Saisir un contenu !"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
             </div>
             
           </div>
