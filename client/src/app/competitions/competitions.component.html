@@ -186,7 +186,7 @@
 <!-- Name Column -->
 <ng-container matColumnDef="nom">
   <mat-header-cell *matHeaderCellDef mat-sort-header>Nom </mat-header-cell>
-  <mat-cell *matCellDef="let row" [ngStyle]="{'color': row.verif == 1 ? 'green' : 'red'}"  > {{row.nom}} </mat-cell>
+  <mat-cell *matCellDef="let row"  > {{row.nom}} </mat-cell>
 </ng-container>
 
 <!-- Name Column -->
@@ -226,6 +226,15 @@
   <mat-cell *matCellDef="let row"> {{row.fin | date: 'dd MMM yyyy' }} </mat-cell>
  </ng-container>
 
+<!-- Verif Column -->
+<ng-container matColumnDef="verif">
+  <mat-header-cell *matHeaderCellDef mat-sort-header>Verif</mat-header-cell>
+  <mat-cell *matCellDef="let row"  >
+    <mat-icon color='primary' *ngIf="row.verif=='1'" >check_box</mat-icon>
+    <mat-icon color='warn'  *ngIf="row.verif=='0'" >indeterminate_check_box</mat-icon>
+  </mat-cell>
+ </ng-container>
+
 
  <ng-container matColumnDef="id" >
   <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
@@ -246,8 +255,8 @@
   <!-- Header and Row Declarations -->
 
 
-  <mat-header-row *matHeaderRowDef="['nom','lieu','bassin','type', 'debut', 'fin' ,'id'  ]"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['nom','lieu','bassin','type', 'debut', 'fin', 'id'  ]"></mat-row>
+  <mat-header-row *matHeaderRowDef="['nom','lieu','bassin','type', 'debut', 'fin', 'verif' ,'id'  ]"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['nom','lieu','bassin','type', 'debut', 'fin','verif' , 'id'  ]"></mat-row>
 
 
 

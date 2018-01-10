@@ -44,7 +44,7 @@ import { MailtoComponent } from './mailto/mailto.component';
 import { LicenciesComponent } from './licencies/licencies.component';
 
 import { DialogengagementComponent } from './engagements/dialog/dialogengagement.component';
-
+import { DialogEngOverlay} from  './engagements/engagements.component';
 
 import { CompetitionsService } from './services/competitions.service';
 import { LoginService } from './services/login.service';
@@ -107,12 +107,14 @@ export const routes: Routes = [
     LicenciesComponent,
     LoginComponent,
     DialogengagementComponent,
+    DialogEngOverlay,
     MainComponent,
     MytestComponent,
     
   ],
   entryComponents:[
     DialogengagementComponent,
+    DialogEngOverlay,
     DialogConfirm,
   ],
   imports: [

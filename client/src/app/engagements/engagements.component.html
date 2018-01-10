@@ -171,7 +171,10 @@
     <!-- Name Column -->
     <ng-container matColumnDef="presence">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Présence</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.presence | uppercase}}
+        <mat-cell *matCellDef="let row">
+            <mat-icon color='accent'  *ngIf="row.presence == 'at'" >check_box_outline_blank</mat-icon>
+            <mat-icon color='warn'    *ngIf="row.presence == 'ko'" >indeterminate_check_box</mat-icon>
+            <mat-icon color='primary' *ngIf="row.presence == 'ok'" >check_box</mat-icon>
         </mat-cell>
        </ng-container>
     

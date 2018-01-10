@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
+import { Component, OnInit, ViewChild ,ElementRef ,Inject  } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DataSource} from '@angular/cdk/table';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -8,7 +8,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 
-import {EngagementsService  }  from '../services/engagements.service' ;
+import {EngagementsService , MessageResponse }  from '../services/engagements.service' ;
 
 import {DialogengagementComponent  }  from './dialog/dialogengagement.component' ;
 
@@ -184,7 +184,7 @@ private deleteEngage(idcompet) {
     }
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 create( idcompet ) {
 let data={};
 
@@ -198,23 +198,29 @@ let data={};
     
   });
 
-console.log(data);
+console.log(idcompet, data);
 
-    this.engageService.createEngagement(idcompet,data).subscribe(
-      ( response: any[] ) =>{
-        
-        this.refreshData( idcompet );
-       console.log("ok");
+    this.engageService.create(idcompet,data).subscribe(
+      ( response: MessageResponse ) =>{
+
+                this.dialog.open(DialogEngOverlay , {
+                        width: '35%',
+                        height:'20%',
+                        data: response
+                      });
+
+              if( response.success )
+              {
+                if ( this.meta.displayForm )  this.meta.displayForm=false; 
+                this.refreshData( idcompet );
+              }
+                   
+       
         } ,
 
-    (err: HttpErrorResponse)  => { 
-
-      console.log("error");
-    },
-    () => {
-
-
-    });
+    (err: HttpErrorResponse)  => { console.log( "err " + JSON.stringify(err) ) },
+    () => {}
+    );
 
 
 }
@@ -356,4 +362,30 @@ export class MyDataSource extends DataSource<any> {
 
 
   disconnect() {}
+}
+
+@Component({
+  selector:  `overlay-dialog`,
+  template: `<div>
+             <div mat-dialog-content>
+             <p [style.color]="color"  > {{message}}</p>
+             </div>  
+             <div mat-dialog-actions>
+              <button mat-raised-button color="primary"  [mat-dialog-close]="true" cdkFocusInitial >Quitte</button>
+             </div>
+            </div>`,
+  
+})
+export class DialogEngOverlay {
+  color=null;
+  message=""
+  constructor(public dialogRef: MatDialogRef<DialogEngOverlay>,@Inject(MAT_DIALOG_DATA) public data: any)
+              { 
+                
+                ( data.success) ? this.color="green" : this.color="red";
+                this.message=data.message
+
+              }
+
+ 
 }

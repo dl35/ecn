@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+export interface MessageResponse {
+  success: boolean;
+  message: string;
+  }
+
 @Injectable()
 export class EngagementsService {
 
@@ -21,9 +26,9 @@ export class EngagementsService {
    }
 
 
-   createEngagement( id,data ){
+   create( id,data ){
       // post data.id et data.filtre 
-    return  this.http.post('/api/private/engagements/'+id , data) ;
+    return  this.http.post<MessageResponse>('/api/private/engagements/'+id , data) ;
 
    }
 
