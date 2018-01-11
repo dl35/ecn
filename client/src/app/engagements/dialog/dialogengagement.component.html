@@ -92,3 +92,30 @@
   
       
         </div>
+
+             <!-- delete  -->   
+   
+     <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='delete' "  fxLayoutAlign="space-around center" >
+      
+      <br><br>
+      
+               <div   fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="100" >
+                
+                  <mat-selection-list #datas  >
+                    <mat-list-option *ngFor="let data of params.datas">
+                     {{data.nom}} {{data.prenom}} {{data.categorie}}{{data.rang}}
+                    </mat-list-option>
+                  </mat-selection-list>
+                
+              </div>
+               
+           
+                <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;">
+                    
+                </div>
+        
+           
+         
+        
+            
+              </div>

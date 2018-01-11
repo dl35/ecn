@@ -44,7 +44,7 @@ export class CompetitionsComponent implements OnInit {
      displayForm : false ,
     'bassin':[{'name':'25' ,'value':'25'  } , {'name':'50' ,'value':'50'  }  ] ,
     'type': [{'name':'Stage' ,'value':'stage' } , {'name':'Compétition' ,'value':'compet'  } ] ,
-    'entraineur': [{'name':'E1' ,'value':'e1@test.fr'  } , {'name':'E2' ,'value':'e2@test.fr'   } , {'name':'E3' ,'value':'e3@test.fr'   }] ,
+    'entraineur': [] ,
     total : 0,
     totdisp :0
   };
@@ -197,10 +197,10 @@ private openDialog( id ): void {
 private refreshData() {
   
             this.compService.list().subscribe(
-              ( data: any[] ) =>{ 
-                this.meta.total = data.length ; 
-                this.meta.totdisp = data.length ;  
-                this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
+              ( data: any ) =>{ 
+                this.meta.total = data.datas.length ; 
+                this.meta.totdisp = data.datas.length ;  
+                this.dataSource = new MyDataSource(data.datas ,  this.sort , this.paginator) ;
               },  
               (err: HttpErrorResponse)  => { 
                 if (err.error instanceof Error) {
@@ -317,10 +317,11 @@ public ngOnInit() {
       this.createForm();
 
       this.compService.list().subscribe(
-        ( data: any[] ) =>{
-           this.meta.total = data.length ;
-           this.meta.totdisp = data.length ;  
-           this.dataSource = new MyDataSource(data ,  this.sort , this.paginator) ;
+        ( data: any ) =>{
+           this.meta.entraineur = data.entr; 
+           this.meta.total = data.datas.length ;
+           this.meta.totdisp = data.datas.length ;  
+           this.dataSource = new MyDataSource(data.datas ,  this.sort , this.paginator) ;
           
             Observable.fromEvent(this.filter.nativeElement, 'keyup')
             .debounceTime(150)

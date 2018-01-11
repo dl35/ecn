@@ -13,7 +13,7 @@ export class DialogengagementComponent  {
 
   
 
-  params={idcompet:-1,row:null};
+  params={idcompet:-1,row:null,datas:null };
   reponse={progress:false,show:false,error:null,text:null};
   
   categories =[ 

@@ -38,7 +38,6 @@ export class EngagementsComponent implements OnInit {
 
 
   meta={
-    
     displayForm : false ,
     init:false,
     competitions:[],
@@ -52,19 +51,14 @@ export class EngagementsComponent implements OnInit {
     
          // this.dateAdapter.setLocale('fr-FR');
     
-    
-    
        }
 
   ngOnInit() {
 
     this.initForm();
-
-
-    this.engageService.listCompetitions().subscribe(
+   this.engageService.listCompetitions().subscribe(
       ( datas: any[] ) =>{
         this.meta.competitions=datas;
-       
         } ,
   
     (err: HttpErrorResponse)  => { 
@@ -76,11 +70,8 @@ export class EngagementsComponent implements OnInit {
       }*/
 
      },
-    () => {
-
-
-    });
-
+    () => {}
+  );
 
   }
 
@@ -167,7 +158,7 @@ private deleteEngage(idcompet) {
   let dialogRef = this.dialog.open(DialogengagementComponent , {
     width: '75%',
     height:'50%',
-    data: { option: "add" , idcompet: idcompet }
+    data: { option: "delete" , idcompet: idcompet,datas:this.dataSource.datas }
   });
   
   
