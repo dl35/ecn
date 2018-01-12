@@ -41,9 +41,9 @@ export class EngagementsService {
        return  this.http.delete ('/api/private/engagements/'+id ) ;
     }
 
-    remove( id ){
+    remove( idcompet ,idlicencie ){
       // delete 1 licencie de engagement
-       return  this.http.delete ('/api/private/engagements/'+id ) ;
+       return  this.http.delete ('/api/private/engagements/'+idcompet+'/'+idlicencie ) ;
     }
 
 

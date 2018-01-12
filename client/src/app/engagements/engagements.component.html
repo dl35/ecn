@@ -133,8 +133,15 @@
     <ng-container matColumnDef="notification">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Notification </mat-header-cell>
       <mat-cell *matCellDef="let row" > 
-         <div *ngIf="row.id ==-1" ></div>
-          <div *ngIf="row.id !=-1" >{{row.notification}}</div>
+         <div *ngIf="row.id == -1 " ></div>
+          <div *ngIf="row.id !=-1"  >
+              <mat-chip-list>
+                  <mat-chip color="accent" (click)="setNotification(row.id)"  [selected]="row.notification != '0'"  >{{row.notification}}</mat-chip>
+               
+                  </mat-chip-list>
+
+
+          </div>
         </mat-cell>
   
     </ng-container>
@@ -184,19 +191,15 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header>Extranat</mat-header-cell>
           <mat-cell *matCellDef="let row">
               
-                  <div *ngIf="row.id ==-1" ></div>
-                   <div *ngIf="row.id !=-1" > <mat-chip-list>
-                      
-                       <mat-chip color="primary" *ngIf="row.extranat == '0'" selected="false">{{row.extranat}}</mat-chip>
-                       <mat-chip color="primary" *ngIf="row.extranat == '1'" selected="true">{{row.extranat}}</mat-chip>
-                       </mat-chip-list></div>
-              
-
-
-                
-          
+                    <div  *ngIf="row.id ==-1" ></div>
+                    <div *ngIf="row.id !=-1"  >
+                      <mat-chip-list  >
+                      <mat-chip style="cursor:pointer" tooltip="ok" color="primary" (click)="setExtranat(row.id)"  *ngIf="row.extranat == '0'" selected="false"   >{{row.extranat}}</mat-chip>
+                      <mat-chip style="cursor:pointer" color="primary" (click)="setExtranat(row.id)"  *ngIf="row.extranat == '1'" selected="true" >{{row.extranat}}</mat-chip>
+                      </mat-chip-list>
+                    </div>
           </mat-cell>
-         </ng-container>
+      </ng-container>
     
       
       <ng-container matColumnDef="id" >

@@ -117,6 +117,29 @@ let row= this.searchId(id) ;
   });
 
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private setExtranat(id) {
+ 
+  let row= this.searchId(id) ;
+  let value;
+  ( row.extranat == '1' ) ? value="0" : value="1";
+ 
+    let data ={extranat:value };
+    this.engageService.updateEngagement( row.id , data ).subscribe(
+     (response: any ) =>{ 
+          if( response.success ) 
+           {
+            ( value == '1' ) ? row.extranat="1" : row.extranat="0";
+           }
+   
+      } ,
+    (err: HttpErrorResponse)  => {},
+    () => {}  
+  
+  );
+  
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 searchId( id )  {
   let item :any ;
