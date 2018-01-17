@@ -14,36 +14,49 @@ export class EngagementsService {
 
 
 
-
+  // liste des competitions à venir
   listCompetitions(){
     return  this.http.get('/api/private/engagements') ;
    }
 
 
-
+  // engagements d'une competition
    getEngagement( id ){
     return  this.http.get('/api/private/engagements/'+id) ;
    }
 
-
-   create( id,data ){
-      // post data.id et data.filtre 
-    return  this.http.post<MessageResponse>('/api/private/engagements/'+id , data) ;
-
+   // categories pour ajouter
+   getCategories( id, cat ){
+    return  this.http.get('/api/private/engagements/'+id+'/'+cat) ;
    }
 
-    updateEngagement( id,json ){
+   //licencies pour delete
+   getLicencies ( id ){
+    return  this.http.get('/api/private/engagements/'+id+'/delete') ;
+   }
+
+
+   create( id,data ){
+    return  this.http.post<MessageResponse>('/api/private/engagements/'+id , data) ;
+   }
+
+   //ajoute liste licencies
+   append( idcompet,data ){
+    return  this.http.post<MessageResponse>('/api/private/engagements/'+idcompet+'/append' , data) ;
+  }
+
+
+  updateEngagement( id,json ){
     return  this.http.put('/api/private/engagements/'+id , json) ;
     }
 
-    removeAll( id ){
-      // delete tous les engagements 
-       return  this.http.delete ('/api/private/engagements/'+id ) ;
-    }
 
-    remove( idcompet ,idlicencie ){
-      // delete 1 licencie de engagement
-       return  this.http.delete ('/api/private/engagements/'+idcompet+'/'+idlicencie ) ;
+
+   delete( idcompet ,listlicencies ){
+      // delete une liste de licencies de engagement
+console.log(  idcompet , listlicencies );
+
+       return  this.http.delete('/api/private/engagements/'+listlicencies ) ;
     }
 
 

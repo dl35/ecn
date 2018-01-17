@@ -36,7 +36,6 @@ export class EngagementsComponent implements OnInit {
 
 
 
-
   meta={
     displayForm : false ,
     init:false,
@@ -50,7 +49,7 @@ export class EngagementsComponent implements OnInit {
   constructor( private formBuilder: FormBuilder, private engageService: EngagementsService , private snackBar: MatSnackBar ,public dialog: MatDialog ) {
     
          // this.dateAdapter.setLocale('fr-FR');
-    
+
        }
 
   ngOnInit() {
@@ -117,29 +116,7 @@ let row= this.searchId(id) ;
   });
 
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private setExtranat(id) {
- 
-  let row= this.searchId(id) ;
-  let value;
-  ( row.extranat == '1' ) ? value="0" : value="1";
- 
-    let data ={extranat:value };
-    this.engageService.updateEngagement( row.id , data ).subscribe(
-     (response: any ) =>{ 
-          if( response.success ) 
-           {
-            ( value == '1' ) ? row.extranat="1" : row.extranat="0";
-           }
-   
-      } ,
-    (err: HttpErrorResponse)  => {},
-    () => {}  
-  
-  );
-  
-  }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 searchId( id )  {
   let item :any ;
@@ -164,6 +141,10 @@ private sendMail(idcompet) {
     data: { option: "mails" , idcompet: idcompet  }
   });
   
+  dialogRef.beforeClose().subscribe(result => {
+            this.refreshData(idcompet);
+      });
+
   
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,6 +155,10 @@ private addEngage(idcompet) {
     data: { option: "add" , idcompet: idcompet }
   });
   
+  dialogRef.beforeClose().subscribe(result => {
+    this.refreshData(idcompet);
+});
+
   
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,9 +166,11 @@ private deleteEngage(idcompet) {
   let dialogRef = this.dialog.open(DialogengagementComponent , {
     width: '75%',
     height:'50%',
-    data: { option: "delete" , idcompet: idcompet,datas:this.dataSource.datas }
+    data: { option: "delete" , idcompet: idcompet }
   });
-  
+  dialogRef.beforeClose().subscribe(result => {
+            this.refreshData(idcompet);
+       });
   
   }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,7 +184,18 @@ private deleteEngage(idcompet) {
 
     }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private showSnackBar( message , info)
+    {
+      let style= 'snack-success';
+      if ( !info )  style='snack-error';
+    
+      this.snackBar.open( message  , '', {
+        duration: 2000,
+        extraClasses: [ style ]
+      });
+    
+    }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 create( idcompet ) {
 let data={};
@@ -232,7 +230,12 @@ console.log(idcompet, data);
        
         } ,
 
-    (err: HttpErrorResponse)  => { console.log( "err " + JSON.stringify(err) ) },
+    (err: HttpErrorResponse)  => { 
+      if (err.error instanceof Error) {
+        this.showSnackBar("error Client: " +err.status+":"+err.statusText , false );
+      } else {
+        this.showSnackBar(err.status+" "+err.error.message , false );
+      }  },
     () => {}
     );
 
@@ -283,8 +286,6 @@ private validateCat(formGroup: FormGroup) {
     }
   };
 }
-
-
 
 
 

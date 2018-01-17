@@ -3,23 +3,20 @@
   
 
   <div fxLayout="row"  fxLayoutAlign="space-evenly center" fxFlex="100">
-      <mat-chip>
-          {{params?.row.nom}} {{params?.row.prenom}} {{params?.row.categorie}} {{params?.row.rang}} 
-        </mat-chip>
+    
 
     <button   mat-raised-button    color="primary"  (click)="sendNotification(params?.row.id)"  >
        <mat-icon class="mat-24" >email</mat-icon> Notification ({{params?.row.notification}})
     </button>
 
-  
+    <mat-chip>
+      {{params?.row.nom}} {{params?.row.prenom}} {{params?.row.categorie}} {{params?.row.rang}} 
+    </mat-chip>
      
     <mat-checkbox class="example-margin" *ngIf="params?.row.notification >= 1 "  [checked]="params?.row.extranat == '1' " [value]="params?.row.extranat"  (change)="setExtranat($event.source.value)"   >Extranat</mat-checkbox>
 
-      
+     
 
-    <button   mat-raised-button    color="primary"  (click)="delete(params?.row.id)"  *ngIf="params?.row.notification == 0" >
-        <mat-icon class="mat-24" >delete</mat-icon>Supprimer
-     </button>
 
     </div>
 
@@ -63,23 +60,51 @@
     
      <!-- add all  -->   
    
-     <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='add' "  fxLayoutAlign="space-around center" >
+     <div class="engage-body mat-elevation-z10" fxLayout="column"   *ngIf="params.option=='add' "   >
       
 <br><br>
 
-         <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="100" >
+         <div fxLayout="row"  fxLayoutAlign="space-evenly center" fxFlex="100" >
           <mat-form-field>
-          <mat-select placeholder="Categories"  >
+          <mat-select placeholder="Categories" (change)="changeCat($event.value);" >
             <mat-option *ngFor="let cat of categories" [value]="cat.value">
               {{cat.name}}
             </mat-option>
           </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+        
+          
+              <mat-checkbox  *ngIf="paramAppend.listecategories.length > 0 " [checked]="paramAppend.listecategories.length == paramAppend.listeselected.length"  (change)=" ($event.checked) ?  sellic.selectAll() : sellic.deselectAll(); "    >selection</mat-checkbox>
+          
+        
+              <button mat-raised-button color="accent" [disabled]="paramAppend.listeselected.length == 0 " (click)="add()"  >Ajouter</button>
+            
+              <button mat-raised-button color="primary" mat-dialog-close  >Quitter</button>
+
         </div>
          
+        <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;" [fxShow]="paramAppend.show">
+         
+            <mat-chip-list>
+                <mat-chip color="error"   selected="true" *ngIf="paramAppend.error"  >{{paramAppend?.text}}</mat-chip>
+                <mat-chip color="accent"  selected="true" *ngIf="!paramAppend.error" >{{paramAppend?.text}}</mat-chip>
+              </mat-chip-list>
+        </div>
+
+
+
      
-          <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;">
-              
+          <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 14px;" >
+            
+            <div style="display: block;max-height:300px;overflow:auto;" >
+            <mat-selection-list #sellic  [(ngModel)]="paramAppend.listeselected"   >
+              <mat-list-option *ngFor="let lic of paramAppend.listecategories " [value]="lic.id"  [selected]="lic.selected" >
+                {{lic.nom}} {{lic.prenom}} {{lic.rang}}
+              </mat-list-option>
+            </mat-selection-list>
+          </div>
+
+
           </div>
   
      
@@ -88,26 +113,46 @@
       
         </div>
 
-             <!-- delete  -->   
+             <!--Delete ALL  -->   
    
-     <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='delete' "  fxLayoutAlign="space-around center" >
+     <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='delete' "  >
       
       <br><br>
       
-               <div   fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="100" >
-                
-                  <mat-selection-list #datas  >
-                    <mat-list-option *ngFor="let data of params.datas">
-                     {{data.nom}} {{data.prenom}} {{data.categorie}}{{data.rang}}
-                    </mat-list-option>
-                  </mat-selection-list>
-                
-              </div>
-               
-           
-                <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;">
-                    
-                </div>
+      <div fxLayout="row"  fxLayoutAlign="space-evenly center" fxFlex="100" >
+          
+              <mat-checkbox  *ngIf="paramDelete.listecategories.length > 0 " [checked]="paramDelete.listecategories.length == paramDelete.listeselected.length"  (change)=" ($event.checked) ?  sellic.selectAll() : sellic.deselectAll(); "    >selection</mat-checkbox>
+          
+        
+              <button mat-raised-button color="accent" [disabled]="paramDelete.listeselected.length == 0 " (click)="delete()"  >Supprimer</button>
+            
+              <button mat-raised-button color="primary" mat-dialog-close  >Quitter</button>
+
+        </div>
+         
+        <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 4px;" [fxShow]="paramDelete.show">
+         
+            <mat-chip-list>
+                <mat-chip color="error"   selected="true" *ngIf="paramDelete.error"  >{{paramDelete?.text}}</mat-chip>
+                <mat-chip color="accent"  selected="true" *ngIf="!paramDelete.error" >{{paramDelete?.text}}</mat-chip>
+              </mat-chip-list>
+        </div>
+
+
+
+     
+          <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top: 14px;" >
+            
+            <div style="display: block;max-height:300px;overflow:auto;" >
+            <mat-selection-list #sellic  [(ngModel)]="paramDelete.listeselected"   >
+              <mat-list-option *ngFor="let lic of paramDelete.listecategories " [value]="lic.id"  [selected]="lic.selected" >
+                {{lic.nom}} {{lic.prenom}} {{lic.rang}}
+              </mat-list-option>
+            </mat-selection-list>
+          </div>
+
+
+          </div>
         
            
          

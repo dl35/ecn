@@ -92,7 +92,7 @@
            <div fxLayout="row"  fxLayoutAlign="space-around center" >
            
             <button mat-mini-fab color="primary"  (click)="sendMail(compet.value)" matTooltip="Envoyer les mails!"  > <mat-icon>contact_mail</mat-icon></button>
-            <button mat-mini-fab color="primary"  (click)="addEngage('-1') "  matTooltip="Ajouter licenciés!"    ><mat-icon>add</mat-icon></button>
+            <button mat-mini-fab color="primary"  (click)="addEngage(compet.value) "  matTooltip="Ajouter licenciés!"    ><mat-icon>add</mat-icon></button>
             <button mat-mini-fab color="primary"  (click)="deleteEngage(compet.value) "  matTooltip="Supprimer licenciés!"   ><mat-icon>delete</mat-icon></button>
             <mat-form-field floatPlaceholder="never"  fxFlex="65" >
               
@@ -136,7 +136,7 @@
          <div *ngIf="row.id == -1 " ></div>
           <div *ngIf="row.id !=-1"  >
               <mat-chip-list>
-                  <mat-chip color="accent" (click)="setNotification(row.id)"  [selected]="row.notification != '0'"  >{{row.notification}}</mat-chip>
+                  <mat-chip color="accent"   [selected]="row.notification != '0'"  >{{row.notification}}</mat-chip>
                
                   </mat-chip-list>
 
@@ -180,7 +180,7 @@
     <ng-container matColumnDef="presence">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Présence</mat-header-cell>
         <mat-cell *matCellDef="let row">
-            <mat-icon color='accent'  *ngIf="row.presence == 'at'" >check_box_outline_blank</mat-icon>
+            <mat-icon color='accent'  *ngIf="row.presence == 'at'" >help</mat-icon>
             <mat-icon color='warn'    *ngIf="row.presence == 'ko'" >indeterminate_check_box</mat-icon>
             <mat-icon color='primary' *ngIf="row.presence == 'ok'" >check_box</mat-icon>
         </mat-cell>
@@ -194,8 +194,8 @@
                     <div  *ngIf="row.id ==-1" ></div>
                     <div *ngIf="row.id !=-1"  >
                       <mat-chip-list  >
-                      <mat-chip style="cursor:pointer" tooltip="ok" color="primary" (click)="setExtranat(row.id)"  *ngIf="row.extranat == '0'" selected="false"   >{{row.extranat}}</mat-chip>
-                      <mat-chip style="cursor:pointer" color="primary" (click)="setExtranat(row.id)"  *ngIf="row.extranat == '1'" selected="true" >{{row.extranat}}</mat-chip>
+                      <mat-chip style="cursor:pointer" tooltip="ok" color="primary"   *ngIf="row.extranat == '0'" selected="false"   >{{row.extranat}}</mat-chip>
+                      <mat-chip style="cursor:pointer" color="primary"   *ngIf="row.extranat == '1'" selected="true" >{{row.extranat}}</mat-chip>
                       </mat-chip-list>
                     </div>
           </mat-cell>
