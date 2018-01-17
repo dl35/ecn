@@ -81,8 +81,6 @@ export class CompetitionsComponent implements OnInit {
     {validator: this.allDateValidator  }
   );
   this.setValidator();
-
- 
   }
  
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,10 +89,14 @@ private catValidator(gcat: FormGroup ) {
 
  let res=false;
    Object.keys( gcat.controls).forEach(key => {
-     if( gcat.get(key).value ) { res=true;}
+     if( gcat.get(key).value ) { 
+       res=true; }
    });
-   if (res)  return null  ;
-   else  return {catError:true};
+   if (res){
+     return null;
+    } else { 
+     return {catError:true}; 
+    }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private setValidator() {
