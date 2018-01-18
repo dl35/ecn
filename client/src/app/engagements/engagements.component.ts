@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild ,ElementRef ,Inject  } from '@angular/core';
+import { Component, OnInit, ViewChild , ElementRef , Inject  } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DataSource} from '@angular/cdk/table';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -8,14 +8,10 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 
-import {EngagementsService , MessageResponse }  from '../services/engagements.service' ;
-
-import {DialogengagementComponent  }  from './dialog/dialogengagement.component' ;
-
-import { MatSort ,MatSnackBar ,MatPaginator } from '@angular/material';
+import {EngagementsService , MessageResponse } from '../services/engagements.service' ;
+import {DialogengagementComponent  } from './dialog/dialogengagement.component' ;
+import { MatSort , MatSnackBar , MatPaginator } from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-
-
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
 import { forEach } from '@angular/router/src/utils/collection';
 
@@ -36,18 +32,21 @@ export class EngagementsComponent implements OnInit {
 
 
 
-  meta={
+  meta= {
     displayForm : false ,
-    init:false,
-    competitions:[],
-    //engagements:[],
+    init: false,
+    competitions: [],
+    // engagements:[],
     total : 0,
-    totdisp :0
+    totdisp : 0
   };
 
 
-  constructor( private formBuilder: FormBuilder, private engageService: EngagementsService , private snackBar: MatSnackBar ,public dialog: MatDialog ) {
-    
+  constructor( private formBuilder: FormBuilder,
+    private engageService: EngagementsService,
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog ) {
+
          // this.dateAdapter.setLocale('fr-FR');
 
        }
@@ -56,11 +55,11 @@ export class EngagementsComponent implements OnInit {
 
     this.initForm();
    this.engageService.listCompetitions().subscribe(
-      ( datas: any[] ) =>{
-        this.meta.competitions=datas;
+      ( datas: any[] ) => {
+        this.meta.competitions = datas;
         } ,
-  
-    (err: HttpErrorResponse)  => { 
+
+    (err: HttpErrorResponse)  => {
      /*
       if (err.error instanceof Error) {
         this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
@@ -76,57 +75,56 @@ export class EngagementsComponent implements OnInit {
 
 
   initForm() {
-    
+
         this.dataForm = this.formBuilder.group({
-          av1:false,
-          av2:false,
-          je1:false,
-          je2:false,
-          je3:false,
-          ju1:false,
-          ju2:false,
-          ju3:false,
-          ju4:false,
-          se1:false,
-          se2:false,
-          dep:false,
-          reg:false,
-          nat:false,
-          ma:false
+          av1: false,
+          av2: false,
+          je1: false,
+          je2: false,
+          je3: false,
+          ju1: false,
+          ju2: false,
+          ju3: false,
+          ju4: false,
+          se1: false,
+          se2: false,
+          dep: false,
+          reg: false,
+          nat: false,
+          ma: false
         } ,
-       
+
 
         {
           validator: (formGroup: FormGroup) => {
             return this.validateCat (formGroup);
           }
         }) ;
-     
+
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private edit(id) {
-let row= this.searchId(id) ;
+const row = this.searchId(id) ;
 
 // notif_unique,extranat,
-  let dialogRef = this.dialog.open(DialogengagementComponent , {
+  const dialogRef = this.dialog.open(DialogengagementComponent , {
     width: '75%',
-    height:'50%',
-    data: { option: "action" , row:row }
+    height: '50%',
+    data: { option: 'action' , row: row }
   });
 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 searchId( id )  {
-  let item :any ;
-  let d =   this.dataSource.datas;
-  for (var i = 0; i < d.length ; i++) {
+  let item: any ;
+  const d =   this.dataSource.datas;
+  for (let i = 0; i < d.length ; i++) {
     item = d[i];
-    if( item.id == id )  
-    {
+    if ( item.id === id ) {
       break;
-    }  
+    }
 
   }
 
@@ -135,106 +133,108 @@ searchId( id )  {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private sendMail(idcompet) {
-  let dialogRef = this.dialog.open(DialogengagementComponent , {
+  const dialogRef = this.dialog.open(DialogengagementComponent , {
     width: '65%',
-    height:'35%',
-    data: { option: "mails" , idcompet: idcompet  }
+    height: '35%',
+    data: { option: 'mails' , idcompet: idcompet  }
   });
-  
+
   dialogRef.beforeClose().subscribe(result => {
             this.refreshData(idcompet);
       });
 
-  
+
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 private addEngage(idcompet) {
-  let dialogRef = this.dialog.open(DialogengagementComponent , {
+  const dialogRef = this.dialog.open(DialogengagementComponent , {
     width: '75%',
-    height:'50%',
-    data: { option: "add" , idcompet: idcompet }
+    height: '50%',
+    data: { option: 'add' , idcompet: idcompet }
   });
-  
+
   dialogRef.beforeClose().subscribe(result => {
     this.refreshData(idcompet);
 });
 
-  
+
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 private deleteEngage(idcompet) {
-  let dialogRef = this.dialog.open(DialogengagementComponent , {
+  const dialogRef = this.dialog.open(DialogengagementComponent , {
     width: '75%',
-    height:'50%',
-    data: { option: "delete" , idcompet: idcompet }
+    height: '50%',
+    data: { option: 'delete' , idcompet: idcompet }
   });
   dialogRef.beforeClose().subscribe(result => {
             this.refreshData(idcompet);
        });
-  
+
   }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    private  changeCompet(e) {
-       
-     if( !this.meta.init )  this.meta.init=true;
-     if ( this.meta.displayForm )  this.meta.displayForm=false; 
-         
-        let id = e.value;
+
+     if ( !this.meta.init ) {
+        this.meta.init = true; }
+     if ( this.meta.displayForm ) {
+        this.meta.displayForm = false; }
+
+        const id = e.value;
         this.refreshData( id );
 
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private showSnackBar( message , info)
-    {
-      let style= 'snack-success';
-      if ( !info )  style='snack-error';
-    
+    private showSnackBar( message , info) {
+      let style = 'snack-success';
+      if ( !info ) {
+        style = 'snack-error'; }
+
       this.snackBar.open( message  , '', {
         duration: 2000,
         extraClasses: [ style ]
       });
-    
+
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 create( idcompet ) {
-let data={};
+const data = {};
 
   Object.keys(this.dataForm.controls).forEach(key => {
-    if ( this.dataForm.get(key).value )
-    {
-      data[key]=true;
+    if ( this.dataForm.get(key).value ) {
+      data[key] = true;
     }
 
 
-    
+
   });
 
 console.log(idcompet, data);
 
-    this.engageService.create(idcompet,data).subscribe(
-      ( response: MessageResponse ) =>{
+    this.engageService.create(idcompet, data).subscribe(
+      ( response: MessageResponse ) => {
 
                 this.dialog.open(DialogEngOverlay , {
                         width: '35%',
-                        height:'20%',
+                        height: '20%',
                         data: response
                       });
 
-              if( response.success )
-              {
-                if ( this.meta.displayForm )  this.meta.displayForm=false; 
+              if ( response.success ) {
+                if ( this.meta.displayForm ) {
+                  this.meta.displayForm = false;
+                }
                 this.refreshData( idcompet );
               }
-                   
-       
+
+
         } ,
 
-    (err: HttpErrorResponse)  => { 
+    (err: HttpErrorResponse)  => {
       if (err.error instanceof Error) {
-        this.showSnackBar("error Client: " +err.status+":"+err.statusText , false );
+        this.showSnackBar('error Client: ' + err.status + ':' + err.statusText , false );
       } else {
-        this.showSnackBar(err.status+" "+err.error.message , false );
+        this.showSnackBar(err.status + ' ' + err.error.message , false );
       }  },
     () => {}
     );
@@ -243,15 +243,17 @@ console.log(idcompet, data);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-private refreshData( id ){
+private refreshData( id ) {
   this.engageService.getEngagement(id).subscribe(
-    ( response: any[] ) =>{
-       
-      if ( response.length == 0 ) { if ( !this.meta.displayForm )  this.meta.displayForm=true; }
-      else     this.dataSource = new MyDataSource( response ,  this.sort , this.paginator) ; 
+    ( response: any[] ) => {
+
+      if ( response.length === 0 ) {
+        if ( !this.meta.displayForm ) {
+          this.meta.displayForm = true; }
+         } else {this.dataSource = new MyDataSource( response ,  this.sort , this.paginator) ; }
       } ,
 
-  (err: HttpErrorResponse)  => { 
+  (err: HttpErrorResponse)  => {
    /*
     if (err.error instanceof Error) {
       this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
@@ -261,7 +263,7 @@ private refreshData( id ){
 
    },
   () => {
-     
+
     this.dataForm.reset();
 
   });
@@ -271,9 +273,9 @@ private refreshData( id ){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 private validateCat(formGroup: FormGroup) {
-  for (let key in formGroup.controls) {
+  for (const key in formGroup.controls) {
     if (formGroup.controls.hasOwnProperty(key)) {
-      let control: FormControl = <FormControl>formGroup.controls[key];
+      const control: FormControl = <FormControl>formGroup.controls[key];
       if (control.value) {
         return null;
       }
@@ -299,15 +301,15 @@ export class MyDataSource extends DataSource<any> {
   set filter(filter: string) { this._filterChange.next(filter); }
 
 
-  constructor(public datas: any[] , private mysort: MatSort ,private mypaginator:  MatPaginator) {
+  constructor(public datas: any[] , private mysort: MatSort , private mypaginator:  MatPaginator) {
     super();
 
-    this.mypaginator._intl.itemsPerPageLabel="items / page";
+    this.mypaginator._intl.itemsPerPageLabel = 'items / page';
   }
 
 
   connect(): Observable<Element[]> {
-     
+
 
     const displayDataChanges = [
       this.datas,
@@ -318,39 +320,36 @@ export class MyDataSource extends DataSource<any> {
 
     return Observable.merge(...displayDataChanges).map((e) => {
 
-  
 
-      const datasorted = this.getSortedData(); 
+
+      const datasorted = this.getSortedData();
 
       const datafilter  = datasorted.slice().filter((item: any) => {
-        let searchStr = (item.nom +" "+ item.lieu +" "+ item.type ).toLowerCase();
-        //this.mypaginator.pageIndex =0 ;
+        const searchStr = (item.nom + ' ' + item.lieu + ' ' + item.type ).toLowerCase();
+        // this.mypaginator.pageIndex =0 ;
 
-        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
-      this.mypaginator.length =datafilter.length;
-      
-      if(this.mypaginator.pageIndex * this.mypaginator.pageSize >  this.mypaginator.length ) this.mypaginator.pageIndex =0;
+      this.mypaginator.length = datafilter.length;
+
+      if (this.mypaginator.pageIndex * this.mypaginator.pageSize >  this.mypaginator.length ) {
+         this.mypaginator.pageIndex = 0; }
 
       const startIndex = this.mypaginator.pageIndex * this.mypaginator.pageSize;
       return datafilter.splice(startIndex, this.mypaginator.pageSize);
 
-
-
-
-
-    });;
+    });
 
   }
 
 
   getSortedData(): Element[] {
-    if (!this.mysort.active || this.mysort.direction == '') { return this.datas; }
-   
-    const data = this.datas.slice();
-    console.log ("sorted..."  );
+    if (!this.mysort.active || this.mysort.direction === '') { return this.datas; }
 
-   
+    const data = this.datas.slice();
+    console.log ('sorted...'  );
+
+
 
     return data.sort((a, b) => {
       let propertyA: number|string = '';
@@ -359,18 +358,18 @@ export class MyDataSource extends DataSource<any> {
 
 
       switch (this.mysort.active) {
-        
+
         case 'nom': [propertyA, propertyB] = [a.nom, b.nom]; break;
         case 'lieu': [propertyA, propertyB] = [a.lieu, b.lieu]; break;
-        
-       
-       
+
+
+
       }
 
-      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
-      return (valueA < valueB ? -1 : 1) * (this.mysort.direction == 'asc' ? 1 : -1);
+      return (valueA < valueB ? -1 : 1) * (this.mysort.direction === 'asc' ? 1 : -1);
     });
   }
 
@@ -380,27 +379,27 @@ export class MyDataSource extends DataSource<any> {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector:  `overlay-dialog`,
   template: `<div>
              <div mat-dialog-content>
              <p [style.color]="color"  > {{message}}</p>
-             </div>  
+             </div>
              <div mat-dialog-actions>
               <button mat-raised-button color="primary"  [mat-dialog-close]="true" cdkFocusInitial >Quitte</button>
              </div>
             </div>`,
-  
+
 })
+// tslint:disable-next-line:component-class-suffix
 export class DialogEngOverlay {
-  color=null;
-  message=""
-  constructor(public dialogRef: MatDialogRef<DialogEngOverlay>,@Inject(MAT_DIALOG_DATA) public data: any)
-              { 
-                
-                ( data.success) ? this.color="green" : this.color="red";
-                this.message=data.message
+  color= null;
+  message= '';
+  constructor(public dialogRef: MatDialogRef<DialogEngOverlay>, @Inject(MAT_DIALOG_DATA) public data: any) {
+                ( data.success) ? this.color = 'green' : this.color = 'red';
+                this.message = data.message;
 
               }
 
- 
+
 }

@@ -12,23 +12,26 @@ export class LicenciesService {
 
   constructor(private http: HttpClient) {}
 
-  public list(){
+  public list() {
     return  this.http.get('/api/private/licencies') ;
    }
 
   public store(json ) {
-    if (json.id == "-1"  )  return this.post(json)
-    else return this.put(json);
+    if (json.id === '-1'  ) {
+      return this.post(json);
+    } else {
+       return this.put(json);
+    }
     }
 
-  private post ( json ){
-      const url = '/api/private/licencies/'+json.id;
+  private post ( json ) {
+      const url = '/api/private/licencies/' + json.id;
       return  this.http.post<MessageResponse>( url , json ) ;
   }
 
 
-  private put ( json ){
-    const url = '/api/private/licencies/'+json.id;
+  private put ( json ) {
+    const url = '/api/private/licencies/' + json.id;
     return  this.http.put<MessageResponse>( url , json ) ;
   }
 

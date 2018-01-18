@@ -15,48 +15,48 @@ export class EngagementsService {
 
 
   // liste des competitions à venir
-  listCompetitions(){
+  listCompetitions() {
     return  this.http.get('/api/private/engagements') ;
    }
 
 
   // engagements d'une competition
-   getEngagement( id ){
-    return  this.http.get('/api/private/engagements/'+id) ;
+   getEngagement( id ) {
+    return  this.http.get('/api/private/engagements/' + id) ;
    }
 
    // categories pour ajouter
-   getCategories( id, cat ){
-    return  this.http.get('/api/private/engagements/'+id+'/'+cat) ;
+   getCategories( id, cat ) {
+    return  this.http.get('/api/private/engagements/' + id + '/' + cat) ;
    }
 
-   //licencies pour delete
-   getLicencies ( id ){
-    return  this.http.get('/api/private/engagements/'+id+'/delete') ;
+   // licencies pour delete
+   getLicencies ( id ) {
+    return  this.http.get('/api/private/engagements/' + id + '/delete') ;
    }
 
 
-   create( id,data ){
-    return  this.http.post<MessageResponse>('/api/private/engagements/'+id , data) ;
+   create( id, data ) {
+    return  this.http.post<MessageResponse>('/api/private/engagements/' + id , data) ;
    }
 
-   //ajoute liste licencies
-   append( idcompet,data ){
-    return  this.http.post<MessageResponse>('/api/private/engagements/'+idcompet+'/append' , data) ;
+   // ajoute liste licencies
+   append( idcompet, data ) {
+    return  this.http.post<MessageResponse>('/api/private/engagements/' + idcompet + '/append' , data) ;
   }
 
 
-  updateEngagement( id,json ){
-    return  this.http.put('/api/private/engagements/'+id , json) ;
+  updateEngagement( id, json ) {
+    return  this.http.put('/api/private/engagements/' + id , json) ;
     }
 
 
 
-   delete( idcompet ,listlicencies ){
+   delete( idcompet , listlicencies ) {
       // delete une liste de licencies de engagement
 console.log(  idcompet , listlicencies );
 
-       return  this.http.delete('/api/private/engagements/'+listlicencies ) ;
+       return  this.http.delete('/api/private/engagements/' + listlicencies ) ;
     }
 
 

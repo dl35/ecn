@@ -4,15 +4,14 @@ import { HttpClient } from '@angular/common/http';
 
 
 export class Profile {
-  competitions:boolean;
-  licencies:boolean;
-  engagments:boolean;
-  manage:boolean
-constructor( c:boolean   )
-{
-  this.competitions =c ;
+  competitions: boolean;
+  licencies: boolean;
+  engagments: boolean;
+  manage: boolean;
 
-}
+  constructor( c: boolean ) {
+  this.competitions = c ;
+  }
 
 
 }
@@ -22,10 +21,10 @@ constructor( c:boolean   )
 @Injectable()
 export class LoginService {
 
-  
-   public profile :Profile ;
 
-  constructor(private http: HttpClient) {  
+   public profile: Profile ;
+
+  constructor(private http: HttpClient) {
 
   }
 
@@ -35,41 +34,43 @@ return this.profile;
 
 }
 
-public setTest( profile :Profile  ) {
-  this.profile= profile ;
+public setTest( profile: Profile  ) {
+  this.profile = profile ;
 
 }
 
-    signup( value :any ) {
+    signup( value: any ) {
 
      this.profile = new Profile(false);
 
-   return this.http.post("/api/private/signup" , value) ;
+   return this.http.post('/api/private/signup' , value) ;
     }
 
     signout() {
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("profile");
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('profile');
     }
 
-    
+
 
    getRole() {
 
-        if(  ! this.checkCredentials()  )   return false;
-        else {
-          var u= JSON.parse( sessionStorage.getItem( "token" ) ) ;
-              return u.role;
+        if (  ! this.checkCredentials()  ) {
+            return false;
+        } else {
+            const u = JSON.parse( sessionStorage.getItem( 'token' ) ) ;
+            return u.role;
         }
 
     }
 
 
-   checkCredentials(){
-    if (sessionStorage.getItem("token") === null){
+   checkCredentials() {
+    if (sessionStorage.getItem('token') === null) {
       return false;
+    } else {
+      return true;
     }
-    else return true;
 
   }
 

@@ -14,13 +14,13 @@ export class MailtoService {
 
 
 
-      get(){
+      get() {
         return  this.http.get('/api/private/mailto') ;
        }
-    
-       post(data){
-         let url = '/api/private/mailto';
-         return  this.http.post( url,data) ;
+
+       post(data) {
+         const url = '/api/private/mailto';
+         return  this.http.post( url, data) ;
 
        }
 

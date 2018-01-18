@@ -44,7 +44,7 @@ import { MailtoComponent } from './mailto/mailto.component';
 import { LicenciesComponent } from './licencies/licencies.component';
 
 import { DialogengagementComponent } from './engagements/dialog/dialogengagement.component';
-import { DialogEngOverlay} from  './engagements/engagements.component';
+import { DialogEngOverlay} from './engagements/engagements.component';
 
 import { CompetitionsService } from './services/competitions.service';
 import { LoginService } from './services/login.service';
@@ -71,7 +71,7 @@ export const routes: Routes = [
   { path: 'competitions', component: CompetitionsComponent },
   { path: 'mailto', component: MailtoComponent },
   { path: '**', redirectTo: '/login',    pathMatch: 'full'  }
-  
+
 ];
 */
 
@@ -89,7 +89,7 @@ export const routes: Routes = [
 ]},
 
   { path: '**',   component: LoginComponent   }
-  
+
 ];
 
 
@@ -110,7 +110,7 @@ export const routes: Routes = [
     DialogEngOverlay,
     MainComponent,
     MytestComponent,
-    
+
   ],
   entryComponents:[
     DialogengagementComponent,
@@ -134,7 +134,7 @@ export const routes: Routes = [
   //  {provide: DateAdapter, useClass: myDateAdapter} ,
 
   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
-    CompetitionsService ,MailtoService, LoginService, LicenciesService, EngagementsService ,AuthGuard],
+    CompetitionsService , MailtoService, LoginService, LicenciesService, EngagementsService , AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

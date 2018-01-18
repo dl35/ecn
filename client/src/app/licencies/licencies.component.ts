@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild ,ElementRef  } from '@angular/core';
-import { LicenciesService , MessageResponse   }  from '../services/licencies.service' ;
-import { MatSort,MatSnackBar,MatPaginator } from '@angular/material';
+import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
+import { LicenciesService , MessageResponse   } from '../services/licencies.service' ;
+import { MatSort, MatSnackBar, MatPaginator } from '@angular/material';
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataSource } from '@angular/cdk/collections';
@@ -28,106 +28,105 @@ export class LicenciesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
 
 
 
   invalid = {
-    mail:"Adresse email invalide" ,
-    tel:"Téléphone email invalide" 
+    mail: 'Adresse email invalide' ,
+    tel: 'Téléphone email invalide'
 
   } ;
 
 
-  meta={
+  meta= {
     displayForm : false ,
-    
-    //rang:[{"value": 1  } , {"value": 2 } ,{"value": 3 }],
-    rang:['-' ,'1','2','3','4' ],
-    banque:['CA','CMB'],
-    officiel:['Non','A','B','C'],
-    sexe:['F','H'] ,
-    type:[{"name":"Ren" ,"value":"R" } , {"name":"Nou" ,"value":"N" } ] ,
-    niveau:[{"name":"Dep" ,"value":"Dep" } , {"name":"Reg" ,"value":"Reg" } , {"name":"Nat" ,"value":"Nat" }] ,
-    categorie:[ {"name":"Avenir" ,"value":"AV" } , {"name":"Jeune" ,"value":"JE" } ,{"name":"Junior" ,"value":"JU" },{"name":"Senior" ,"value":"SE" },{"name":"Master" ,"value":"MA" }] ,
+    rang: ['-' , '1', '2', '3', '4' ],
+    banque: ['CA', 'CMB'],
+    officiel: ['Non', 'A', 'B', 'C'],
+    sexe: ['F', 'H'] ,
+    type: [{'name': 'Ren' , 'value': 'R' } , {'name': 'Nou' , 'value': 'N' } ] ,
+    niveau: [{'name': 'Dep' , 'value': 'Dep' } , {'name': 'Reg' , 'value': 'Reg' } , {'name': 'Nat' , 'value': 'Nat' }] ,
+    // tslint:disable-next-line:max-line-length
+    categorie: [ {'name': 'Avenir' , 'value': 'AV' } , {'name': 'Jeune' , 'value': 'JE' } , {'name': 'Junior' , 'value': 'JU' }, {'name': 'Senior' , 'value': 'SE' }, {'name': 'Master' , 'value': 'MA' }] ,
     total : 0,
-    totdisp :0
-  }
+    totdisp : 0
+  };
 
-  
 
-  myfilter={sexe:'', categorie:'', type:''};
+
+  myfilter= {sexe: '', categorie: '', type: ''};
 
 
 
 
   constructor( private formBuilder: FormBuilder, private licservice: LicenciesService , private snackBar: MatSnackBar ) {
 
-          
+
        }
 
-       
+
        saveForm() {
-        
-        this.meta.displayForm=false;
-        localStorage.setItem('key' ,JSON.stringify ( this.dataForm.value )  );
-        
-        
-          this.licservice.store( this.dataForm.value ).subscribe( 
-            
+
+        this.meta.displayForm = false;
+        localStorage.setItem('key' , JSON.stringify ( this.dataForm.value )  );
+
+
+          this.licservice.store( this.dataForm.value ).subscribe(
+
             ( data: MessageResponse )  =>  { console.log( JSON.stringify(data)  ) ;  this.showSnackBar( data.message  , data.success );  },
-            (err: HttpErrorResponse)  => { 
+            (err: HttpErrorResponse)  => {
               if (err.error instanceof Error) {
-                this.showSnackBar("Client-side error occured.", false );
+                this.showSnackBar('Client-side error occured.', false );
               } else {
-                this.showSnackBar("Server-side error occured." +err.statusText  , false );
+                this.showSnackBar('Server-side error occured.' + err.statusText  , false );
               }
-        
+
              },
           () => {
-              
-             
+
+
           });
-        
-        
-        
-        
+
+
+
+
         }
 
 
        initForm() {
-        
-            //Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') , 
-        
+
             this.dataForm = this.formBuilder.group({
               id: ['-1' ],
               nom: [ null , [Validators.required] ],
               prenom:  [ null , [Validators.required] ],
               date:  [ new Date() , [Validators.required] ],
-              sexe:  [ null , [Validators.required] ], 
+              sexe:  [ null , [Validators.required] ],
 
-              categorie:  [ null , [Validators.required] ], 
-              rang:  [ null  , [Validators.required] ], 
-              officiel:  [ null   ], 
-              entr:  [ null  ], 
-            
+              categorie:  [ null , [Validators.required] ],
+              rang:  [ null  , [Validators.required] ],
+              officiel:  [ null   ],
+              entr:  [ null  ],
+
 
 
               adresse:  [ null , [Validators.required] ],
               code_postal:  [ null , [Validators.required] ],
               ville:  [ null  , [Validators.required] ],
-              
+
               telephone1:  [ null , [Validators.required] ],
               telephone2:  [ null ],
               telephone3:  [ null ],
 
+              // tslint:disable-next-line:max-line-length
               email1:  [ null , [Validators.required , Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ] ],
-              email2:  [ null  ,[Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
-              email3:  [ null  ,[Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
+              email2:  [ null  , [Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
+              // tslint:disable-next-line:max-line-length
+              email3:  [ null  , [Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
               licence:  [ null  ],
 
               commentaires:  [ null  ],
-     
+
               carte:  [ '0' ],
 
               auto_parentale:  [ false  ] ,
@@ -137,7 +136,7 @@ export class LicenciesComponent implements OnInit {
               paye:  [ false  ],
               reglement:  [ false  ],
               tarif:  [ null  ],
-              cotisation: new FormControl({value:'',disabled: true }) ,
+              cotisation: new FormControl({value: '', disabled: true }) ,
               especes:  [ 0.0  ],
               cheque1:  [ null  ],
               cheque2:  [ null  ],
@@ -152,18 +151,18 @@ export class LicenciesComponent implements OnInit {
               nbre_chvac10:  [null],
               nbre_chvac20:  [null],
               banque:  [null],
-              type:  [ "N" , [Validators.required]  ],
+              type:  [ 'N' , [Validators.required]  ],
               valide:  [ false  ],
-              
-              
-        
-        
-            
-        
+
+
+
+
+
+
 
 
             });
-        
+
        //     this.customValidator();
           }
 
@@ -173,47 +172,47 @@ export class LicenciesComponent implements OnInit {
     customValidator() {
 
       this.dataForm.get('telephone2').valueChanges.subscribe(
-        
+
             (value: any) => {
             console.log( value.length  ) ;
 
                 if ( value.length > 0 ) {
                     this.dataForm.get('telephone2').setValidators([Validators.required]);
-                } 
+                }
                 this.dataForm.get('telephone2').updateValueAndValidity();
 
-           
+
 
 
             } ) ;
         this.dataForm.get('telephone3').valueChanges.subscribe(
-          
+
               (value: any) => {
               console.log( value.length  ) ;
-  
+
                   if ( value.length > 0 ) {
                       this.dataForm.get('telephone3').setValidators([Validators.required]);
-                  } 
+                  }
                   this.dataForm.get('telephone3').updateValueAndValidity();
               } ) ;
         this.dataForm.get('email2').valueChanges.subscribe(
-          
+
               (value: any) => {
               console.log( value.length  ) ;
-  
+
                   if ( value.length > 0 ) {
                       this.dataForm.get('email2').setValidators([Validators.required]);
-                  } 
+                  }
                   this.dataForm.get('email2').updateValueAndValidity();
               } ) ;
         this.dataForm.get('email3').valueChanges.subscribe(
-          
+
               (value: any) => {
               console.log( value.length  ) ;
-  
+
                   if ( value.length > 0 ) {
                       this.dataForm.get('email3').setValidators([Validators.required]);
-                  } 
+                  }
                   this.dataForm.get('email3').updateValueAndValidity();
               } ) ;
     }
@@ -222,10 +221,10 @@ export class LicenciesComponent implements OnInit {
 
 
   ngOnInit() {
-    
-    
+
+
           this.initForm();
-    
+
           Observable.fromEvent(this.filter.nativeElement, 'keyup')
           .debounceTime(150)
           .distinctUntilChanged()
@@ -236,9 +235,10 @@ export class LicenciesComponent implements OnInit {
 
 
           this.licservice.list().subscribe(
-          ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(this.sort , this.paginator) ;
-            this.dataSource.mydatafilter =data ;
-          
+          // tslint:disable-next-line:max-line-length
+          ( data: any[] ) => { this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource = new MyDataSource(this.sort , this.paginator) ;
+            this.dataSource.mydatafilter = data ;
+
          /*   Observable.of( this.myfilter )
              .debounceTime(150)
             .distinctUntilChanged()
@@ -247,82 +247,80 @@ export class LicenciesComponent implements OnInit {
               this.dataSource.myfilter = this.myfilter;
             });*/
 
-    
-          
-          },  
-          (err: HttpErrorResponse)  => { 
+
+
+          },
+          (err: HttpErrorResponse)  => {
             if (err.error instanceof Error) {
-              this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+              this.showSnackBar('Client-side:' + err.status + ':' + err.statusText, false );
             } else {
-              this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+              this.showSnackBar('Server-side: ' + err.status + ':' + err.statusText  , false );
             }
-      
+
            },
           () => {
-              console.log("end ok " + this.dataSource   ) ;
+              console.log('end ok ' + this.dataSource   ) ;
             //  console.log("search Id .... " + this.updateForm (10)  );
              // console.log("search Id .... " + Object.keys ( this.searchId(10) )  );
-            // this.updateForm (10) 
-             
-    
-    
+            // this.updateForm (10)
+
+
+
           });
-    
+
       }
 
 
       editForm( id ) {
 
-        this.meta.displayForm=true;
+        this.meta.displayForm = true;
         this.dataForm.reset();
-        this.dataForm.get('type').setValue("N");
-        this.dataForm.get('id').setValue("-1");
-        
+        this.dataForm.get('type').setValue('N');
+        this.dataForm.get('id').setValue('-1');
 
-        var d = new Date(); // today!
-        var x = 5; // go back 5 days!
+
+        const d = new Date(); // today!
+        const x = 5; // go back 5 days!
         d.setDate(d.getDate() - 500);
 
-   
-          if( id != -1 )
-          {  
-              let response= this.searchId( id ) ;
-              this.dataForm.setValue(response );  ///, { onlySelf: true });
-        
+
+          if ( id !== -1 ) {
+              const response = this.searchId( id ) ;
+              this.dataForm.setValue(response );  /// , { onlySelf: true });
+
           }
-        
+
 
 
       }
         searchId( id )  {
-          let item:any;
-          let d =   this.dataSource.mydatafilter;
-          for (var i = 0; i < d.length ; i++) {
+          let item: any;
+          const d =   this.dataSource.mydatafilter;
+          for (let i = 0; i < d.length ; i++) {
             item = d[i];
-            if( item.id === id )  
-            {
+            if ( item.id === id ) {
            /*   ( item.verif === '0' ) ? item.verif = false : item.verif = true ;
               ( item.choixnages === '0' ) ? item.choixnages = false : item.choixnages = true ;
               item.debut = new Date( item.debut );
               item.fin = new Date( item.fin );*/
               item.date = new Date( item.date );
-      
+
               break;
-            }  
-    
+            }
+
           }
-    
+
           return item ;
-    
+
     }
 
       cancelForm() {
 
-        this.meta.displayForm=false;
+        this.meta.displayForm = false;
 
 
 
-        
+
       }
 
 
@@ -339,9 +337,9 @@ this.dataSource.myfilter = this.myfilter;
         refreshData() {
 
           this.licservice.list().subscribe(
-            ( data: any[] ) =>{ this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource.mydatafilter = data; ;
-            
-              
+            ( data: any[] ) => { this.meta.total = data.length ; this.meta.totdisp = data.length ;   this.dataSource.mydatafilter = data;
+
+
 
             /*  Observable.fromEvent(this.filter.nativeElement, 'keyup')
               .debounceTime(150)
@@ -350,20 +348,20 @@ this.dataSource.myfilter = this.myfilter;
                 if (!this.dataSource) { return; }
                 this.dataSource.filter = this.filter.nativeElement.value;
               });*/
-            
-            },  
-            (err: HttpErrorResponse)  => { 
+
+            },
+            (err: HttpErrorResponse)  => {
               if (err.error instanceof Error) {
-                this.showSnackBar("Client-side:" +err.status+":"+err.statusText, false );
+                this.showSnackBar('Client-side:' + err.status + ':' + err.statusText, false );
               } else {
-                this.showSnackBar("Server-side: " +err.status+":"+err.statusText  , false );
+                this.showSnackBar('Server-side: ' + err.status + ':' + err.statusText  , false );
               }
-        
+
              },
             () => {
-                    
-      
-      
+
+
+
             });
 
         }
@@ -372,29 +370,26 @@ this.dataSource.myfilter = this.myfilter;
 
 
 
-      showSnackBar( message , info)
-      {
-          let style='snack-success';
-        if ( !info )  style='snack-error';
-      
-      
+      showSnackBar( message , info) {
+          let style = 'snack-success';
+        if ( !info ) {
+           style = 'snack-error';
+        }
 
-
-        this.snackBar.open( message,'', {
+        this.snackBar.open( message, '', {
           duration: 2000,
           extraClasses: [ style ]
-          
+
         });
 
         if ( info ) {
-          
-                    this.refreshData();
+            this.refreshData();
           }
 
 
 
 
-      
+
       }
 
 
@@ -420,16 +415,16 @@ export class MyDataSource extends DataSource<any> {
   set mydatafilter(d: any[] ) { this._mydataChange.next(d); }
 
 
-  constructor( /*public datas: any[] ,*/  private mysort: MatSort ,private mypaginator:  MatPaginator) {
+  constructor( /*public datas: any[] ,*/  private mysort: MatSort , private mypaginator:  MatPaginator) {
     super();
 
-    this.mypaginator._intl.itemsPerPageLabel='items / page';
-   
+    this.mypaginator._intl.itemsPerPageLabel = 'items / page';
+
   }
 
 
   connect(): Observable<Element[]> {
-     
+
 
     const displayDataChanges = [
       this._mydataChange,
@@ -443,34 +438,41 @@ export class MyDataSource extends DataSource<any> {
 
   console.log('update...');
 
-      const datasorted =this.getSortedData(); 
-      
+      const datasorted = this.getSortedData();
+
 
       const datafilter  = datasorted.slice().filter((item: any) => {
-        let searchStr = (item.nom +" "+ item.prenom +" "+ item.ville ).toLowerCase();
-        //this.mypaginator.pageIndex =0 ;
+        const searchStr = (item.nom + ' ' + item.prenom + ' ' + item.ville ).toLowerCase();
+        // this.mypaginator.pageIndex =0 ;
 
-        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
 
       const datafilter2  = datafilter.slice().filter((item: any) => {
       let flag  = false;
-     
 
-      if ( ! this.myfilter )  return true;;
 
-      if ( this.myfilter.sexe === ''  ) {  flag=true }
-      else if ( item.sexe === this.myfilter.sexe  ) {flag=true;}
-      else {flag=false }
-     
-      if ( this.myfilter.categorie === ''  ) {  flag=flag && true }
-      else if (  item.categorie === this.myfilter.categorie.toLowerCase() ) { flag=flag && true}
-      else {flag=false }
-     
-      if ( this.myfilter.type === ''  ) {  flag=flag && true }
-      else if (  item.type === this.myfilter.type ) { flag=flag && true}
-      else {flag=false }
+      if ( ! this.myfilter ) {
+          return true; }
+
+      if ( this.myfilter.sexe === ''  ) {flag = true;
+       } else { if ( item.sexe === this.myfilter.sexe  ) {
+                  flag = true;
+                } else {flag = false; }
+      }
+
+      if ( this.myfilter.categorie === ''  ) {flag = flag && true;
+      } else { if (  item.categorie === this.myfilter.categorie.toLowerCase() ) {
+                  flag = flag && true;
+                } else { flag = false; }
+      }
+
+      if ( this.myfilter.type === ''  ) {  flag = flag && true;
+       } else { if (  item.type === this.myfilter.type ) {
+                  flag = flag && true;
+                } else { flag = false; }
+      }
 
 
 
@@ -479,30 +481,26 @@ export class MyDataSource extends DataSource<any> {
 
 
 
-      this.mypaginator.length =datafilter2.length;
-      
-      if(this.mypaginator.pageIndex * this.mypaginator.pageSize >  this.mypaginator.length ) this.mypaginator.pageIndex =0;
+      this.mypaginator.length = datafilter2.length;
+
+      if (this.mypaginator.pageIndex * this.mypaginator.pageSize >  this.mypaginator.length ) {
+         this.mypaginator.pageIndex = 0; }
 
       const startIndex = this.mypaginator.pageIndex * this.mypaginator.pageSize;
       return datafilter2.splice(startIndex, this.mypaginator.pageSize);
-
-
-
-
-
-    });;
+    });
 
   }
 
 
   getSortedData(): Element[] {
     if (!this.mysort.active || this.mysort.direction === '') { return this.mydatafilter; }
-   
-    const data = this.mydatafilter.slice();
-    //const data = this.datas.slice();
-    console.log ("sorted..."  );
 
-   
+    const data = this.mydatafilter.slice();
+    // const data = this.datas.slice();
+    console.log ('sorted...'  );
+
+
 
     return data.sort((a, b) => {
       let propertyA: number|string = '';
@@ -519,8 +517,8 @@ export class MyDataSource extends DataSource<any> {
        // case 'color': [propertyA, propertyB] = [a.color, b.color]; break;
       }
 
-      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
       return (valueA < valueB ? -1 : 1) * (this.mysort.direction === 'asc' ? 1 : -1);
     });
