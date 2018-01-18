@@ -5,7 +5,7 @@
   <div fxLayout="row"  fxLayoutAlign="space-evenly center" fxFlex="100">
     
 
-    <button   mat-raised-button    color="primary"  (click)="sendNotification(params?.row.id)"  >
+    <button   mat-raised-button    color="primary"  (click)="notify()"  >
        <mat-icon class="mat-24" >email</mat-icon> Notification ({{params?.row.notification}})
     </button>
 
@@ -33,7 +33,7 @@
   <div class="engage-body mat-elevation-z10"  fxLayout="column"   *ngIf="params.option=='mails'" >
     
        <div fxLayout="row"  fxLayoutAlign="space-around center" fxFlex="50" style="margin-top:8px;" >
-        <button   mat-raised-button   fxFlex="50" color="primary"  (click)="sendAllNotification()"  [disabled]="reponse.show" >
+        <button   mat-raised-button   fxFlex="50" color="primary"  (click)="notifyAll()"  [disabled]="reponse.show" >
            <mat-icon class="mat-24" >email</mat-icon>Envoyer les Notifications par emails
         </button>
         </div>

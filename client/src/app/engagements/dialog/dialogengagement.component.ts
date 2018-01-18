@@ -38,7 +38,6 @@ export class DialogengagementComponent  {
     @Inject(MAT_DIALOG_DATA) public data: any) {
         this.params = data;
 
-console.log( this.params );
 
         if ( this.params.option === 'delete') {
             this.getLicencies( this.params.idcompet );
@@ -50,8 +49,6 @@ console.log( this.params );
 
 /////////////////////////////////////////////////////////////////////////////////
     add() {
-
-
 this.engageService.append(this.params.idcompet,  this.paramAppend.listeselected ).subscribe(
   ( response: any ) => {
 
@@ -156,45 +153,20 @@ getLicencies(idcompet) {
 
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////
-addEngage(e) {
-
-
-
-  const data = {append: null};
-    this.engageService.updateEngagement( this.params.row.id , data ).subscribe(
-     ( response: any[] ) => {
-
-       } ,
-
-   (err: HttpErrorResponse)  => {
-
-
-   },
-   () => {
-
-
-   });
-
-
-  }
-
-/////////////////////////////////////////////////////////////////////////////////
-setExtranat(e) {
-
-
-const old = this.params.row.extranat ;
-( e === '1' ) ? this.params.row.extranat = '0' : this.params.row.extranat = '1';
-const data = {extranat: this.params.row.extranat };
-  this.engageService.updateEngagement( this.params.row.id , data ).subscribe(
-   ( response: any[] ) => {
+setExtranat(extra) {
+ ( extra === '1') ? extra = '0' : extra = '1';
+  this.engageService.extranatEngagement ( this.params.row.id , extra ).subscribe(
+   ( response: any ) => {
+       if ( response.success ) {
+        this.params.row.extranat = extra;
+       }
 
      } ,
 
  (err: HttpErrorResponse)  => {
 
-
+  console.log( err );
  },
  () => {
 
@@ -205,18 +177,19 @@ const data = {extranat: this.params.row.extranat };
 }
 
 //////////////////////////////////////////////////////////////////////////
-sendNotification() {
-  const data = {notify: this.params.row.id };
-  console.log( data);
-  this.engageService.updateEngagement( this.params.row.id_competitions , data ).subscribe(
-    ( response: any[] ) => {
+notify() {
 
-      this.params.row.notification++;
+  console.log( this.params.row.id_competitions , this.params.row.id ) ;
+
+  this.engageService.notifyEngagement ( this.params.row.id_competitions , this.params.row.id ).subscribe(
+    ( response: any ) => {
+         if ( response.success ) {
+            this.params.row.notification++;
+         }
       } ,
 
   (err: HttpErrorResponse)  => {
 
-    console.log('error');
   },
   () => {
 
@@ -225,17 +198,16 @@ sendNotification() {
   });
 }
 /////////////////////////////////////////////////////////////////////////
-sendAllNotification() {
-  const data = {notifyall: true };
+notifyAll() {
   this.reponse.progress = true;
 
-  this.engageService.updateEngagement( this.params.idcompet , data ).subscribe(
+  this.engageService.notifyallEngagement( this.params.idcompet ).subscribe(
     ( response: any ) => {
 
       console.log( '...........' , response );
       this.reponse.show = true;
       this.reponse.error = false;
-      this.reponse.text = response.info;
+      this.reponse.text = response.message;
 
 
       } ,
@@ -249,7 +221,7 @@ sendAllNotification() {
     this.reponse.progress = false;
   },
   () => {
-console.log( 'denis....');
+
     this.reponse.progress = false;
 
   });

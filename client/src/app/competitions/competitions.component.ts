@@ -72,7 +72,7 @@ export class CompetitionsComponent implements OnInit {
       fin: [ null  , [Validators.required] ],
       heure: ['07', [Validators.required] ],
       limite: [ null  , [Validators.required] ],
-      choixnages: new FormControl(false),
+      choixnages: new FormControl({value: false}),
       max: new FormControl(0),
       entraineur:  [ null, [Validators.required] ],
       lien: new FormControl(null, Validators.pattern('')),
@@ -278,6 +278,7 @@ private updateForm( id )  {
     this.dataForm.get('heure').setValue('07');
     this.dataForm.get('verif').setValue(false);
     this.dataForm.get('verif').disable();
+    this.dataForm.get('choixnages').setValue(false);
     this.meta.type =  [{'name': 'Stage' , 'value': 'stage' } , {'name': 'Compétition' , 'value': 'compet'  } ] ;
 
         }

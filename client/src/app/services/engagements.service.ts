@@ -46,16 +46,24 @@ export class EngagementsService {
   }
 
 
-  updateEngagement( id, json ) {
-    return  this.http.put('/api/private/engagements/' + id , json) ;
+  notifyallEngagement( idcompet ) {
+    const mode = {notifyall: true};
+    return  this.http.put('/api/private/engagements/' + idcompet , mode ) ;
     }
 
+  notifyEngagement( idcompet, idengage ) {
+    const mode = {notify: idengage};
+    return  this.http.put('/api/private/engagements/' + idcompet , mode) ;
+    }
+
+  extranatEngagement( idengage, value ) {
+    const mode = {extranat : value };
+    return  this.http.put('/api/private/engagements/' + idengage , mode ) ;
+    }
 
 
    delete( idcompet , listlicencies ) {
       // delete une liste de licencies de engagement
-console.log(  idcompet , listlicencies );
-
        return  this.http.delete('/api/private/engagements/' + listlicencies ) ;
     }
 
