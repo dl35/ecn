@@ -1,4 +1,4 @@
-<div class="mat-elevation-z10" fxLayout="column"   [fxShow]="meta.displayForm"   style="margin:10px"  fxLayoutGap="10px">
+<div class="mat-elevation-z10" fxLayout="column"   [fxShow]="meta.displayForm"   style="margin:15px"  >
   
       <br/>
       <br/>
@@ -6,48 +6,50 @@
   <form  name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate>  
 
   
-  <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayoutGap="10px" fxLayout.lt-sm="column" >
+  <div    fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"      fxLayout.lt-sm="column" >
           
-  
+ 
     
-          <mat-form-field fxFlex="20" >
+          <mat-form-field fxFlex="20" fxFlexOffset="3" >
           <input matInput placeholder="Nom" formControlName="nom"    >
           </mat-form-field>
     
-          <mat-form-field fxFlex="20" >
+          <mat-form-field fxFlex="20" fxFlexOffset="2" >
           <input matInput placeholder="Prénom" formControlName="prenom"    >
           </mat-form-field>
     
-          <mat-form-field fxFlex="10"  >
+          <mat-form-field fxFlex="10" fxFlexOffset="2" >
             
-            <input matInput [matDatepicker]="day"  placeholder="Date" (click)="day.open()"  formControlName="date" >
+            <input matInput [matDatepicker]="day"  placeholder="Date" (click)="day.open()"  formControlName="date" [max]="maxDate" [min]="minDate"  >
             <mat-datepicker-toggle matSuffix [for]="day"  ></mat-datepicker-toggle>
-            <mat-datepicker #day></mat-datepicker>
+            <mat-datepicker #day  [startAt]="startDate"  ></mat-datepicker>
          </mat-form-field>
 
 
   
-         <mat-form-field [floatPlaceholder]="auto"    fxFlex="4"  >
+         <mat-form-field [floatPlaceholder]="auto"    fxFlex="4" fxFlexOffset="2"  >
             <mat-select placeholder="Sexe" formControlName="sexe"  >
                 <mat-option *ngFor="let s of meta.sexe"     [value]="s"   >{{s}} </mat-option>
             </mat-select> 
           </mat-form-field>
   
-  </div> 
+        </div>
+
+
   
   
-  <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayoutGap="10px" fxLayout.lt-sm="column" >
+  <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayout.lt-sm="column" >
       
-      <mat-form-field fxFlex="25" >
+      <mat-form-field fxFlex="25" fxFlexOffset="3" >
       <input matInput placeholder="Adresse" formControlName="adresse"    >
       </mat-form-field>
 
-      <mat-form-field fxFlex="8" >
+      <mat-form-field fxFlex="8" fxFlexOffset="2" >
       <input matInput #postalCode maxLength="5"  placeholder="Code Postal" formControlName="code_postal"    >
       <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
       </mat-form-field>
     
-      <mat-form-field fxFlex="20" >
+      <mat-form-field fxFlex="20" fxFlexOffset="2" >
       <input matInput placeholder="Ville" formControlName="ville"    >
       </mat-form-field>
   
@@ -56,41 +58,41 @@
 
 
 
-  <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"   fxLayoutGap="35px" fxLayout.lt-sm="column"  >
+  <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  >
       
-      <mat-form-field fxFlex="18" >
+      <mat-form-field fxFlex="18" fxFlexOffset="3">
       <input matInput placeholder="Email*" formControlName="email1"    >
       <mat-icon matSuffix>email</mat-icon>
       <mat-hint align="start" *ngIf="(dataForm.get('email1').hasError('required') ||  dataForm.get('email1').hasError('pattern') ) && dataForm.get('email1').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
           {{invalid.mail}}</mat-hint>
       </mat-form-field>
 
-      <mat-form-field fxFlex="18" >
+      <mat-form-field fxFlex="18" fxFlexOffset="2">
       <input matInput placeholder="Email" formControlName="email2"    >
       <mat-hint align="start" *ngIf="( dataForm.get('email2').hasError('pattern') ) && dataForm.get('email2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
           {{ invalid.mail}}</mat-hint>
       </mat-form-field>
     
-      <mat-form-field fxFlex="18" >
+      <mat-form-field fxFlex="18" fxFlexOffset="2">
       <input matInput placeholder="Email" formControlName="email3"    >
       <mat-hint align="start" *ngIf="( dataForm.get('email3').hasError('pattern') ) && dataForm.get('email3').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
           {{ invalid.mail}}</mat-hint>
       </mat-form-field>
      
     
-      <mat-form-field fxFlex="8" >
+      <mat-form-field fxFlex="8" fxFlexOffset="2" >
           <input matInput placeholder="Télephone*" formControlName="telephone1"   maxlength="10" >
           <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
     
-          <mat-form-field fxFlex="8" >
+          <mat-form-field fxFlex="8" fxFlexOffset="2" >
           <input matInput placeholder="Télephone" formControlName="telephone2"   maxlength="10"  >
           <mat-icon matSuffix>phone</mat-icon>
           <mat-hint align="start" *ngIf="( dataForm.get('telephone2').hasError('required') ) && dataForm.get('telephone2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
               *Le Téléphone....              </mat-hint>
           </mat-form-field>
         
-          <mat-form-field fxFlex="8" >
+          <mat-form-field fxFlex="8" fxFlexOffset="2" >
           <input matInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"   >
           <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
@@ -105,12 +107,12 @@
 
 
 
-  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"   fxLayoutGap="10px">
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  >
     
 
 
   
-      <mat-form-field [floatPlaceholder]="auto"    fxFlex="4"  >
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="4" fxFlexOffset="3" >
         <mat-select placeholder="Type" formControlName="type"  >
         <mat-option *ngFor="let r of meta.type"    [value]="r.value"   >{{r.name}} </mat-option>
         </mat-select> 
@@ -120,7 +122,7 @@
   
    
   
-        <mat-form-field [floatPlaceholder]="auto"    fxFlex="10"  >
+        <mat-form-field [floatPlaceholder]="auto"    fxFlex="10" fxFlexOffset="1" >
         <mat-select placeholder="Categorie" formControlName="categorie">
         <mat-option *ngFor="let r of meta.categorie"    [value]="r.value"   >{{r.name}} </mat-option>
         </mat-select> 
@@ -129,7 +131,7 @@
  
  
    
-      <mat-form-field [floatPlaceholder]="auto"    fxFlex="5"  >
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="5" fxFlexOffset="1" >
       <mat-select placeholder="Rang" formControlName="rang" >
       <mat-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </mat-option>
       </mat-select> 
@@ -137,25 +139,25 @@
    
 
    
-        <mat-form-field [floatPlaceholder]="auto"    fxFlex="4"  >
+        <mat-form-field [floatPlaceholder]="auto"    fxFlex="4" fxFlexOffset="2" >
       <mat-select placeholder="Officiel" formControlName="officiel"  >
       <mat-option *ngFor="let r of meta.officiel"    [value]="r"   >{{r}} </mat-option>
       </mat-select> 
       </mat-form-field>
     
   
-    <mat-form-field fxFlex="10" >
+    <mat-form-field fxFlex="10" fxFlexOffset="1" >
         <input matInput placeholder="Licence" formControlName="licence"    >
     </mat-form-field>
 
-    <mat-form-field fxFlex="6" >
+    <mat-form-field fxFlex="6" fxFlexOffset="1" >
       <input matInput placeholder="Tarif (€)" formControlName="tarif"   maxlength="7" >
    </mat-form-field>
-   <mat-form-field fxFlex="6"  >
+   <mat-form-field fxFlex="6" fxFlexOffset="1" >
       <input matInput placeholder="Total (€)"   class="cotisation"  formControlName="cotisation"    maxlength="7" >
    </mat-form-field>
 
-    <section>
+    <section fxFlexOffset="1" >
         <mat-checkbox  formControlName="entr" color="accent" >Entraineur</mat-checkbox>
     </section>
          
@@ -166,28 +168,28 @@
 
 </div> 
 
-<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
+<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px'  >
     
 
    
        
-            <mat-form-field [floatPlaceholder]="auto"    fxFlex="10"  >
+            <mat-form-field [floatPlaceholder]="auto"    fxFlex="10" fxFlexOffset="3" >
         <mat-select placeholder="Banque" formControlName="banque"  >
           <mat-option *ngFor="let r of meta.banque"    [value]="r"   >{{r}} </mat-option>
         </mat-select> 
         </mat-form-field>
        
      
-        <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
-          <mat-form-field fxFlex="5" >
+        <div fxLayout="column" fxLayoutAlign="start start"   fxFlexOffset="3" >
+          <mat-form-field fxFlex="5"  >
               <input matInput placeholder="Montant (€)" formControlName="cheque1"   >
             </mat-form-field>
-            <mat-form-field fxFlex="10" >
+            <mat-form-field fxFlex="10"  >
                 <input matInput placeholder="Numéro" formControlName="num_cheque1"    >
               </mat-form-field>
            </div>
          
-           <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
+           <div fxLayout="column" fxLayoutAlign="start start"   fxFlexOffset="3" >
               <mat-form-field fxFlex="5" >
                   <input matInput placeholder="Montant (€)" formControlName="cheque2"    >
                 </mat-form-field>
@@ -195,7 +197,9 @@
                     <input matInput placeholder="Numéro" formControlName="num_cheque2"    >
                   </mat-form-field>
                </div>
-               <div fxLayout="column" fxLayoutAlign="start start"   fxLayoutGap="10px" >
+            
+            
+               <div fxLayout="column" fxLayoutAlign="start start"   fxFlexOffset="3"  >
                   <mat-form-field fxFlex="5" >
                       <input matInput placeholder="Montant (€)" formControlName="cheque3"    >
                     </mat-form-field>
@@ -206,33 +210,33 @@
 
 </div> 
 
-<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
-        <mat-form-field fxFlex="15" >
+<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px'  >
+        <mat-form-field fxFlex="15"  fxFlexOffset="3"  >
             <input matInput placeholder="Cheque sport (€)" formControlName="ch_sport"   >
           </mat-form-field>
-          <mat-form-field fxFlex="15" >
+          <mat-form-field fxFlex="15"  fxFlexOffset="1"  >
               <input matInput placeholder="Numéro" formControlName="num_sport"    >
             </mat-form-field>
-            <mat-form-field fxFlex="15" >
+            <mat-form-field fxFlex="15"  fxFlexOffset="1"  >
               <input matInput placeholder="Coupon sport (€)" formControlName="coup_sport"   >
             </mat-form-field>
-            <mat-form-field fxFlex="15" >
+            <mat-form-field fxFlex="15"  fxFlexOffset="1"  >
                 <input matInput placeholder="Numéro" formControlName="num_coupsport"    >
               </mat-form-field>
 
 
 </div> 
 
-<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' fxLayoutGap="10px" >
+<div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' f>
   
-        <mat-form-field fxFlex="15" >
+        <mat-form-field fxFlex="15" fxFlexOffset="3" >
             <input matInput placeholder="Nombre Ch. vacances * 10 €" formControlName="nbre_chvac10"   >
         </mat-form-field>
-        <mat-form-field fxFlex="15" >
+        <mat-form-field fxFlex="15" fxFlexOffset="1" >
           <input matInput placeholder="Nombre Ch. vacances * 20 €" formControlName="nbre_chvac20"   >
       </mat-form-field>
    
-      <mat-form-field fxFlex="15" >
+      <mat-form-field fxFlex="15" fxFlexOffset="1" >
           <input matInput placeholder="Espèce €" formControlName="especes"   >
       </mat-form-field>
 
@@ -240,17 +244,17 @@
 
 
 
-<div  fxLayout="row" fxLayoutAlign="center  baseline"    fxLayoutGap="10px"  >
+<div  fxLayout="row" fxLayoutAlign="center  baseline"    >
       
          
         <mat-checkbox  formControlName="cert_medical" color="primary" >Cert.Médical</mat-checkbox>
-        <mat-checkbox  formControlName="auto_parentale" color="primary" >Auto.Parentale</mat-checkbox>
-        <mat-checkbox  formControlName="fiche_medicale" color="primary" >Fich.Médicale</mat-checkbox>
-        <mat-checkbox  formControlName="photo" color="primary" >Auto.Photo</mat-checkbox>
-        <mat-checkbox  formControlName="reglement" color="primary" >Réglement</mat-checkbox>
+        <mat-checkbox fxFlexOffset="1" formControlName="auto_parentale" color="primary" >Auto.Parentale</mat-checkbox>
+        <mat-checkbox fxFlexOffset="1" formControlName="fiche_medicale" color="primary" >Fich.Médicale</mat-checkbox>
+        <mat-checkbox fxFlexOffset="1" formControlName="photo" color="primary" >Auto.Photo</mat-checkbox>
+        <mat-checkbox fxFlexOffset="1"  formControlName="reglement" color="primary" >Réglement</mat-checkbox>
       
 
-        <mat-checkbox  formControlName="paye" color="accent"   ><label style="color:green;font-weight: bold ">Payé</label></mat-checkbox>
+        <mat-checkbox fxFlexOffset="1" formControlName="paye" color="accent"   ><label style="color:green;font-weight: bold ">Payé</label></mat-checkbox>
 
 
 
@@ -290,16 +294,16 @@
   
   
   
-  <div class="mat-elevation-z8"     [fxShow]="!meta.displayForm"  style="margin:10px"   >
+  <div class="mat-elevation-z8"     [fxShow]="!meta.displayForm"  style="margin:15px"   >
   
      
       <div>
       <div fxFlex="100" fxFlexLayout="column"  fxLayoutAlign="center center" fxLayoutGap="45px" >
           <mat-form-field floatPlaceholder="never"  fxFlex="65"  >
-            <input matInput #filter placeholder="Filtre...  nom, prenom, ville">
+            <input matInput #filter placeholder="recherche...  nom, prenom, ville">
           </mat-form-field>
           
-              <button mat-mini-fab color="primary"  (click)="editForm('-1') "  > <mat-icon>add</mat-icon></button>
+              <button mat-mini-fab color="primary"  (click)="editForm(null) "  > <mat-icon>add</mat-icon></button>
               <mat-chip-list>
                   <mat-chip color="accent" selected="true">{{meta.totdisp}} / {{meta.total}}</mat-chip>
                 </mat-chip-list>

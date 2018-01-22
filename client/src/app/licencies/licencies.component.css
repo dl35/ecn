@@ -5,22 +5,15 @@
 
 
   form div {
-    margin-left: 32px;
+   _margin-left: 32px;
 
   }
 
   .mat-form-field{
-    font-size: 12px;
+    font-size: 14px;
     _flex-grow: 1;
     _margin-left: 32px;
   }
-
-
-  /*
-  mat-checkbox  {
-    font-size: 12px;
-}*/
-
 
 
 

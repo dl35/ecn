@@ -54,6 +54,9 @@ export class LicenciesComponent implements OnInit {
   };
 
 
+  maxDate: Date;
+  minDate: Date;
+  startDate: Date;
 
   myfilter= {sexe: '', categorie: '', type: ''};
 
@@ -62,7 +65,12 @@ export class LicenciesComponent implements OnInit {
 
   constructor( private formBuilder: FormBuilder, private licservice: LicenciesService , private snackBar: MatSnackBar ) {
 
-
+        this.maxDate = new Date();
+        const dmax = ( new Date().getFullYear() )  - 5 ;
+        this.maxDate.setFullYear ( dmax ) ;
+        this.minDate = new Date() ;
+        const dmin = ( new Date().getFullYear() )  - 90 ;
+        this.minDate.setFullYear ( dmin ) ;
        }
 
 
@@ -273,23 +281,22 @@ export class LicenciesComponent implements OnInit {
 
       editForm( id ) {
 
-        this.meta.displayForm = true;
-        this.dataForm.reset();
-        this.dataForm.get('type').setValue('N');
-        this.dataForm.get('id').setValue('-1');
-
-
-        const d = new Date(); // today!
-        const x = 5; // go back 5 days!
-        d.setDate(d.getDate() - 500);
-
-
-          if ( id !== -1 ) {
+          this.meta.displayForm = true;
+          if ( id !== null   ) {
               const response = this.searchId( id ) ;
               this.dataForm.setValue(response );  /// , { onlySelf: true });
+              this.startDate = new Date( this.dataForm.get('date').value  );
+          } else {
+            this.dataForm.reset();
+            this.startDate = new Date();
+            const dstart = ( new Date().getFullYear() )  - 10 ;
+            this.startDate.setFullYear ( dstart ) ;
+            this.dataForm.get('type').setValue('N');
+            this.dataForm.get('id').setValue('-1');
+
+        
 
           }
-
 
 
       }

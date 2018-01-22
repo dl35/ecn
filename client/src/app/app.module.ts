@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { LOCALE_ID } from '@angular/core';
-import { Routes,RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule  } from '@angular/common/http';
 
 
@@ -21,14 +21,7 @@ import {
   MAT_DATE_FORMATS
 } from '@angular/material';
 
-//import { M   } from '@angular/material';
 
-/*
-import { myDateAdapter } from './providers/myDateAdapter';
-import { APP_DATE_FORMATS } from './providers/myDateAdapter';
-
-
-*/
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -78,7 +71,7 @@ export const routes: Routes = [
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 //  { path: '', component: LoginComponent },
-{ path: '',   component: MainComponent, canActivate: [AuthGuard] ,canActivateChild :[AuthGuard] ,children:
+{ path: '',   component: MainComponent, canActivate: [AuthGuard] , canActivateChild : [AuthGuard] , children:
 [
 
   { path: 'licencies', component: LicenciesComponent },
@@ -112,7 +105,7 @@ export const routes: Routes = [
     MytestComponent,
 
   ],
-  entryComponents:[
+  entryComponents: [
     DialogengagementComponent,
     DialogEngOverlay,
     DialogConfirm,
@@ -129,9 +122,7 @@ export const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
-    //{provide: MD_DATE_FORMATS, useValue : APP_DATE_FORMATS },
-    //{provide: LOCALE_ID, useValue : 'fr-FR' },
-  //  {provide: DateAdapter, useClass: myDateAdapter} ,
+
 
   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     CompetitionsService , MailtoService, LoginService, LicenciesService, EngagementsService , AuthGuard],

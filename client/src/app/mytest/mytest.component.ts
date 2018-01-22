@@ -6,17 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mytest.component.css']
 })
 export class MytestComponent implements OnInit {
-
+  edisabled = true;
   constructor() { }
 
   ngOnInit() {
   }
 
-edisabled:boolean=true;
+
 
 dotest() {
 
-this.edisabled=!this.edisabled;
+this.edisabled = !this.edisabled;
 
 }
 
