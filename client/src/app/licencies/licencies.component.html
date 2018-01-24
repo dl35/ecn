@@ -112,7 +112,7 @@
 
 
   
-      <mat-form-field [floatPlaceholder]="auto"    fxFlex="4" fxFlexOffset="3" >
+      <mat-form-field [floatPlaceholder]="auto"    fxFlex="6" fxFlexOffset="3" >
         <mat-select placeholder="Type" formControlName="type"  >
         <mat-option *ngFor="let r of meta.type"    [value]="r.value"   >{{r.name}} </mat-option>
         </mat-select> 
@@ -139,7 +139,7 @@
    
 
    
-        <mat-form-field [floatPlaceholder]="auto"    fxFlex="4" fxFlexOffset="2" >
+        <mat-form-field [floatPlaceholder]="auto"    fxFlex="6" fxFlexOffset="2" >
       <mat-select placeholder="Officiel" formControlName="officiel"  >
       <mat-option *ngFor="let r of meta.officiel"    [value]="r"   >{{r}} </mat-option>
       </mat-select> 
@@ -150,7 +150,7 @@
         <input matInput placeholder="Licence" formControlName="licence"    >
     </mat-form-field>
 
-    <mat-form-field fxFlex="6" fxFlexOffset="1" >
+    <mat-form-field fxFlex="6" fxFlexOffset="3" >
       <input matInput placeholder="Tarif (€)" formControlName="tarif"   maxlength="7" >
    </mat-form-field>
    <mat-form-field fxFlex="6" fxFlexOffset="1" >

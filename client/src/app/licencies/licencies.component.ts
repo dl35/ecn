@@ -48,7 +48,7 @@ export class LicenciesComponent implements OnInit {
     type: [{'name': 'Ren' , 'value': 'R' } , {'name': 'Nou' , 'value': 'N' } ] ,
     niveau: [{'name': 'Dep' , 'value': 'Dep' } , {'name': 'Reg' , 'value': 'Reg' } , {'name': 'Nat' , 'value': 'Nat' }] ,
     // tslint:disable-next-line:max-line-length
-    categorie: [ {'name': 'Avenir' , 'value': 'AV' } , {'name': 'Jeune' , 'value': 'JE' } , {'name': 'Junior' , 'value': 'JU' }, {'name': 'Senior' , 'value': 'SE' }, {'name': 'Master' , 'value': 'MA' }] ,
+    categorie: [{'name': '-' , 'value': '-' } , {'name': 'Avenir' , 'value': 'AV' } , {'name': 'Jeune' , 'value': 'JE' } , {'name': 'Junior' , 'value': 'JU' }, {'name': 'Senior' , 'value': 'SE' }, {'name': 'Master' , 'value': 'MA' }] ,
     total : 0,
     totdisp : 0
   };
