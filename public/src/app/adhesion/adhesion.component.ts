@@ -37,7 +37,7 @@ export class AdhesionComponent implements OnInit {
       email1:  [ null , [Validators.required, Validators.email] ],
       email2:  [ null ],
       email3:  [ null ],
-      telephone1:  [ null , [Validators.required] ],
+      telephone1:  [ null , [Validators.required, Validators.pattern('^[0-9]{10}$') ] ],
       telephone2:  [ null ],
       telephone3:  [ null ]
     });
@@ -51,6 +51,14 @@ export class AdhesionComponent implements OnInit {
       return 'Vous devez saisir un nom' ;
 
   }
+
+  getErrorTel () {
+      return this.dataForm.get('telephone1').hasError('required') ? 'You must enter a telephone' :
+      this.dataForm.get('telephone1').hasError('pattern') ? 'numéro de télephone invalide' : '' ;
+
+    }
+
+
 
   customValidator() {
 

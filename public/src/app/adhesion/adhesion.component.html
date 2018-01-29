@@ -68,6 +68,7 @@
   <mat-form-field fxFlex="25" fxFlexOffset="3" >
       <input matInput placeholder="Téléphone(père)*" maxlength="10"  formControlName="telephone1" >
       <mat-icon matSuffix>phone</mat-icon>
+      <mat-error *ngIf="dataForm.get('telephone1').invalid">{{getErrorTel()}}</mat-error>
     </mat-form-field>
       
   <mat-form-field fxFlex="25" fxFlexOffset="3" >
