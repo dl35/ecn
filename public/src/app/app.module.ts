@@ -13,6 +13,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
+import { CompetitionsService } from './services/competitions.service';
+import { AdhesionService } from './services/adhesion.service';
+
+
+
+
+
+
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
@@ -25,6 +33,16 @@ import { PiscinesComponent } from './piscines/piscines.component';
 import { CotationComponent } from './cotation/cotation.component';
 import { Top10Component } from './top10/top10.component';
 import 'hammerjs';
+
+import {
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  MAT_DATE_LOCALE_PROVIDER,
+  MAT_DATE_FORMATS
+} from '@angular/material';
+
+
+
 
 
 export const routes: Routes = [
@@ -70,7 +88,10 @@ export const routes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    AdhesionService
+          ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
+import { AdhesionService , MessageResponse   } from '../services/adhesion.service' ;
 
 @Component({
   selector: 'app-adhesion',
@@ -7,9 +10,80 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdhesionComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit() {
+  public dataForm: FormGroup ;
+  public meta = {
+    'sexe': [{'name': '-' , 'value': ''  }, {'name': 'Homme' , 'value': 'H'  } , {'name': 'Dame' , 'value': 'F'  } ]
+  };
+  constructor( private formBuilder: FormBuilder, private adhservice: AdhesionService ) { }
+
+  ngOnInit( ) {
+
+    this.createForm();
+
+
   }
+  createForm() {
+
+    this.dataForm = this.formBuilder.group({
+      id: [ null ],
+      nom: [ null , [Validators.required] ],
+      prenom:  [ null , [Validators.required] ],
+      date:  [ null, [Validators.required] ],
+      sexe:  [ '' , [Validators.required] ],
+      adresse:  [ null , [Validators.required] ],
+      codepostal:  [ null , [Validators.required , Validators.minLength(5) , Validators.maxLength(5) ] ],
+      ville:  [ null  , [Validators.required] ],
+      email1:  [ null , [Validators.required, Validators.email] ],
+      email2:  [ null ],
+      email3:  [ null ],
+      telephone1:  [ null , [Validators.required] ],
+      telephone2:  [ null ],
+      telephone3:  [ null ]
+    });
+    this.customValidator();
+  }
+
+
+  customValidator() {
+
+    this.dataForm.get('email2').valueChanges.subscribe(
+
+          (value: any) => {
+          console.log( value.length  ) ;
+
+              if ( value.length > 0 ) {
+                  this.dataForm.get('email2').setValidators([Validators.email]);
+              } else {
+                this.dataForm.get('email2').setValidators([null]);
+              }
+
+              this.dataForm.get('email2').updateValueAndValidity();
+
+
+
+
+          } ) ;
+        }
+
+  public saveForm() {
+    const obj = this.dataForm.value ;
+    this.adhservice.store( obj ).subscribe (
+      ( data: MessageResponse )  => { },
+      ( err: HttpErrorResponse)  => { },
+      ( )  => { }
+
+    );
+
+  }
+
+
+
+
+
+
+
+
+
 
 }
