@@ -1,0 +1,43 @@
+<mat-toolbar color="primary"  >
+  <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" >
+      <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
+      
+      <button mat-raised-button color="primary"  routerLink="/competition" ><mat-icon>account_circle</mat-icon>&nbsp;Competitions</button>
+      <button mat-raised-button color="primary"  routerLink="/records" ><mat-icon>pool</mat-icon>&nbsp;Records</button>
+      <button mat-raised-button color="primary"  routerLink="/stats" ><mat-icon>airport_shuttle</mat-icon>&nbsp;Stats</button>  
+      <button mat-raised-button color="primary"  routerLink="/cotation" ><mat-icon>email</mat-icon>&nbsp;Cotation</button>
+      <button mat-raised-button color="primary"  routerLink="/top10" ><mat-icon>email</mat-icon>&nbsp;Top10</button>
+      <button mat-raised-button color="primary"  routerLink="/piscines" ><mat-icon>email</mat-icon>&nbsp;Piscines</button>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>Redial</span>
+          </button>
+          <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
+            <span>Check voicemail</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Disable alerts</span>
+          </button>
+        </mat-menu>
+      
+      </div>
+
+
+
+
+  </div> 
+</mat-toolbar>
+
+
+
+
+<div>
+   <router-outlet></router-outlet>
+</div>
