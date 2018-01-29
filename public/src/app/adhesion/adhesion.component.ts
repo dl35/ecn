@@ -13,7 +13,7 @@ export class AdhesionComponent implements OnInit {
 
   public dataForm: FormGroup ;
   public meta = {
-    'sexe': [{'name': '-' , 'value': ''  }, {'name': 'Homme' , 'value': 'H'  } , {'name': 'Dame' , 'value': 'F'  } ]
+    'sexe': [{'name': 'Homme' , 'value': 'H'  } , {'name': 'Dame' , 'value': 'F'  } ]
   };
   constructor( private formBuilder: FormBuilder, private adhservice: AdhesionService ) { }
 
@@ -30,7 +30,7 @@ export class AdhesionComponent implements OnInit {
       nom: [ null , [Validators.required] ],
       prenom:  [ null , [Validators.required] ],
       date:  [ null, [Validators.required] ],
-      sexe:  [ '' , [Validators.required] ],
+      sexe:  [ null , [Validators.required] ],
       adresse:  [ null , [Validators.required] ],
       codepostal:  [ null , [Validators.required , Validators.minLength(5) , Validators.maxLength(5) ] ],
       ville:  [ null  , [Validators.required] ],
@@ -44,6 +44,13 @@ export class AdhesionComponent implements OnInit {
     this.customValidator();
   }
 
+  getErrorMessage() {
+  /*  return this.dataForm.get('nom').hasError('required') ? 'You must enter a value' :
+    this.dataForm.get('nom').hasError('email') ? 'Not a valid email' : '' ;
+*/
+      return 'Vous devez saisir un nom' ;
+
+  }
 
   customValidator() {
 
