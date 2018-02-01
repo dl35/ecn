@@ -6,7 +6,7 @@
 <div class="mat-elevation-z10" fxLayout="column"   style='margin:20px;' >
 
 <br>
-  <form  name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate>  
+  <form *ngIf="meta.showform"  name="form"  autocomplete="off" [formGroup]="dataForm"   novalidate>  
 
       <div   fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="center start"      fxLayout.lt-sm="column" >
             <mat-form-field fxFlex="23" fxFlexOffset="3"  >
@@ -38,7 +38,7 @@
               <input matInput placeholder="Adresse*" formControlName="adresse"  >
             </mat-form-field>
             <mat-form-field fxFlex="20" fxFlexOffset="2" >
-                <input matInput #postalCode maxLength="5"  placeholder="Code Postal*"  formControlName="codepostal"    >
+                <input matInput #postalCode maxLength="5"  placeholder="Code Postal*"  formControlName="code_postal"    >
                 <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
                 </mat-form-field>
             <mat-form-field fxFlex="30" fxFlexOffset="3" >
@@ -87,11 +87,11 @@
             <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
            
    </div>
+  </form>
 
-   <br>
-   <br>
-
-
-</form>
+<div fxLayout="row" fxLayoutAlign="center baseline" *ngIf="!meta.showform"  >
+  <button mat-raised-button color="primary" (click)="reload()" >La validation est confirmée</button>
+</div>
+<br>
 
 </div>

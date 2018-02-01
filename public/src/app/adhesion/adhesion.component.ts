@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse  } from '@angular/common/http';
 import { FormBuilder, FormControl , FormGroup, Validators } from '@angular/forms';
 import { AdhesionService , MessageResponse   } from '../services/adhesion.service' ;
 
@@ -10,29 +11,57 @@ import { AdhesionService , MessageResponse   } from '../services/adhesion.servic
 })
 export class AdhesionComponent implements OnInit {
 
-
+  private sub: any;
   public dataForm: FormGroup ;
   public meta = {
+    'showform': true,
+    'message': '',
+    'id': null,
     'sexe': [{'name': 'Homme' , 'value': 'H'  } , {'name': 'Dame' , 'value': 'F'  } ]
   };
-  constructor( private formBuilder: FormBuilder, private adhservice: AdhesionService ) { }
-
-  ngOnInit( ) {
-
-    this.createForm();
+  constructor( private route: ActivatedRoute , private formBuilder: FormBuilder, private adhservice: AdhesionService ) {
 
 
   }
+
+  ngOnInit() {
+    this.createForm();
+    this.dataForm.reset();
+    this.sub = this.route.params.subscribe(params => {
+                this.meta.id = params['id'];
+                this.adhservice.get(this.meta.id).subscribe(
+                  ( data: any )  => { this.dataForm.setValue(data) ; },
+                  ( err: HttpErrorResponse)  => { },
+                  ( )  => { }
+
+                );
+      });
+
+
+  }
+
+
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
+reload() {
+  window.location.reload();
+
+}
+
+
   createForm() {
 
     this.dataForm = this.formBuilder.group({
       id: [ null ],
       nom: [ null , [Validators.required] ],
       prenom:  [ null , [Validators.required] ],
-      date:  [ null, [Validators.required] ],
+      date:  [new Date() , [Validators.required] ],
       sexe:  [ null , [Validators.required] ],
       adresse:  [ null , [Validators.required] ],
-      codepostal:  [ null , [Validators.required , Validators.minLength(5) , Validators.maxLength(5) ] ],
+      code_postal:  [ null , [Validators.required , Validators.minLength(5) , Validators.maxLength(5) ] ],
       ville:  [ null  , [Validators.required] ],
       email1:  [ null , [Validators.required, Validators.email] ],
       email2:  [ null ],
@@ -41,7 +70,7 @@ export class AdhesionComponent implements OnInit {
       telephone2:  [ null ],
       telephone3:  [ null ]
     });
-    this.customValidator();
+   // this.customValidator();
   }
 
   getErrorMessage() {
@@ -82,9 +111,14 @@ export class AdhesionComponent implements OnInit {
         }
 
   public saveForm() {
+
+
     const obj = this.dataForm.value ;
+
+console.log( JSON.stringify( obj ) );
+
     this.adhservice.store( obj ).subscribe (
-      ( data: MessageResponse )  => { },
+      ( data: MessageResponse )  => {console.log( data.message );  this.meta.message = data.message ; this.meta.showform = false; },
       ( err: HttpErrorResponse)  => { },
       ( )  => { }
 
