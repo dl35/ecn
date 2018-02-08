@@ -7,7 +7,7 @@
 
 <div fxLayout="row" fxLayoutAlign="start center"   >
         
-         <mat-form-field fxFlex="55"  fxFlexOffset="5"  >
+         <mat-form-field fxFlex="55"    fxFlexOffset="5"  >
         <input matInput placeholder="Nom" formControlName="nom" required >
         <mat-hint align="start" *ngIf="( dataForm.get('nom').hasError('required') ||  dataForm.get('nom').hasError('minlength') ) && dataForm.get('nom').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
           *Nom sur 5 charactères minimum
@@ -23,6 +23,8 @@
         </mat-form-field>
 
 </div> 
+
+
 
 
 <div fxLayout="row" fxLayoutAlign="start baseline"  style='margin-top:10px'   >
@@ -256,7 +258,7 @@
 
 
   <mat-header-row *matHeaderRowDef="['nom','lieu','bassin','type', 'debut', 'fin', 'verif' ,'id'  ]"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['nom','lieu','bassin','type', 'debut', 'fin','verif' , 'id'  ]"></mat-row>
+  <mat-row *matRowDef="let row; columns: ['nom','lieu','bassin','type', 'debut', 'fin','verif' , 'id'  ]" [@state]="row.date" ></mat-row>
 
 
 

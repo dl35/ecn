@@ -14,13 +14,46 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
+import { trigger, animate, style, transition, state } from '@angular/animations';
 
 
 @Component({
   selector: 'app-licencies',
   templateUrl: './licencies.component.html',
-  styleUrls: ['./licencies.component.css']
+  styleUrls: ['./licencies.component.css'],
+  animations: [
+    trigger('state', [
+      transition('false => true', [
+        style({opacity : '0'}),
+              animate('0.9s ease-in-out', style(
+                { opacity: '1'  }
+              ))
+      ]),
+      transition('true => false', [
+        style({opacity : '1'}),
+        animate('0.9s ease-in-out', style({ opacity: '0'}))
+      ])
+      ]
+    )
+  ],
 })
+/*
+     state('true' , style({ opacity: 1 })),
+      state('false', style({ opacity: 0 })),
+    transition('* => *', animate('0.5s ease-in-out'))
+
+transition('hidden => visible', [
+  style({opacity : '0'}),
+        animate('1s ease-in-out', style(
+          { opacity: '1', background: 'red' }
+        ))
+]),
+transition('visible => hidden', [
+  style({opacity : '1'}),
+  animate('1s ease-in-out', style({ opacity: '0'}))
+])
+
+*/
 export class LicenciesComponent implements OnInit {
 
   public dataForm: FormGroup ;
@@ -30,7 +63,7 @@ export class LicenciesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-
+  state: boolean;
 
   invalid = {
     mail: 'Adresse email invalide' ,
@@ -281,6 +314,7 @@ export class LicenciesComponent implements OnInit {
 
       editForm( id ) {
 
+
           this.meta.displayForm = true;
           if ( id !== null   ) {
               const response = this.searchId( id ) ;
@@ -294,7 +328,7 @@ export class LicenciesComponent implements OnInit {
             this.dataForm.get('type').setValue('N');
             this.dataForm.get('id').setValue('-1');
 
-        
+
 
           }
 
@@ -378,6 +412,7 @@ this.dataSource.myfilter = this.myfilter;
 
 
       showSnackBar( message , info) {
+          // tslint:disable-next-line:no-shadowed-variable
           let style = 'snack-success';
         if ( !info ) {
            style = 'snack-error';

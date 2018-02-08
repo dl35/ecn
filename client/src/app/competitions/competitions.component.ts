@@ -1,4 +1,14 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, OnInit, ViewChild , ElementRef, Inject  } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  keyframes
+} from '@angular/animations';
+
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DataSource} from '@angular/cdk/table';
@@ -18,8 +28,29 @@ import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 @Component({
   selector: 'app-competitions',
   templateUrl: './competitions.component.html',
-  styleUrls: ['./competitions.component.css']
+  styleUrls: ['./competitions.component.css'],
+  animations : [ trigger('state', [
+    transition('void => *', [
+      animate('325ms cubic-bezier(0.4,0.0,0.2,1)', style(
+      {minHeight: '0px' , overflow: 'hidden', height: '0px', opacity: '0' }
+    ))
+  ])
+,
+transition('* => void', [
+  animate('525ms cubic-bezier(0, 1.05, 0, 1)', style(
+         {minHeight: '*' , overflow: 'inherit', height: '*' , opacity: '1' }
+))
+])
+  ])]
 })
+
+
+
+
+// animate('525ms cubic-bezier(0.4,0.0,0.2,1) ',(
+  // style({tokens: {minHeight: '0px' , overflow: 'hidden', height: '0px' }),
+ //  style({tokens: {minHeight: '*' , overflow: 'inherit', height: '*' })
+
 export class CompetitionsComponent implements OnInit {
 
   public dataForm: FormGroup ;
@@ -157,6 +188,7 @@ private cancelForm() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private showSnackBar( message , info) {
+  // tslint:disable-next-line:no-shadowed-variable
   let style = 'snack-success';
   if ( !info ) {
     style = 'snack-error';
