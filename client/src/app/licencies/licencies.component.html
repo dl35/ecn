@@ -1,4 +1,4 @@
-<div class="mat-elevation-z10" fxLayout="column"   [fxShow]="meta.displayForm"   style="margin:15px"  >
+<div class="mat-elevation-z10" fxLayout="column"   [fxShow]="meta.displayForm" [@state]="meta.displayForm"  style="margin:15px"  >
   
       <br/>
       <br/>
@@ -294,7 +294,7 @@
   
   
   
-  <div class="mat-elevation-z8"     [fxShow]="!meta.displayForm"  style="margin:15px"   >
+  <div class="mat-elevation-z8"  [@state]="!meta.displayForm"   [fxShow]="!meta.displayForm"  style="margin:15px"   >
   
      
       <div>
@@ -415,7 +415,7 @@
   </mat-table>
 
   <mat-paginator #paginator
-  
+  [showFirstLastButtons]=true
   [length]="dataSource?.datas?.length"
   [pageIndex]="0"
   [pageSize]="10"
