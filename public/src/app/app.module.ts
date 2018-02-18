@@ -47,7 +47,7 @@ import {
 
 export const routes: Routes = [
   { path: 'adhesion', component: AdhesionComponent },
-  { path: 'adhesion/:id', component: AdhesionComponent },
+  { path: 'adhesion/:code', component: AdhesionComponent },
   { path: 'engagement/:idcompet/:idlicencie', component: EngagementComponent },
 
 { path: '',   component: MainComponent,  children:

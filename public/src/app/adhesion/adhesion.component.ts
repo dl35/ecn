@@ -16,7 +16,7 @@ export class AdhesionComponent implements OnInit {
   public meta = {
     'showform': true,
     'message': '',
-    'id': null,
+    'code': null,
     'sexe': [{'name': 'Homme' , 'value': 'H'  } , {'name': 'Dame' , 'value': 'F'  } ]
   };
   constructor( private route: ActivatedRoute , private formBuilder: FormBuilder, private adhservice: AdhesionService ) {
@@ -28,13 +28,18 @@ export class AdhesionComponent implements OnInit {
     this.createForm();
     this.dataForm.reset();
     this.sub = this.route.params.subscribe(params => {
-                this.meta.id = params['id'];
-                this.adhservice.get(this.meta.id).subscribe(
+
+                if ( params['code'] )  {
+
+                this.meta.code = params['code'];
+                this.adhservice.get(this.meta.code).subscribe(
                   ( data: any )  => { this.dataForm.setValue(data) ; },
                   ( err: HttpErrorResponse)  => { },
                   ( )  => { }
 
                 );
+
+              }
       });
 
 
@@ -55,7 +60,7 @@ reload() {
   createForm() {
 
     this.dataForm = this.formBuilder.group({
-      id: [ null ],
+      code: [ null ],
       nom: [ null , [Validators.required] ],
       prenom:  [ null , [Validators.required] ],
       date:  [new Date() , [Validators.required] ],
